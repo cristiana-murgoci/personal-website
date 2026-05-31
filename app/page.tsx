@@ -118,6 +118,8 @@ const coursework = [
       { code: "COMPSCI 136", name: "Economics and Computation" },
       { code: "COMPSCI 37", name: "Incentives in the Wild" },
       { code: "COMPSCI 2881R", name: "AI Alignment and Safety" },
+      { code: "COMPSCI 181", name: "Machine Learning" },
+      { code: "COMPSCI 124", name: "Algorithms and Data Structures" },
       { code: "COMPSCI 1261", name: "Privacy, Fairness & Validity" },
       { code: "COMPSCI 61", name: "Systems Programming" },
       { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
@@ -399,6 +401,7 @@ export default function Home() {
                   <p className={styles.researchDesc}>
                     Using the 2023 FDIC National Survey of Unbanked and Underbanked Households (69,484 households), we investigated which demographic groups distrust financial institutions and why. EDA revealed stark racial disparities: Black, Hispanic, and AIAN households face unbanked rates 5–7x higher than White households. Logistic regression identified Black race and Midwest region as the strongest demographic predictors of distrust.
                   </p>
+
                   <div className={styles.tags}>
                     {['R', 'logistic regression', 'FDIC data', 'financial inclusion'].map(t => (
                       <span key={t} className={styles.tag}>{t}</span>
@@ -415,7 +418,7 @@ export default function Home() {
                 <div className={styles.researchBody}>
                   <h3 className={styles.researchTitle}>
                     <a href="/CS37_sportsbook_project.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
-                      Strategic Promotions in Sports Betting Markets ↗
+                      The Incentive Pitfalls of Sports Betting ↗
                     </a>
                   </h3>
                   <p className={styles.researchDesc}>
