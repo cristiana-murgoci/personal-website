@@ -190,12 +190,13 @@ const awards = [
   { year: '2017',                         name: 'Member of the Romanian National Team',                           org: 'Junior Balkan Mathematical Olympiad' },
 ];
 
-type Tab = 'projects' | 'research' | 'background';
+type Tab = 'projects' | 'research' | 'background' | 'writing';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'projects',   label: 'Projects'    },
   { id: 'research',   label: 'Research'    },
   { id: 'background', label: 'Background'  },
+  { id: 'writing',    label: 'Writing'     },
 ];
 
 function SkillRow({ items }: { items: string[] }) {
@@ -464,6 +465,32 @@ export default function Home() {
 
               <div className={styles.researchItem}>
                 <div className={styles.researchMeta}>
+                  <span className={styles.researchYear}>Spring 2025</span>
+                  <span className={styles.researchOrg}>CS 37</span>
+                </div>
+                <div className={styles.researchBody}>
+                  <h3 className={styles.researchTitle}>
+                    <a href="/CS37_sportsbook_project.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
+                      Strategic Promotions in Sports Betting Markets ↗
+                    </a>
+                  </h3>
+                  <p className={styles.researchDesc}>
+                    Modeled sportsbook pricing strategy as a game between naive and sophisticated bettors.
+                    Naive bettors misperceive probabilities and are swayed by win/loss streaks; sophisticated bettors
+                    know the true odds. Simulated three boost scenarios — no promotion, one-time initial boost, and
+                    dynamic targeting of discouraged bettors — showing that dynamic targeting maximizes sportsbook
+                    profit by exploiting behavioral biases. Implemented in Python with full agent-based simulation.
+                  </p>
+                  <div className={styles.tags}>
+                    {['game theory', 'agent-based simulation', 'behavioral economics', 'Python'].map(t => (
+                      <span key={t} className={styles.tag}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.researchItem}>
+                <div className={styles.researchMeta}>
                   <span className={styles.researchYear}>Fall 2023</span>
                   <span className={styles.researchOrg}>CS 136</span>
                 </div>
@@ -679,6 +706,17 @@ export default function Home() {
               </div>
             </section>
           </>
+        )}
+
+        {/* ── Writing tab ───────────────────────────── */}
+        {activeTab === 'writing' && (
+          <section className={styles.section}>
+            <div className={styles.prose} style={{ marginTop: '8px' }}>
+              <p style={{ color: 'var(--text-faint)', fontStyle: 'italic' }}>
+                Essays and writing coming soon.
+              </p>
+            </div>
+          </section>
         )}
 
       </div>
