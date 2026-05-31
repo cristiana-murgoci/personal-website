@@ -25,6 +25,15 @@ export const metadata: Metadata = {
   title: "Cristiana Murgoci",
   description:
     "Researcher at the intersection of AI safety, statistics, and physical automation.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Cristiana Murgoci",
     description:
