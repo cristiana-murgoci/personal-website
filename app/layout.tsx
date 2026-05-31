@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond, Space_Mono } from "next/font/google";
 import "./globals.css";
-import SideNav from "./components/SideNav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -42,8 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${cormorant.variable} ${spaceMono.variable}`}>
       <body>
-        <SideNav />
-<div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
+        {children}
       </body>
     </html>
   );

@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import styles from "./page.module.css";
 import FadeUp from "./components/FadeUp";
 
@@ -45,20 +48,20 @@ const research = [
     tags: ["quantitative finance", "statistical arbitrage", "algorithmic trading"],
   },
   {
-    year: "March 2023",
-    title: "First-Year Trading and Technology Program",
-    org: "Jane Street",
-    description:
-      "Highly selective program introducing first-year undergraduates to Jane Street's trading and technology models. Participated in classes and team-based mock trading simulations.",
-    tags: ["trading", "market structure", "technology"],
-  },
-  {
     year: "August 2023",
     title: "Insight Program",
     org: "Jane Street",
     description:
       "Highly selective program introducing undergraduate students to market-making strategies including arbitrage, through trading simulation games.",
     tags: ["market-making", "arbitrage", "trading"],
+  },
+  {
+    year: "March 2023",
+    title: "First-Year Trading and Technology Program",
+    org: "Jane Street",
+    description:
+      "Highly selective program introducing first-year undergraduates to Jane Street's trading and technology models. Participated in classes and team-based mock trading simulations.",
+    tags: ["trading", "market structure", "technology"],
   },
   {
     year: "Summer 2023",
@@ -98,57 +101,58 @@ const coursework = [
   {
     dept: "Mathematics & Statistics",
     courses: [
-      { code: "Math 55A/B", name: "Studies in Algebra & Analysis", desc: "Harvard's most demanding mathematics course. 55A covers abstract algebra, group theory, and linear algebra; 55B covers real and complex analysis. Taken by a small cohort each year." },
-      { code: "STAT 210", name: "Graduate Probability", desc: "Measure-theoretic probability: probability spaces, random variables, convergence theorems, martingales, and Brownian motion." },
-      { code: "STAT 220", name: "Bayesian Inference", desc: "Bayesian theory and computation. Prior and posterior distributions, conjugate families, hierarchical models, and MCMC methods." },
-      { code: "STAT 242", name: "Time Series", desc: "Stationary processes, ARMA models, spectral analysis, state-space representations, and forecasting." },
-      { code: "STAT 139", name: "Linear Models", desc: "Linear regression, generalized linear models, mixed effects models, and model selection." },
-      { code: "STAT 110", name: "Introduction to Probability", desc: "Probability theory, combinatorics, conditional probability, distributions, expectation, and the law of large numbers." },
-      { code: "STAT 111", name: "Statistical Inference", desc: "Frequentist inference, hypothesis testing, confidence intervals, likelihood, and the foundations of statistical reasoning." },
+      { code: "Math 55A/B", name: "Studies in Algebra & Analysis" },
+      { code: "STAT 210", name: "Graduate Probability" },
+      { code: "STAT 220", name: "Bayesian Inference" },
+      { code: "STAT 242", name: "Time Series" },
+      { code: "STAT 139", name: "Linear Models" },
+      { code: "STAT 288", name: "Statistical Consulting" },
+      { code: "STAT 110", name: "Introduction to Probability" },
+      { code: "STAT 111", name: "Statistical Inference" },
     ],
   },
   {
     dept: "Computer Science",
     courses: [
-      { code: "COMPSCI 1210", name: "Theoretical Computer Science", desc: "Computability, complexity theory, the P vs. NP question, NP-completeness, randomized algorithms, and circuit complexity." },
-      { code: "COMPSCI 136", name: "Economics and Computation", desc: "Algorithmic game theory and mechanism design. Nash equilibria, auctions, social choice, price of anarchy." },
-      { code: "COMPSCI 37", name: "Incentives in the Wild", desc: "Game theory applied to real-world systems: sports tanking, cryptocurrency mining, social media, and matching markets." },
-      { code: "COMPSCI 2881R", name: "AI Alignment and Safety", desc: "Technical foundations of AI safety: reward hacking, goal misgeneralization, mechanistic interpretability, and RLHF." },
-      { code: "COMPSCI 1261", name: "Privacy, Fairness & Validity", desc: "Differential privacy, fairness impossibility results, statistical validity of ML claims, and the complexity of enforcing fairness." },
-      { code: "COMPSCI 61", name: "Systems Programming", desc: "Computer architecture, memory management, processes, concurrency, and the C programming environment." },
-      { code: "ENG-SCI 139", name: "Innovation in Science and Engineering", desc: "Conference course on translating scientific research into real-world impact: entrepreneurship, communication, and the structure of building from the lab." },
+      { code: "COMPSCI 1210", name: "Theoretical Computer Science" },
+      { code: "COMPSCI 136", name: "Economics and Computation" },
+      { code: "COMPSCI 37", name: "Incentives in the Wild" },
+      { code: "COMPSCI 2881R", name: "AI Alignment and Safety" },
+      { code: "COMPSCI 1261", name: "Privacy, Fairness & Validity" },
+      { code: "COMPSCI 61", name: "Systems Programming" },
+      { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
     ],
   },
   {
     dept: "Economics",
     courses: [
-      { code: "ECON 10A", name: "Principles of Economics: Microeconomics", desc: "Supply and demand, consumer and producer theory, market structure, externalities, and the foundations of price theory." },
-      { code: "ECON 10B", name: "Principles of Economics: Macroeconomics", desc: "National income, inflation, unemployment, monetary and fiscal policy, economic growth, and open-economy macroeconomics." },
-      { code: "ECON 1011A", name: "Intermediate Microeconomics: Advanced", desc: "General equilibrium, welfare economics, game theory, and information economics. The mathematically rigorous track of Harvard's micro sequence." },
-      { code: "ECON 1021", name: "Using Markets to Solve Social Problems", desc: "Market design and mechanism design applied to education, healthcare, and organ allocation." },
+      { code: "ECON 10A", name: "Principles of Economics: Microeconomics" },
+      { code: "ECON 10B", name: "Principles of Economics: Macroeconomics" },
+      { code: "ECON 1011A", name: "Intermediate Microeconomics: Advanced" },
+      { code: "ECON 1021", name: "Using Markets to Solve Social Problems" },
     ],
   },
   {
     dept: "Physics",
     courses: [
-      { code: "PHYSICS 143A", name: "Quantum Mechanics I", desc: "Wave functions, the Schrödinger equation, operators, the uncertainty principle, spin, angular momentum, and the hydrogen atom." },
-      { code: "PHYSICS 151", name: "Mechanics", desc: "Newtonian mechanics, Lagrangian and Hamiltonian formulations, oscillations, central force motion, and rigid body dynamics." },
+      { code: "PHYSICS 143A", name: "Quantum Mechanics I" },
+      { code: "PHYSICS 151", name: "Mechanics" },
     ],
   },
   {
     dept: "Social Sciences & Humanities",
     courses: [
-      { code: "SOCIOL 1136", name: "Work and Culture", desc: "How economic shifts, automation, and cultural norms reshape work and identity. Examines the sociology of labor in a moment of technological disruption." },
-      { code: "WOMGEN 1225", name: "Visions of Feminism in the 21st Century", desc: "Feminist theory through contemporary media, politics, and culture: how ideas about gender and power circulate and evolve." },
-      { code: "WOMGEN 1410", name: "The Politics of Personal Writing", desc: "First-person narrative as a political act. Memoir, essay, and the ethics of writing about yourself and others." },
-      { code: "EXPOS 20", name: "Expository Writing: Gender & Mental Health", desc: "Writing seminar examining the intersection of gender and mental health through personal essay and analytical writing. Explores how identity shapes experience and how writing can make that legible." },
-      { code: "GENED 1033", name: "Conflict Resolution in a Divided World", desc: "Theories and practice of conflict resolution across political, organizational, and interpersonal domains." },
+      { code: "SOCIOL 1136", name: "Work and Culture" },
+      { code: "WOMGEN 1225", name: "Visions of Feminism in the 21st Century" },
+      { code: "WOMGEN 1410", name: "The Politics of Personal Writing" },
+      { code: "EXPOS 20", name: "Expository Writing: Gender & Mental Health" },
+      { code: "GENED 1033", name: "Conflict Resolution in a Divided World" },
     ],
   },
   {
     dept: "Pre-College",
     courses: [
-      { code: "Qubit by Qubit", name: "Introduction to Quantum Computing", desc: "Full-year course taught by MIT and Oxford quantum scientists, sponsored by IBM. Covered quantum gates, Deutsch-Jozsa, Shor's algorithm, and Grover's search, implemented in Python." },
+      { code: "Qubit by Qubit", name: "Introduction to Quantum Computing" },
     ],
   },
 ];
@@ -169,6 +173,31 @@ const skills = {
   ],
 };
 
+const awards = [
+  { year: '2026',                         name: 'Intellectual Contribution Award',                                org: 'Harvard · Cabot House' },
+  { year: '2024',                         name: 'Honor Medal for Outstanding Results in International Olympiads',  org: 'Institute of Atomic Physics' },
+  { year: '2022',                         name: 'Silver Medal · Best Female Contestant',                          org: 'European Physics Olympiad' },
+  { year: '2022',                         name: 'Finalist, Biomedical Engineering Category',                      org: 'Regeneron ISEF' },
+  { year: '2022',                         name: 'Honor Medal for Outstanding Results in International Olympiads',  org: 'Institute of Atomic Physics' },
+  { year: '2022',                         name: '"Florea Uliu" Award for Top Results in National Olympiads',      org: 'Romanian Physics Society' },
+  { year: '2021',                         name: 'Gold Medal · Third Place · Best Female Contestant',              org: 'European Physics Olympiad' },
+  { year: '2021',                         name: 'Gold Medal',                                                     org: 'Nordic-Baltic Physics Olympiad' },
+  { year: '2021',                         name: 'Gold Medal',                                                     org: 'International Zhautykov Olympiad in Physics' },
+  { year: '2021',                         name: 'Honorable Mention',                                              org: 'Asian Physics Olympiad' },
+  { year: '2021',                         name: 'First Place',                                                    org: 'Romanian Science and Engineering Fair' },
+  { year: '2017, 2018, 2019, 2021, 2022', name: 'Gold Medal · First Place (2021)',                               org: 'Romanian National Physics Olympiad' },
+  { year: '2019',                         name: 'Gold Medal',                                                     org: 'Romanian National Mathematics Olympiad' },
+  { year: '2017',                         name: 'Member of the Romanian National Team',                           org: 'Junior Balkan Mathematical Olympiad' },
+];
+
+type Tab = 'projects' | 'research' | 'background';
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'projects',   label: 'Projects'    },
+  { id: 'research',   label: 'Research'    },
+  { id: 'background', label: 'Background'  },
+];
+
 function SkillRow({ items }: { items: string[] }) {
   return (
     <div className={styles.skillList}>
@@ -183,475 +212,475 @@ function SkillRow({ items }: { items: string[] }) {
 }
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<Tab | null>(null);
+
+  function handleTab(tab: Tab) {
+    const next = activeTab === tab ? null : tab;
+    setActiveTab(next);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   return (
     <main className={styles.main}>
-      {/* Hero — hidden until intro completes, then fades in as one piece */}
+
+      {/* Hero */}
       <section className={styles.hero}>
-          <div className={styles.heroText}>
-            <p className={styles.heroEyebrow}>Researcher · Builder · Harvard</p>
-            <h1 className={styles.name}>Cristiana Murgoci</h1>
-            <p className={styles.tagline}>
-              Researcher at the intersection of AI safety, statistics, and
-              physical automation.
-            </p>
-            <p className={styles.heroMeta}>
-              Bachelor's in Statistics & CS · Harvard College<br />Master's in Statistics · Harvard Graduate School of Arts and Sciences
-            </p>
+        <div className={styles.heroText}>
+          <p className={styles.heroEyebrow}>Researcher · Builder · Harvard</p>
+          <h1 className={styles.name}>Cristiana Murgoci</h1>
+          <p className={styles.tagline}>
+            Researcher at the intersection of AI safety, statistics, and physical automation.
+          </p>
+          <p className={styles.heroMeta}>
+            Bachelor&apos;s in Statistics &amp; CS · Harvard College<br />
+            Master&apos;s in Statistics · Harvard Graduate School of Arts and Sciences
+          </p>
+        </div>
+        <div className={styles.heroPhotoFrame}>
+          <div className={styles.heroPhoto}>
+            <img src="/headshot.jpg" alt="Cristiana Murgoci" className={styles.headshot} />
           </div>
-          <div className={styles.heroPhotoFrame}>
-            <div className={styles.heroPhoto}>
-              <img
-                src="/headshot.jpg"
-                alt="Cristiana Murgoci"
-                className={styles.headshot}
-              />
-            </div>
-          </div>
-        </section>
+        </div>
+      </section>
+
+      {/* Tab bar */}
+      <nav className={styles.tabBar}>
+        {TABS.map(({ id, label }) => (
+          <button
+            key={id}
+            className={`${styles.tabButton} ${activeTab === id ? styles.tabActive : ''}`}
+            onClick={() => handleTab(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
 
       <div className={styles.content}>
-        {/* About */}
-        <FadeUp>
-        <section className={styles.section} id="about">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionLabel}>About</span>
-            <div className={styles.sectionRule} />
-          </div>
-          <div className={styles.prose}>
-            <p>
-              I grew up in Romania competing in physics and mathematics olympiads.
-              I was the first female participant in history to rank top three at
-              the European Physics Olympiad. At Harvard I am studying CS, Statistics, and
-              Economics, with a concurrent MA in Statistics.
-            </p>
-            <p>
-              Most of my work now lives at the intersection of markets and AI. Right now I am
-              researching what happens when AI agents start acting strategically: negotiating,
-              colluding, learning to exploit the rules they operate under. More
-              broadly, I am drawn to questions at the intersection of fairness and system design:
-              differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
-            </p>
-          </div>
-        </section>
-        </FadeUp>
 
-        {/* Awards */}
-        <FadeUp delay={100}>
-        <section className={styles.section} id="awards">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionLabel}>Awards & Honours</span>
-            <div className={styles.sectionRule} />
-          </div>
-          <div className={styles.awardsList}>
-            {[
-              { year: '2026',                         name: 'Intellectual Contribution Award',                                org: 'Harvard · Cabot House' },
-              { year: '2024',                         name: 'Honor Medal for Outstanding Results in International Olympiads',  org: 'Institute of Atomic Physics' },
-              { year: '2022',                         name: 'Silver Medal · Best Female Contestant',                          org: 'European Physics Olympiad' },
-              { year: '2022',                         name: 'Finalist, Biomedical Engineering Category',                      org: 'Regeneron ISEF' },
-              { year: '2022',                         name: 'Honor Medal for Outstanding Results in International Olympiads',  org: 'Institute of Atomic Physics' },
-              { year: '2022',                         name: '"Florea Uliu" Award for Top Results in National Olympiads',      org: 'Romanian Physics Society' },
-              { year: '2021',                         name: 'Gold Medal · Third Place · Best Female Contestant',              org: 'European Physics Olympiad' },
-              { year: '2021',                         name: 'Gold Medal',                                                     org: 'Nordic-Baltic Physics Olympiad' },
-              { year: '2021',                         name: 'Gold Medal',                                                     org: 'International Zhautykov Olympiad in Physics' },
-              { year: '2021',                         name: 'Honorable Mention',                                              org: 'Asian Physics Olympiad' },
-              { year: '2021',                         name: 'First Place',                                                    org: 'Romanian Science and Engineering Fair' },
-              { year: '2017, 2018, 2019, 2021, 2022', name: 'Gold Medal · First Place (2021)',                               org: 'Romanian National Physics Olympiad' },
-              { year: '2019',                         name: 'Gold Medal',                                                     org: 'Romanian National Mathematics Olympiad' },
-              { year: '2017',                         name: 'Member of the Romanian National Team',                          org: 'Junior Balkan Mathematical Olympiad' },
-            ].map((a, i) => (
-              <div key={i} className={styles.awardRow}>
-                <div className={styles.awardLeft}>
-                  <span className={styles.awardName}>{a.name}</span>
-                  <span className={styles.awardOrg}>· {a.org}</span>
+        {/* ── Home view ─────────────────────────────── */}
+        {activeTab === null && (
+          <>
+            <FadeUp>
+              <section className={styles.section}>
+                <div className={styles.sectionHeader}>
+                  <span className={styles.sectionLabel}>About</span>
+                  <div className={styles.sectionRule} />
                 </div>
-                <span className={styles.awardYear}>{a.year}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-        </FadeUp>
-
-        {/* Projects */}
-        <FadeUp delay={100}>
-        <section className={styles.section} id="projects">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionLabel}>Projects</span>
-            <div className={styles.sectionRule} />
-          </div>
-          <div className={styles.researchList}>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Spring 2026</span>
-                <span className={styles.researchOrg}>CS 1261</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>
-                  <a href="/CS1261_Unofficial_Lecture_Notes_Murgoci.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
-                    Differential Privacy, Algorithmic Fairness &amp; Cryptography ↗
-                  </a>
-                </h3>
-                <p className={styles.researchDesc}>
-                  A self-contained set of lecture notes I wrote for CS 1261, my favorite course at Harvard.
-                  Covers differential privacy, fairness impossibility results, the statistical validity of ML claims,
-                  and the limits of enforcing fairness at scale.
-                </p>
-                <div className={styles.tags}>
-                  {['differential privacy', 'algorithmic fairness', 'cryptography'].map(t => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
+                <div className={styles.prose}>
+                  <p>
+                    I grew up in Romania competing in physics and mathematics olympiads.
+                    I was the first female participant in history to rank top three at
+                    the European Physics Olympiad. At Harvard I am studying CS, Statistics, and
+                    Economics, with a concurrent MA in Statistics.
+                  </p>
+                  <p>
+                    Most of my work now lives at the intersection of markets and AI. Right now I am
+                    researching what happens when AI agents start acting strategically: negotiating,
+                    colluding, learning to exploit the rules they operate under. More
+                    broadly, I am drawn to questions at the intersection of fairness and system design:
+                    differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
+                  </p>
                 </div>
-              </div>
-            </div>
+              </section>
+            </FadeUp>
 
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Mar 2026 – present</span>
-                <span className={styles.researchOrg}>thauma.app</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>
-                  <a href="https://thauma.app" target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid var(--border)', color: 'inherit' }}>Thauma ↗</a>
-                </h3>
-                <p className={styles.researchDesc}>
-                  A platform for connecting researchers with collaborators and curious people with projects worth working on.
-                  The name is the Greek word for wonder, the thing Aristotle said is the beginning of philosophy.
-                  Thauma lets researchers post projects with detailed scopes, researchers and students apply with written responses,
-                  and a dashboard tracks everything from first contact to accepted collaborator.
-                  Built on Next.js and Supabase.
-                </p>
-                <div className={styles.tags}>
-                  {['Next.js', 'Supabase', 'research infrastructure'].map(t => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
+            <FadeUp delay={100}>
+              <section className={styles.section}>
+                <div className={styles.sectionHeader}>
+                  <span className={styles.sectionLabel}>Contact</span>
+                  <div className={styles.sectionRule} />
                 </div>
-              </div>
-            </div>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>May 2026 – present</span>
-                <span className={styles.researchOrg}>Neuromail</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>Neuromail</h3>
-                <p className={styles.researchDesc}>
-                  An AI-powered inbox assistant that replaces the chaos of Gmail with a focused, one-at-a-time
-                  workflow. Reads your inbox, classifies each message by urgency and importance using OpenAI,
-                  drafts replies you can edit, and learns your priorities over time via a scikit-learn ranker.
-                  Designed around a single constraint: it never sends anything without your explicit confirmation.
-                  Deployed on Railway.
-                </p>
-                <div className={styles.tags}>
-                  {['Python', 'Flask', 'OpenAI', 'scikit-learn', 'Gmail API'].map(t => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
+                <div className={styles.contactBlock}>
+                  <p className={styles.contactNote}>
+                    Open to research collaborations, conversations about AI safety and
+                    automation timelines, and meeting people working on hard problems.
+                  </p>
+                  <p className={styles.contactLine}>
+                    <a href="mailto:cristiana_murgoci@college.harvard.edu" style={{ color: 'var(--accent)' }}>
+                      cristiana_murgoci@college.harvard.edu
+                    </a>
+                  </p>
                 </div>
-              </div>
-            </div>
+              </section>
+            </FadeUp>
 
+            <FadeUp delay={200}>
+              <footer className={styles.footer}>
+                <p>Cristiana Murgoci · {new Date().getFullYear()}</p>
+              </footer>
+            </FadeUp>
+          </>
+        )}
 
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Fall 2025</span>
-                <span className={styles.researchOrg}>CS 1090A</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="/CS109A_F1_Presentation.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>Predicting Formula 1 Lap Times ↗</a></h3>
-                <p className={styles.researchDesc}>
-                  Built a pipeline to predict F1 driver lap times from pre-race indicators across 271,773 driver-race-lap observations.
-                  Merged the Kaggle F1 database with external weather data (temperature, precipitation, windspeed) and engineered features
-                  including qualifying pace, constructor, circuit, and driver age. Compared linear regression, polynomial ridge regression
-                  with cross-validated regularization, and random forest with early stopping. Random forest achieved the best performance,
-                  with qualifying time and lap count as the strongest predictors.
-                </p>
-                <div className={styles.tags}>
-                  {['Python', 'scikit-learn', 'random forest', 'ridge regression'].map(t => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
+        {/* ── Projects tab ──────────────────────────── */}
+        {activeTab === 'projects' && (
+          <section className={styles.section}>
+            <div className={styles.researchList}>
 
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Fall 2025</span>
-                <span className={styles.researchOrg}>CS 61</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>
-                  <a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
-                    Systems Software ↗
-                  </a>
-                </h3>
-                <ul className={styles.researchDesc} style={{ paddingLeft: '1.2em', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/main/pset1" target="_blank" rel="noopener noreferrer"><strong>Memory allocator</strong></a> — custom malloc/free in C++ with leak detection, corruption reporting, and 60+ test cases</li>
-                  <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/main/pset2" target="_blank" rel="noopener noreferrer"><strong>Binary reverse engineering</strong></a> — defused a compiled bomb by reading x86-64 assembly with GDB, no source code</li>
-                  <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/pset3-cow/pset3" target="_blank" rel="noopener noreferrer"><strong>OS kernel</strong></a> — built WeensyOS on x86-64: virtual memory, process isolation, fork, copy-on-write, interrupt handling</li>
-                  <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/pset4-phase4-final/pset4" target="_blank" rel="noopener noreferrer"><strong>Buffered I/O layer</strong></a> — I/O abstraction supporting sequential, strided, and scatter-gather access patterns</li>
-                  <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/pset5/pset5" target="_blank" rel="noopener noreferrer"><strong>Unix shell</strong></a> — built sh61 in C++ with process management, piping, redirection, and background execution</li>
-                  <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/pset6/pset6" target="_blank" rel="noopener noreferrer"><strong>Transaction database</strong></a> — concurrent financial transaction system with file I/O and integrity verification</li>
-                </ul>
-                <div className={styles.tags}>
-                  {['C++', 'x86-64 assembly', 'OS kernel', 'GDB', 'systems'].map(t => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Fall 2025</span>
-                <span className={styles.researchOrg}>STAT 139</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="/stat139_project.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>In Banks We Trust? Demographic Determinants of Institutional Distrust ↗</a></h3>
-                <p className={styles.researchDesc}>
-                  Using the 2023 FDIC National Survey of Unbanked and Underbanked Households (69,484 households), we investigated which demographic groups distrust financial institutions and why. EDA revealed stark racial disparities: Black, Hispanic, and AIAN households face unbanked rates 5–7x higher than White households. Among unbanked individuals, distrust is the second most cited reason for staying unbanked. Logistic regression identified Black race and Midwest region as the strongest demographic predictors of distrust, with Black unbanked households showing approximately 38% higher odds of citing institutional distrust than their White counterparts.
-                </p>
-                <div className={styles.tags}>
-                  {['R', 'logistic regression', 'FDIC data', 'financial inclusion'].map(t => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Fall 2023</span>
-                <span className={styles.researchOrg}>CS 136</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>
-                  <a href="/CS136_final_project.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
-                    Improving Poker Winnings with Game Theory ↗
-                  </a>
-                </h3>
-                <p className={styles.researchDesc}>
-                  Argues that pot odds alone are insufficient for optimal poker play and derives the Mixed Strategy Nash Equilibrium
-                  for heads-up scenarios. Shows that a GTO player achieves strictly higher expected value than any pure strategy:
-                  by bluffing at the right frequency (1:2 bluff-to-value ratio at all-in), a player makes their opponent indifferent
-                  between calling and folding, eliminating exploitability. Analyzes minimum defense frequencies and introduces
-                  GTO solver software for computing equilibria in more complex game trees.
-                </p>
-                <div className={styles.tags}>
-                  {['game theory', 'Nash equilibrium', 'GTO', 'poker'].map(t => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-        </FadeUp>
-
-        {/* Research */}
-        <FadeUp delay={100}>
-        <section className={styles.section} id="research">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionLabel}>Research</span>
-            <div className={styles.sectionRule} />
-          </div>
-          <div className={styles.researchList}>
-            {research.map((item, i) => (
-              <div key={i} className={styles.researchItem}>
+              <div className={styles.researchItem}>
                 <div className={styles.researchMeta}>
-                  <span className={styles.researchYear}>{item.year}</span>
-                  <span className={styles.researchOrg}>{item.org}</span>
+                  <span className={styles.researchYear}>Spring 2026</span>
+                  <span className={styles.researchOrg}>CS 1261</span>
                 </div>
                 <div className={styles.researchBody}>
                   <h3 className={styles.researchTitle}>
-                    {item.link ? (
-                      <a href={item.link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
-                        {item.title} ↗
-                      </a>
-                    ) : item.title}
+                    <a href="/CS1261_Unofficial_Lecture_Notes_Murgoci.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
+                      Differential Privacy, Algorithmic Fairness &amp; Cryptography ↗
+                    </a>
                   </h3>
-                  <p className={styles.researchDesc}>{item.description}</p>
+                  <p className={styles.researchDesc}>
+                    A self-contained set of lecture notes I wrote for CS 1261, my favorite course at Harvard.
+                    Covers differential privacy, fairness impossibility results, the statistical validity of ML claims,
+                    and the limits of enforcing fairness at scale.
+                  </p>
                   <div className={styles.tags}>
-                    {item.tags.map((tag) => (
-                      <span key={tag} className={styles.tag}>
-                        {tag}
-                      </span>
+                    {['differential privacy', 'algorithmic fairness', 'cryptography'].map(t => (
+                      <span key={t} className={styles.tag}>{t}</span>
                     ))}
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
-        </FadeUp>
 
-        {/* Activities */}
-        <FadeUp delay={100}>
-        <section className={styles.section} id="activities">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionLabel}>Activities</span>
-            <div className={styles.sectionRule} />
-          </div>
-          <div className={styles.researchList}>
+              <div className={styles.researchItem}>
+                <div className={styles.researchMeta}>
+                  <span className={styles.researchYear}>Mar 2026 – present</span>
+                  <span className={styles.researchOrg}>thauma.app</span>
+                </div>
+                <div className={styles.researchBody}>
+                  <h3 className={styles.researchTitle}>
+                    <a href="https://thauma.app" target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid var(--border)', color: 'inherit' }}>Thauma ↗</a>
+                  </h3>
+                  <p className={styles.researchDesc}>
+                    A platform for connecting researchers with collaborators and curious people with projects worth working on.
+                    The name is the Greek word for wonder, the thing Aristotle said is the beginning of philosophy.
+                    Thauma lets researchers post projects with detailed scopes, researchers and students apply with written responses,
+                    and a dashboard tracks everything from first contact to accepted collaborator.
+                    Built on Next.js and Supabase.
+                  </p>
+                  <div className={styles.tags}>
+                    {['Next.js', 'Supabase', 'research infrastructure'].map(t => (
+                      <span key={t} className={styles.tag}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Sep 2025 – present</span>
-                <span className={styles.researchOrg}>AGI Strategy Reading Group</span>
+              <div className={styles.researchItem}>
+                <div className={styles.researchMeta}>
+                  <span className={styles.researchYear}>May 2026 – present</span>
+                  <span className={styles.researchOrg}>Neuromail</span>
+                </div>
+                <div className={styles.researchBody}>
+                  <h3 className={styles.researchTitle}>Neuromail</h3>
+                  <p className={styles.researchDesc}>
+                    An AI-powered inbox assistant that replaces the chaos of Gmail with a focused, one-at-a-time
+                    workflow. Reads your inbox, classifies each message by urgency and importance using OpenAI,
+                    drafts replies you can edit, and learns your priorities over time via a scikit-learn ranker.
+                    Designed around a single constraint: it never sends anything without your explicit confirmation.
+                    Deployed on Railway.
+                  </p>
+                  <div className={styles.tags}>
+                    {['Python', 'Flask', 'OpenAI', 'scikit-learn', 'Gmail API'].map(t => (
+                      <span key={t} className={styles.tag}>{t}</span>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="https://haist.ai" target="_blank" rel="noopener noreferrer">Harvard AI Safety Student Team ↗</a></h3>
-                <p className={styles.researchDesc}>Engaging with technical and governance literature on long-range AGI strategy and transformative AI risk.</p>
+
+              <div className={styles.researchItem}>
+                <div className={styles.researchMeta}>
+                  <span className={styles.researchYear}>Fall 2025</span>
+                  <span className={styles.researchOrg}>CS 61</span>
+                </div>
+                <div className={styles.researchBody}>
+                  <h3 className={styles.researchTitle}>
+                    <a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
+                      Systems Software ↗
+                    </a>
+                  </h3>
+                  <ul className={styles.researchDesc} style={{ paddingLeft: '1.2em', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/main/pset1" target="_blank" rel="noopener noreferrer"><strong>Memory allocator</strong></a> — custom malloc/free in C++ with leak detection, corruption reporting, and 60+ test cases</li>
+                    <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/main/pset2" target="_blank" rel="noopener noreferrer"><strong>Binary reverse engineering</strong></a> — defused a compiled bomb by reading x86-64 assembly with GDB, no source code</li>
+                    <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/pset3-cow/pset3" target="_blank" rel="noopener noreferrer"><strong>OS kernel</strong></a> — built WeensyOS on x86-64: virtual memory, process isolation, fork, copy-on-write, interrupt handling</li>
+                    <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/pset4-phase4-final/pset4" target="_blank" rel="noopener noreferrer"><strong>Buffered I/O layer</strong></a> — I/O abstraction supporting sequential, strided, and scatter-gather access patterns</li>
+                    <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/pset5/pset5" target="_blank" rel="noopener noreferrer"><strong>Unix shell</strong></a> — built sh61 in C++ with process management, piping, redirection, and background execution</li>
+                    <li><a href="https://github.com/cs61/cs61-f25-psets-cristiana-murgoci/tree/pset6/pset6" target="_blank" rel="noopener noreferrer"><strong>Transaction database</strong></a> — concurrent financial transaction system with file I/O and integrity verification</li>
+                  </ul>
+                  <div className={styles.tags}>
+                    {['C++', 'x86-64 assembly', 'OS kernel', 'GDB', 'systems'].map(t => (
+                      <span key={t} className={styles.tag}>{t}</span>
+                    ))}
+                  </div>
+                </div>
               </div>
+
+              <div className={styles.researchItem}>
+                <div className={styles.researchMeta}>
+                  <span className={styles.researchYear}>Fall 2025</span>
+                  <span className={styles.researchOrg}>CS 1090A</span>
+                </div>
+                <div className={styles.researchBody}>
+                  <h3 className={styles.researchTitle}>
+                    <a href="/CS109A_F1_Presentation.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
+                      Predicting Formula 1 Lap Times ↗
+                    </a>
+                  </h3>
+                  <p className={styles.researchDesc}>
+                    Built a pipeline to predict F1 driver lap times from pre-race indicators across 271,773 driver-race-lap observations.
+                    Merged the Kaggle F1 database with external weather data and engineered features including qualifying pace,
+                    constructor, circuit, and driver age. Compared linear regression, polynomial ridge regression with
+                    cross-validated regularization, and random forest with early stopping.
+                  </p>
+                  <div className={styles.tags}>
+                    {['Python', 'scikit-learn', 'random forest', 'ridge regression'].map(t => (
+                      <span key={t} className={styles.tag}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.researchItem}>
+                <div className={styles.researchMeta}>
+                  <span className={styles.researchYear}>Fall 2025</span>
+                  <span className={styles.researchOrg}>STAT 139</span>
+                </div>
+                <div className={styles.researchBody}>
+                  <h3 className={styles.researchTitle}>
+                    <a href="/stat139_project.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
+                      In Banks We Trust? Demographic Determinants of Institutional Distrust ↗
+                    </a>
+                  </h3>
+                  <p className={styles.researchDesc}>
+                    Using the 2023 FDIC National Survey of Unbanked and Underbanked Households (69,484 households), we investigated which demographic groups distrust financial institutions and why. EDA revealed stark racial disparities: Black, Hispanic, and AIAN households face unbanked rates 5–7x higher than White households. Logistic regression identified Black race and Midwest region as the strongest demographic predictors of distrust.
+                  </p>
+                  <div className={styles.tags}>
+                    {['R', 'logistic regression', 'FDIC data', 'financial inclusion'].map(t => (
+                      <span key={t} className={styles.tag}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.researchItem}>
+                <div className={styles.researchMeta}>
+                  <span className={styles.researchYear}>Fall 2023</span>
+                  <span className={styles.researchOrg}>CS 136</span>
+                </div>
+                <div className={styles.researchBody}>
+                  <h3 className={styles.researchTitle}>
+                    <a href="/CS136_final_project.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
+                      Improving Poker Winnings with Game Theory ↗
+                    </a>
+                  </h3>
+                  <p className={styles.researchDesc}>
+                    Argues that pot odds alone are insufficient for optimal poker play and derives the Mixed Strategy Nash Equilibrium
+                    for heads-up scenarios. Shows that a GTO player achieves strictly higher expected value than any pure strategy
+                    by bluffing at the right frequency (1:2 bluff-to-value ratio at all-in), making the opponent indifferent
+                    between calling and folding.
+                  </p>
+                  <div className={styles.tags}>
+                    {['game theory', 'Nash equilibrium', 'GTO', 'poker'].map(t => (
+                      <span key={t} className={styles.tag}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
             </div>
+          </section>
+        )}
 
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Sep 2025 – present</span>
-                <span className={styles.researchOrg}>Student Representative</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>Harvard Statistics Department, Committee on Equity, Diversity, Inclusion, and Belonging</h3>
-                <p className={styles.researchDesc}>Working to make the Statistics community more equitable and inclusive.</p>
-              </div>
-            </div>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Jun 2025 – Feb 2026</span>
-                <span className={styles.researchOrg}>Director of Programming</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="https://www.wecodeconference.com" target="_blank" rel="noopener noreferrer">Harvard WECode ↗</a></h3>
-                <p className={styles.researchDesc}>Leading programming for the world&apos;s largest student-run undergraduate tech conference, organized by undergraduate women at Harvard. Responsible for speaker curation, session design, and the intellectual direction of the conference.</p>
-              </div>
-            </div>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Jan 2023 – May 2024</span>
-                <span className={styles.researchOrg}>President</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="https://www.scholarsoffinance.org" target="_blank" rel="noopener noreferrer">Scholars of Finance, Harvard Chapter ↗</a></h3>
-                <p className={styles.researchDesc}>Founded and scaled the Harvard chapter: recruited members, built a mentorship program pairing experienced students with newer ones, ran speaker sessions with industry leaders, and served as primary liaison to the national organization.</p>
-              </div>
-            </div>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Jan 2023 – May 2024</span>
-                <span className={styles.researchOrg}>Academic Coordinator</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="https://harvardquantum.com" target="_blank" rel="noopener noreferrer">Harvard Quantum Computing Association ↗</a></h3>
-                <p className={styles.researchDesc}>Organized weekly talks with CEOs and researchers in quantum computing. Led a Qiskit reading group and developed peer-led study groups, running alongside my freshman-year research in quantum ML at Harvard SEAS.</p>
-              </div>
-            </div>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Jan – May 2023</span>
-                <span className={styles.researchOrg}>Academic Chair</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>Woodbridge International Society</h3>
-                <p className={styles.researchDesc}>Academic leadership within Harvard&apos;s international student society, organizing intellectual programming and fostering cross-cultural exchange among international students.</p>
-              </div>
-            </div>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>2023 – 2024</span>
-                <span className={styles.researchOrg}>Member</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>Harvard Financial Analysts Club</h3>
-                <h3 className={styles.researchTitle}>Women in Computer Science</h3>
-                <h3 className={styles.researchTitle}>Harvard Ventures</h3>
-                <h3 className={styles.researchTitle}>Prod Days Program</h3>
-              </div>
-            </div>
-
-          </div>
-        </section>
-        </FadeUp>
-
-        {/* Coursework */}
-        <FadeUp delay={100}>
-        <section className={styles.section} id="coursework">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionLabel}>Coursework</span>
-            <div className={styles.sectionRule} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-            {Array.from({ length: Math.ceil(coursework.length / 2) }, (_, i) => (
-              <div key={i} className={styles.deptPair}>
-                {coursework.slice(i * 2, i * 2 + 2).map((dept) => (
-                  <div key={dept.dept}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: '8px' }}>{dept.dept}</p>
-                    <div className={styles.coursesGrid}>
-                      {dept.courses.map((c) => (
-                        <div key={c.code + c.name} className={styles.courseRow}>
-                          <span className={styles.courseCode}>{c.code}</span>
-                          <span className={styles.courseName}>{c.name}</span>
-                        </div>
+        {/* ── Research tab ──────────────────────────── */}
+        {activeTab === 'research' && (
+          <section className={styles.section}>
+            <div className={styles.researchList}>
+              {research.map((item, i) => (
+                <div key={i} className={styles.researchItem}>
+                  <div className={styles.researchMeta}>
+                    <span className={styles.researchYear}>{item.year}</span>
+                    <span className={styles.researchOrg}>{item.org}</span>
+                  </div>
+                  <div className={styles.researchBody}>
+                    <h3 className={styles.researchTitle}>
+                      {item.link ? (
+                        <a href={item.link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
+                          {item.title} ↗
+                        </a>
+                      ) : item.title}
+                    </h3>
+                    <p className={styles.researchDesc}>{item.description}</p>
+                    <div className={styles.tags}>
+                      {item.tags.map((tag) => (
+                        <span key={tag} className={styles.tag}>{tag}</span>
                       ))}
                     </div>
                   </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── Background tab ────────────────────────── */}
+        {activeTab === 'background' && (
+          <>
+            {/* Awards */}
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <span className={styles.sectionLabel}>Awards &amp; Honours</span>
+                <div className={styles.sectionRule} />
+              </div>
+              <div className={styles.awardsList}>
+                {awards.map((a, i) => (
+                  <div key={i} className={styles.awardRow}>
+                    <div className={styles.awardLeft}>
+                      <span className={styles.awardName}>{a.name}</span>
+                      <span className={styles.awardOrg}>· {a.org}</span>
+                    </div>
+                    <span className={styles.awardYear}>{a.year}</span>
+                  </div>
                 ))}
               </div>
-            ))}
-          </div>
-        </section>
-        </FadeUp>
+            </section>
 
-        {/* Skills */}
-        <FadeUp delay={100}>
-        <section className={styles.section} id="skills">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionLabel}>Skills</span>
-            <div className={styles.sectionRule} />
-          </div>
-          <div className={styles.skillsGrid}>
-            <div className={styles.skillGroup}>
-              <p className={styles.skillGroupLabel}>Computational</p>
-              <SkillRow items={skills.computational} />
-            </div>
-            <div className={styles.skillGroup}>
-              <p className={styles.skillGroupLabel}>Applied</p>
-              <SkillRow items={skills.applied} />
-            </div>
-          </div>
-        </section>
-        </FadeUp>
+            {/* Activities */}
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <span className={styles.sectionLabel}>Activities</span>
+                <div className={styles.sectionRule} />
+              </div>
+              <div className={styles.researchList}>
 
-        {/* Contact */}
-        <FadeUp delay={100}>
-        <section className={styles.section} id="contact">
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionLabel}>Contact</span>
-            <div className={styles.sectionRule} />
-          </div>
-          <div className={styles.contactBlock}>
-            <p className={styles.contactNote}>
-              Open to research collaborations, conversations about AI safety and
-              automation timelines, and meeting people working on hard problems.
-            </p>
-            <p className={styles.contactLine}>
-              <a href="mailto:cristiana_murgoci@college.harvard.edu" style={{ color: 'var(--accent)' }}>
-                cristiana_murgoci@college.harvard.edu
-              </a>
-            </p>
-          </div>
-        </section>
-        </FadeUp>
+                <div className={styles.researchItem}>
+                  <div className={styles.researchMeta}>
+                    <span className={styles.researchYear}>Sep 2025 – present</span>
+                    <span className={styles.researchOrg}>AGI Strategy Reading Group</span>
+                  </div>
+                  <div className={styles.researchBody}>
+                    <h3 className={styles.researchTitle}><a href="https://haist.ai" target="_blank" rel="noopener noreferrer">Harvard AI Safety Student Team ↗</a></h3>
+                    <p className={styles.researchDesc}>Engaging with technical and governance literature on long-range AGI strategy and transformative AI risk.</p>
+                  </div>
+                </div>
 
-        <FadeUp delay={200}>
-        <footer className={styles.footer}>
-          <p>Cristiana Murgoci · {new Date().getFullYear()}</p>
-        </footer>
-        </FadeUp>
+                <div className={styles.researchItem}>
+                  <div className={styles.researchMeta}>
+                    <span className={styles.researchYear}>Sep 2025 – present</span>
+                    <span className={styles.researchOrg}>Student Representative</span>
+                  </div>
+                  <div className={styles.researchBody}>
+                    <h3 className={styles.researchTitle}>Harvard Statistics Department, Committee on Equity, Diversity, Inclusion, and Belonging</h3>
+                    <p className={styles.researchDesc}>Working to make the Statistics community more equitable and inclusive.</p>
+                  </div>
+                </div>
+
+                <div className={styles.researchItem}>
+                  <div className={styles.researchMeta}>
+                    <span className={styles.researchYear}>Jun 2025 – Feb 2026</span>
+                    <span className={styles.researchOrg}>Director of Programming</span>
+                  </div>
+                  <div className={styles.researchBody}>
+                    <h3 className={styles.researchTitle}><a href="https://www.wecodeconference.com" target="_blank" rel="noopener noreferrer">Harvard WECode ↗</a></h3>
+                    <p className={styles.researchDesc}>Leading programming for the world&apos;s largest student-run undergraduate tech conference, organized by undergraduate women at Harvard. Responsible for speaker curation, session design, and the intellectual direction of the conference.</p>
+                  </div>
+                </div>
+
+                <div className={styles.researchItem}>
+                  <div className={styles.researchMeta}>
+                    <span className={styles.researchYear}>Jan 2023 – May 2024</span>
+                    <span className={styles.researchOrg}>President</span>
+                  </div>
+                  <div className={styles.researchBody}>
+                    <h3 className={styles.researchTitle}><a href="https://www.scholarsoffinance.org" target="_blank" rel="noopener noreferrer">Scholars of Finance, Harvard Chapter ↗</a></h3>
+                    <p className={styles.researchDesc}>Founded and scaled the Harvard chapter: recruited members, built a mentorship program pairing experienced students with newer ones, ran speaker sessions with industry leaders, and served as primary liaison to the national organization.</p>
+                  </div>
+                </div>
+
+                <div className={styles.researchItem}>
+                  <div className={styles.researchMeta}>
+                    <span className={styles.researchYear}>Jan 2023 – May 2024</span>
+                    <span className={styles.researchOrg}>Academic Coordinator</span>
+                  </div>
+                  <div className={styles.researchBody}>
+                    <h3 className={styles.researchTitle}><a href="https://harvardquantum.com" target="_blank" rel="noopener noreferrer">Harvard Quantum Computing Association ↗</a></h3>
+                    <p className={styles.researchDesc}>Organized weekly talks with CEOs and researchers in quantum computing. Led a Qiskit reading group and developed peer-led study groups.</p>
+                  </div>
+                </div>
+
+                <div className={styles.researchItem}>
+                  <div className={styles.researchMeta}>
+                    <span className={styles.researchYear}>Jan – May 2023</span>
+                    <span className={styles.researchOrg}>Academic Chair</span>
+                  </div>
+                  <div className={styles.researchBody}>
+                    <h3 className={styles.researchTitle}>Woodbridge International Society</h3>
+                    <p className={styles.researchDesc}>Academic leadership within Harvard&apos;s international student society, organizing intellectual programming and fostering cross-cultural exchange.</p>
+                  </div>
+                </div>
+
+                <div className={styles.researchItem}>
+                  <div className={styles.researchMeta}>
+                    <span className={styles.researchYear}>2023 – 2024</span>
+                    <span className={styles.researchOrg}>Member</span>
+                  </div>
+                  <div className={styles.researchBody}>
+                    <h3 className={styles.researchTitle}>Harvard Financial Analysts Club</h3>
+                    <h3 className={styles.researchTitle}>Women in Computer Science</h3>
+                    <h3 className={styles.researchTitle}>Harvard Ventures</h3>
+                    <h3 className={styles.researchTitle}>Prod Days Program</h3>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            {/* Coursework */}
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <span className={styles.sectionLabel}>Coursework</span>
+                <div className={styles.sectionRule} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                {Array.from({ length: Math.ceil(coursework.length / 2) }, (_, i) => (
+                  <div key={i} className={styles.deptPair}>
+                    {coursework.slice(i * 2, i * 2 + 2).map((dept) => (
+                      <div key={dept.dept}>
+                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: '8px' }}>{dept.dept}</p>
+                        <div className={styles.coursesGrid}>
+                          {dept.courses.map((c) => (
+                            <div key={c.code + c.name} className={styles.courseRow}>
+                              <span className={styles.courseCode}>{c.code}</span>
+                              <span className={styles.courseName}>{c.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Skills */}
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <span className={styles.sectionLabel}>Skills</span>
+                <div className={styles.sectionRule} />
+              </div>
+              <div className={styles.skillsGrid}>
+                <div className={styles.skillGroup}>
+                  <p className={styles.skillGroupLabel}>Computational</p>
+                  <SkillRow items={skills.computational} />
+                </div>
+                <div className={styles.skillGroup}>
+                  <p className={styles.skillGroupLabel}>Applied</p>
+                  <SkillRow items={skills.applied} />
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+
       </div>
     </main>
   );
