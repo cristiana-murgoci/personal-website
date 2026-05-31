@@ -140,22 +140,17 @@ const coursework: CourseEntry[] = [
     ],
   },
   {
-    dept: "Other",
-    sections: [
-      {
-        label: "Entrepreneurship",
-        courses: [
-          { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
-        ],
-      },
-      {
-        label: "Physics",
-        courses: [
-          { code: "PHYSICS 143A", name: "Quantum Mechanics I" },
-          { code: "PHYSICS 151", name: "Mechanics" },
-          { code: "Qubit by Qubit", name: "Introduction to Quantum Computing" },
-        ],
-      },
+    dept: "Physics",
+    courses: [
+      { code: "PHYSICS 143A", name: "Quantum Mechanics I" },
+      { code: "PHYSICS 151", name: "Mechanics" },
+      { code: "Qubit by Qubit", name: "Introduction to Quantum Computing" },
+    ],
+  },
+  {
+    dept: "Entrepreneurship",
+    courses: [
+      { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
     ],
   },
   {
@@ -652,35 +647,15 @@ export default function Home() {
                   <div key={i} className={styles.deptPair}>
                     {coursework.slice(i * 2, i * 2 + 2).map((dept) => (
                       <div key={dept.dept}>
-                        {dept.sections ? (
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                            {dept.sections.map((sec) => (
-                              <div key={sec.label}>
-                                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: '8px' }}>{sec.label}</p>
-                                <div className={styles.coursesGrid}>
-                                  {sec.courses.map((c) => (
-                                    <div key={c.code + c.name} className={styles.courseRow}>
-                                      <span className={styles.courseCode}>{c.code}</span>
-                                      <span className={styles.courseName}>{c.name}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <>
-                            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: '8px' }}>{dept.dept}</p>
-                            <div className={styles.coursesGrid}>
-                              {dept.courses!.map((c) => (
-                                <div key={c.code + c.name} className={styles.courseRow}>
-                                  <span className={styles.courseCode}>{c.code}</span>
-                                  <span className={styles.courseName}>{c.name}</span>
-                                </div>
-                              ))}
+                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: '8px' }}>{dept.dept}</p>
+                        <div className={styles.coursesGrid}>
+                          {dept.courses!.map((c) => (
+                            <div key={c.code + c.name} className={styles.courseRow}>
+                              <span className={styles.courseCode}>{c.code}</span>
+                              <span className={styles.courseName}>{c.name}</span>
                             </div>
-                          </>
-                        )}
+                          ))}
+                        </div>
                       </div>
                     ))}
                   </div>
