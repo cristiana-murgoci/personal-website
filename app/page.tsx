@@ -526,7 +526,7 @@ export default function Home() {
                   I grew up in Romania competing in physics and mathematics olympiads.
                   I was the first female participant in history to rank top three at
                   the European Physics Olympiad. At Harvard I am studying CS, Statistics, and
-                  Economics, with a concurrent MA in Statistics.
+                  Economics, with a concurrent master&apos;s in Statistics.
                 </p>
                 <p>
                   Most of my work now lives at the intersection of markets and AI. Right now I am
