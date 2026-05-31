@@ -1,0 +1,443 @@
+/* ── Layout ──────────────────────────────────────────── */
+.main {
+  min-height: 100vh;
+}
+
+.content {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 0 32px 160px;
+}
+
+@media (max-width: 600px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 64px 24px 56px;
+    gap: 32px;
+  }
+  .heroPhoto {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* ── Hero ─────────────────────────────────────────────── */
+.hero {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 80px 48px 64px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 72px;
+  align-items: center;
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.heroPhotoFrame {
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.heroPhoto {
+  width: 100%;
+  height: 100%;
+}
+
+.headshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  filter: grayscale(8%) contrast(1.02);
+}
+
+.heroEyebrow {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 32px;
+}
+
+.name {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: clamp(32px, 3.6vw, 52px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  white-space: nowrap;
+  color: var(--text);
+  margin-bottom: 32px;
+}
+
+.tagline {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: clamp(13px, 1.1vw, 15px);
+  font-weight: 400;
+  font-style: normal;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 540px;
+  margin-bottom: 24px;
+}
+
+.heroDivider {
+  width: 36px;
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+
+.heroMeta {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+}
+
+/* ── Sections ─────────────────────────────────────────── */
+.section {
+  padding: 56px 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 36px;
+}
+
+.sectionLabel {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.sectionRule {
+  flex: 1;
+  height: 1px;
+  background: var(--border-light);
+}
+
+/* ── About ────────────────────────────────────────────── */
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.prose p {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 14px;
+  line-height: 2;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.prose p:first-child {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 14px;
+  line-height: 2;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ── Research ─────────────────────────────────────────── */
+.researchList {
+  display: flex;
+  flex-direction: column;
+}
+
+.researchItem {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 36px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.researchItem:first-child { padding-top: 0; }
+.researchItem:last-child  { border-bottom: none; padding-bottom: 0; }
+
+.researchMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 3px;
+}
+
+.researchYear {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+}
+
+.researchOrg {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 11.5px;
+  color: var(--text-faint);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+.researchBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.researchTitle {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.researchDesc {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.85;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.tag {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 11px;
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: border-color 0.2s, color 0.2s;
+  cursor: default;
+}
+
+.tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Skills ───────────────────────────────────────────── */
+.skillsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.skillGroup {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+
+.skillGroupLabel {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding-top: 4px;
+}
+
+.skillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.skill {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.skillDot {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--border);
+  display: inline-block;
+  margin: 0 2px;
+  vertical-align: middle;
+}
+
+/* ── Awards ───────────────────────────────────────────── */
+.awardsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.awardRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.awardRow:first-child { border-top: 1px solid var(--border-light); }
+
+.awardLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.awardName {
+  font-size: 13.5px;
+  color: var(--text);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.awardOrg {
+  font-size: 13px;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.awardYear {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Coursework ───────────────────────────────────────── */
+.coursesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.deptPair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+@media (max-width: 700px) {
+  .deptPair {
+    grid-template-columns: 1fr;
+  }
+}
+
+.courseRow {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 20px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border-light);
+  align-items: baseline;
+}
+
+
+.courseCode {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.courseName {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .courseRow {
+    grid-template-columns: 90px 1fr;
+    gap: 12px;
+  }
+}
+
+/* ── Contact ──────────────────────────────────────────── */
+.contactBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contactLine {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.contactNote {
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 2;
+  max-width: 460px;
+  letter-spacing: 0.02em;
+}
+
+/* ── Footer ───────────────────────────────────────────── */
+.footer {
+  padding-top: 72px;
+  font-family: var(--font-mono), 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Mobile ───────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .hero    { padding: 48px 24px 40px; }
+  .content { padding: 0 24px 72px; }
+  .section { padding: 40px 0; }
+
+  .researchItem,
+  .skillGroup {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .researchItem { padding: 28px 0; }
+
+  .researchMeta {
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+  }
+}
