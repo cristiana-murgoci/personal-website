@@ -583,7 +583,7 @@ export default function Home() {
                   </div>
                   <div className={styles.researchBody}>
                     <h3 className={styles.researchTitle}>Committee on Equity, Diversity, Inclusion, and Belonging</h3>
-                    <p className={styles.researchDesc}>Working to make the Statistics community more equitable and inclusive.</p>
+                    <p className={styles.researchDesc}>Representing undergraduate students on the department&apos;s community-building committee. Contributed to initiatives including Stat Nights, the undergraduate colloquium series, and a directed reading program. Advocated for regular undergraduate Town Halls and surveys to surface student feedback directly to faculty, and helped shape the process for drafting and running them.</p>
                   </div>
                 </div>
 
