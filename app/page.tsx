@@ -741,6 +741,11 @@ export default function Home() {
                 cristiana_murgoci@college.harvard.edu
               </a>
             </p>
+            <p className={styles.contactLine}>
+              <a href="https://linkedin.com/in/cristiana-murgoci" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>
+                linkedin.com/in/cristiana-murgoci
+              </a>
+            </p>
           </div>
         </section>
 
