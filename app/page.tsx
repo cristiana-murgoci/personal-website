@@ -164,7 +164,7 @@ const coursework: CourseEntry[] = [
     ],
   },
   {
-    dept: "Social Sciences & Humanities",
+    dept: "Social Sciences",
     courses: [
       { code: "SOCIOL 1136", name: "Work and Culture" },
       { code: "WOMGEN 1225", name: "Visions of Feminism in the 21st Century" },
