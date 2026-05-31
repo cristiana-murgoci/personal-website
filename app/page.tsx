@@ -338,7 +338,7 @@ export default function Home() {
                   <h3 className={styles.researchTitle}>Neuromail <span style={{ color: 'var(--text-faint)', fontWeight: 400, fontSize: '13px' }}>(link coming soon)</span></h3>
                   <p className={styles.researchDesc}>
                     An AI-powered inbox assistant that replaces the chaos of Gmail with a focused, one-at-a-time
-                    workflow. Reads your inbox, classifies each message by urgency and importance using OpenAI,
+                    workflow. Reads your inbox, classifies each message by urgency and importance using a GPT-4 API call,
                     drafts replies you can edit, and learns your priorities over time via a scikit-learn ranker.
                     Designed around a single constraint: it never sends anything without your explicit confirmation.
                     Deployed on Railway.
