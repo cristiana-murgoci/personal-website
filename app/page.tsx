@@ -106,7 +106,7 @@ const coursework = [
       { code: "STAT 220", name: "Bayesian Inference" },
       { code: "STAT 242", name: "Time Series" },
       { code: "STAT 139", name: "Linear Models" },
-      { code: "STAT 288", name: "Deep Statistics: AI and Earth Observations for Sustainable Development" },
+      { code: "STAT 288", name: "AI and Earth Observations for Sustainable Development" },
       { code: "STAT 110", name: "Introduction to Probability" },
       { code: "STAT 111", name: "Statistical Inference" },
     ],
@@ -231,6 +231,7 @@ export default function Home() {
           <p className={styles.tagline}>
             Researcher at the intersection of AI safety, statistics, and physical automation.
           </p>
+          <div className={styles.heroDivider} />
           <p className={styles.heroMeta}>
             Bachelor&apos;s in Statistics &amp; CS · Harvard College<br />
             Master&apos;s in Statistics · Harvard Graduate School of Arts and Sciences
@@ -418,7 +419,7 @@ export default function Home() {
                 <div className={styles.researchBody}>
                   <h3 className={styles.researchTitle}>
                     <a href="/stat139_project.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
-                      In Banks We Trust? Demographic Determinants of Institutional Distrust ↗
+                      Demographic Determinants of Institutional Distrust ↗
                     </a>
                   </h3>
                   <p className={styles.researchDesc}>
