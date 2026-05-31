@@ -335,7 +335,7 @@ export default function Home() {
                   <span className={styles.researchOrg}>Neuromail</span>
                 </div>
                 <div className={styles.researchBody}>
-                  <h3 className={styles.researchTitle}>Neuromail</h3>
+                  <h3 className={styles.researchTitle}>Neuromail <span style={{ color: 'var(--text-faint)', fontWeight: 400, fontSize: '13px' }}>(link coming soon)</span></h3>
                   <p className={styles.researchDesc}>
                     An AI-powered inbox assistant that replaces the chaos of Gmail with a focused, one-at-a-time
                     workflow. Reads your inbox, classifies each message by urgency and importance using OpenAI,
@@ -344,7 +344,7 @@ export default function Home() {
                     Deployed on Railway.
                   </p>
                   <div className={styles.tags}>
-                    {['Python', 'Flask', 'OpenAI', 'scikit-learn', 'Gmail API'].map(t => (
+                    {['Python', 'Flask', 'LLM API', 'scikit-learn', 'Gmail API'].map(t => (
                       <span key={t} className={styles.tag}>{t}</span>
                     ))}
                   </div>
