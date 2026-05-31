@@ -16,7 +16,7 @@ const research = [
   },
   {
     year: "2025 – present",
-    title: "Emergent Collusion in LLM Market Agents",
+    title: "Characterizing Collusive Dynamics in Multi-Agent LLM Systems",
     link: "/SPAR_collusion_midterm.pdf",
     org: "SPAR",
     description:
