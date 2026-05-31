@@ -11,13 +11,18 @@
 
 /* ── Tab bar ──────────────────────────────────────────── */
 .tabBar {
-  display: flex;
-  padding: 0 48px;
   border-bottom: 1px solid var(--border-light);
   position: sticky;
   top: 0;
   background: var(--bg);
   z-index: 10;
+  padding: 0 calc((100% - 740px) / 2);
+}
+
+@media (max-width: 804px) {
+  .tabBar {
+    padding: 0 32px;
+  }
 }
 
 .tabButton {

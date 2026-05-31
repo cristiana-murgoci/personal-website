@@ -106,7 +106,7 @@ const coursework = [
       { code: "STAT 220", name: "Bayesian Inference" },
       { code: "STAT 242", name: "Time Series" },
       { code: "STAT 139", name: "Linear Models" },
-      { code: "STAT 288", name: "Statistical Consulting" },
+      { code: "STAT 288", name: "Deep Statistics: AI and Earth Observations for Sustainable Development" },
       { code: "STAT 110", name: "Introduction to Probability" },
       { code: "STAT 111", name: "Statistical Inference" },
     ],
@@ -193,9 +193,9 @@ const awards = [
 type Tab = 'projects' | 'research' | 'background' | 'writing';
 
 const TABS: { id: Tab; label: string }[] = [
+  { id: 'background', label: 'Background'  },
   { id: 'projects',   label: 'Projects'    },
   { id: 'research',   label: 'Research'    },
-  { id: 'background', label: 'Background'  },
   { id: 'writing',    label: 'Writing'     },
 ];
 
@@ -213,11 +213,10 @@ function SkillRow({ items }: { items: string[] }) {
 }
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<Tab | null>(null);
+  const [activeTab, setActiveTab] = useState<Tab>('background');
 
   function handleTab(tab: Tab) {
-    const next = activeTab === tab ? null : tab;
-    setActiveTab(next);
+    setActiveTab(tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -259,60 +258,30 @@ export default function Home() {
 
       <div className={styles.content}>
 
-        {/* ── Home view ─────────────────────────────── */}
-        {activeTab === null && (
-          <>
-            <FadeUp>
-              <section className={styles.section}>
-                <div className={styles.sectionHeader}>
-                  <span className={styles.sectionLabel}>About</span>
-                  <div className={styles.sectionRule} />
-                </div>
-                <div className={styles.prose}>
-                  <p>
-                    I grew up in Romania competing in physics and mathematics olympiads.
-                    I was the first female participant in history to rank top three at
-                    the European Physics Olympiad. At Harvard I am studying CS, Statistics, and
-                    Economics, with a concurrent MA in Statistics.
-                  </p>
-                  <p>
-                    Most of my work now lives at the intersection of markets and AI. Right now I am
-                    researching what happens when AI agents start acting strategically: negotiating,
-                    colluding, learning to exploit the rules they operate under. More
-                    broadly, I am drawn to questions at the intersection of fairness and system design:
-                    differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
-                  </p>
-                </div>
-              </section>
-            </FadeUp>
-
-            <FadeUp delay={100}>
-              <section className={styles.section}>
-                <div className={styles.sectionHeader}>
-                  <span className={styles.sectionLabel}>Contact</span>
-                  <div className={styles.sectionRule} />
-                </div>
-                <div className={styles.contactBlock}>
-                  <p className={styles.contactNote}>
-                    Open to research collaborations, conversations about AI safety and
-                    automation timelines, and meeting people working on hard problems.
-                  </p>
-                  <p className={styles.contactLine}>
-                    <a href="mailto:cristiana_murgoci@college.harvard.edu" style={{ color: 'var(--accent)' }}>
-                      cristiana_murgoci@college.harvard.edu
-                    </a>
-                  </p>
-                </div>
-              </section>
-            </FadeUp>
-
-            <FadeUp delay={200}>
-              <footer className={styles.footer}>
-                <p>Cristiana Murgoci · {new Date().getFullYear()}</p>
-              </footer>
-            </FadeUp>
-          </>
-        )}
+        {/* ── About (always visible) ────────────────── */}
+        <FadeUp>
+          <section className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.sectionLabel}>About</span>
+              <div className={styles.sectionRule} />
+            </div>
+            <div className={styles.prose}>
+              <p>
+                I grew up in Romania competing in physics and mathematics olympiads.
+                I was the first female participant in history to rank top three at
+                the European Physics Olympiad. At Harvard I am studying CS, Statistics, and
+                Economics, with a concurrent MA in Statistics.
+              </p>
+              <p>
+                Most of my work now lives at the intersection of markets and AI. Right now I am
+                researching what happens when AI agents start acting strategically: negotiating,
+                colluding, learning to exploit the rules they operate under. More
+                broadly, I am drawn to questions at the intersection of fairness and system design:
+                differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
+              </p>
+            </div>
+          </section>
+        </FadeUp>
 
         {/* ── Projects tab ──────────────────────────── */}
         {activeTab === 'projects' && (
@@ -718,6 +687,29 @@ export default function Home() {
             </div>
           </section>
         )}
+
+        {/* ── Contact (always visible) ──────────────── */}
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionLabel}>Contact</span>
+            <div className={styles.sectionRule} />
+          </div>
+          <div className={styles.contactBlock}>
+            <p className={styles.contactNote}>
+              Open to research collaborations, conversations about AI safety and
+              automation timelines, and meeting people working on hard problems.
+            </p>
+            <p className={styles.contactLine}>
+              <a href="mailto:cristiana_murgoci@college.harvard.edu" style={{ color: 'var(--accent)' }}>
+                cristiana_murgoci@college.harvard.edu
+              </a>
+            </p>
+          </div>
+        </section>
+
+        <footer className={styles.footer}>
+          <p>Cristiana Murgoci · {new Date().getFullYear()}</p>
+        </footer>
 
       </div>
     </main>
