@@ -153,11 +153,6 @@ const coursework: CourseEntry[] = [
         courses: [
           { code: "PHYSICS 143A", name: "Quantum Mechanics I" },
           { code: "PHYSICS 151", name: "Mechanics" },
-        ],
-      },
-      {
-        label: "Pre-College",
-        courses: [
           { code: "Qubit by Qubit", name: "Introduction to Quantum Computing" },
         ],
       },
