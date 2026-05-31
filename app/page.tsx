@@ -97,7 +97,13 @@ const research = [
   },
 ];
 
-const coursework = [
+type Course = { code: string; name: string };
+type CourseSection = { label: string; courses: Course[] };
+type CourseEntry =
+  | { dept: string; courses: Course[]; sections?: never }
+  | { dept: string; courses?: never; sections: CourseSection[] };
+
+const coursework: CourseEntry[] = [
   {
     dept: "Mathematics & Statistics",
     courses: [
@@ -122,7 +128,6 @@ const coursework = [
       { code: "COMPSCI 124", name: "Algorithms and Data Structures" },
       { code: "COMPSCI 1261", name: "Privacy, Fairness & Validity" },
       { code: "COMPSCI 61", name: "Systems Programming" },
-      { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
     ],
   },
   {
@@ -135,10 +140,27 @@ const coursework = [
     ],
   },
   {
-    dept: "Physics",
-    courses: [
-      { code: "PHYSICS 143A", name: "Quantum Mechanics I" },
-      { code: "PHYSICS 151", name: "Mechanics" },
+    dept: "Other",
+    sections: [
+      {
+        label: "Entrepreneurship",
+        courses: [
+          { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
+        ],
+      },
+      {
+        label: "Physics",
+        courses: [
+          { code: "PHYSICS 143A", name: "Quantum Mechanics I" },
+          { code: "PHYSICS 151", name: "Mechanics" },
+        ],
+      },
+      {
+        label: "Pre-College",
+        courses: [
+          { code: "Qubit by Qubit", name: "Introduction to Quantum Computing" },
+        ],
+      },
     ],
   },
   {
@@ -149,12 +171,6 @@ const coursework = [
       { code: "WOMGEN 1410", name: "The Politics of Personal Writing" },
       { code: "EXPOS 20", name: "Expository Writing: Gender & Mental Health" },
       { code: "GENED 1033", name: "Conflict Resolution in a Divided World" },
-    ],
-  },
-  {
-    dept: "Pre-College",
-    courses: [
-      { code: "Qubit by Qubit", name: "Introduction to Quantum Computing" },
     ],
   },
 ];
@@ -642,15 +658,35 @@ export default function Home() {
                   <div key={i} className={styles.deptPair}>
                     {coursework.slice(i * 2, i * 2 + 2).map((dept) => (
                       <div key={dept.dept}>
-                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: '8px' }}>{dept.dept}</p>
-                        <div className={styles.coursesGrid}>
-                          {dept.courses.map((c) => (
-                            <div key={c.code + c.name} className={styles.courseRow}>
-                              <span className={styles.courseCode}>{c.code}</span>
-                              <span className={styles.courseName}>{c.name}</span>
+                        {dept.sections ? (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            {dept.sections.map((sec) => (
+                              <div key={sec.label}>
+                                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: '8px' }}>{sec.label}</p>
+                                <div className={styles.coursesGrid}>
+                                  {sec.courses.map((c) => (
+                                    <div key={c.code + c.name} className={styles.courseRow}>
+                                      <span className={styles.courseCode}>{c.code}</span>
+                                      <span className={styles.courseName}>{c.name}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <>
+                            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-faint)', marginBottom: '8px' }}>{dept.dept}</p>
+                            <div className={styles.coursesGrid}>
+                              {dept.courses!.map((c) => (
+                                <div key={c.code + c.name} className={styles.courseRow}>
+                                  <span className={styles.courseCode}>{c.code}</span>
+                                  <span className={styles.courseName}>{c.name}</span>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
+                          </>
+                        )}
                       </div>
                     ))}
                   </div>
