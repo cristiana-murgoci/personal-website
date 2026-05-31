@@ -231,10 +231,9 @@ export default function Home() {
           <p className={styles.tagline}>
             Researcher at the intersection of AI safety, statistics, and physical automation.
           </p>
-          <div className={styles.heroDivider} />
           <p className={styles.heroMeta}>
             Bachelor&apos;s in Statistics &amp; CS · Harvard College<br />
-            Master&apos;s in Statistics · Harvard Graduate School of Arts and Sciences
+            Master&apos;s in Statistics · Harvard GSAS
           </p>
         </div>
         <div className={styles.heroPhotoFrame}>
@@ -258,31 +257,6 @@ export default function Home() {
       </nav>
 
       <div className={styles.content}>
-
-        {/* ── About (always visible) ────────────────── */}
-        <FadeUp>
-          <section className={styles.section}>
-            <div className={styles.sectionHeader}>
-              <span className={styles.sectionLabel}>About</span>
-              <div className={styles.sectionRule} />
-            </div>
-            <div className={styles.prose}>
-              <p>
-                I grew up in Romania competing in physics and mathematics olympiads.
-                I was the first female participant in history to rank top three at
-                the European Physics Olympiad. At Harvard I am studying CS, Statistics, and
-                Economics, with a concurrent MA in Statistics.
-              </p>
-              <p>
-                Most of my work now lives at the intersection of markets and AI. Right now I am
-                researching what happens when AI agents start acting strategically: negotiating,
-                colluding, learning to exploit the rules they operate under. More
-                broadly, I am drawn to questions at the intersection of fairness and system design:
-                differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
-              </p>
-            </div>
-          </section>
-        </FadeUp>
 
         {/* ── Projects tab ──────────────────────────── */}
         {activeTab === 'projects' && (
@@ -522,6 +496,29 @@ export default function Home() {
         {/* ── Background tab ────────────────────────── */}
         {activeTab === 'background' && (
           <>
+            {/* About */}
+            <section className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <span className={styles.sectionLabel}>About</span>
+                <div className={styles.sectionRule} />
+              </div>
+              <div className={styles.prose}>
+                <p>
+                  I grew up in Romania competing in physics and mathematics olympiads.
+                  I was the first female participant in history to rank top three at
+                  the European Physics Olympiad. At Harvard I am studying CS, Statistics, and
+                  Economics, with a concurrent MA in Statistics.
+                </p>
+                <p>
+                  Most of my work now lives at the intersection of markets and AI. Right now I am
+                  researching what happens when AI agents start acting strategically: negotiating,
+                  colluding, learning to exploit the rules they operate under. More
+                  broadly, I am drawn to questions at the intersection of fairness and system design:
+                  differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
+                </p>
+              </div>
+            </section>
+
             {/* Awards */}
             <section className={styles.section}>
               <div className={styles.sectionHeader}>
