@@ -148,12 +148,6 @@ const coursework: CourseEntry[] = [
     ],
   },
   {
-    dept: "Entrepreneurship",
-    courses: [
-      { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
-    ],
-  },
-  {
     dept: "Social Sciences",
     courses: [
       { code: "SOCIOL 1136", name: "Work and Culture" },
@@ -161,6 +155,12 @@ const coursework: CourseEntry[] = [
       { code: "WOMGEN 1410", name: "The Politics of Personal Writing" },
       { code: "EXPOS 20", name: "Expository Writing: Gender & Mental Health" },
       { code: "GENED 1033", name: "Conflict Resolution in a Divided World" },
+    ],
+  },
+  {
+    dept: "Entrepreneurship",
+    courses: [
+      { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
     ],
   },
 ];
