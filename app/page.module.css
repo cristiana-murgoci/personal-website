@@ -74,7 +74,7 @@
 
 /* ── Hero ─────────────────────────────────────────────── */
 .hero {
-  max-width: 860px;
+  max-width: 920px;
   margin: 0 auto;
   padding: 80px 48px 64px;
   display: grid;
@@ -237,17 +237,17 @@
 
 .researchYear {
   font-family: var(--font-mono), 'Space Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-faint);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
 }
 
 .researchOrg {
   font-family: var(--font-mono), 'Space Mono', monospace;
-  font-size: 11.5px;
-  color: var(--text-faint);
+  font-size: 13px;
+  color: var(--text-muted);
   line-height: 1.6;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 
 .researchBody {
@@ -452,18 +452,18 @@
 
 .contactLine {
   font-family: var(--font-mono), 'Space Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
   letter-spacing: 0.02em;
 }
 
 .contactNote {
   font-family: var(--font-mono), 'Space Mono', monospace;
-  font-size: 11px;
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 2;
-  max-width: 460px;
   letter-spacing: 0.02em;
+  text-align: justify;
 }
 
 /* ── Footer ───────────────────────────────────────────── */
