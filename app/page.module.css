@@ -4,9 +4,9 @@
 }
 
 .content {
-  max-width: 740px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 0 32px 160px;
+  padding: 0 48px 160px;
 }
 
 /* ── Tab bar ──────────────────────────────────────────── */
@@ -16,12 +16,18 @@
   top: 0;
   background: var(--bg);
   z-index: 10;
-  padding: 0 calc((100% - 740px) / 2);
+  padding: 0 calc((100% - 920px) / 2);
 }
 
-@media (max-width: 804px) {
+@media (max-width: 1016px) {
   .tabBar {
-    padding: 0 32px;
+    padding: 0 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .tabBar {
+    padding: 0 24px;
   }
 }
 
@@ -193,6 +199,7 @@
   line-height: 2;
   color: var(--text-muted);
   font-weight: 400;
+  text-align: justify;
 }
 
 .prose p:first-child {
@@ -201,6 +208,7 @@
   line-height: 2;
   color: var(--text-muted);
   font-weight: 400;
+  text-align: justify;
 }
 
 /* ── Research ─────────────────────────────────────────── */
@@ -260,6 +268,7 @@
   font-size: 15px;
   color: var(--text-muted);
   line-height: 1.85;
+  text-align: justify;
 }
 
 .tags {
