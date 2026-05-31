@@ -579,10 +579,10 @@ export default function Home() {
                 <div className={styles.researchItem}>
                   <div className={styles.researchMeta}>
                     <span className={styles.researchYear}>Sep 2025 – present</span>
-                    <span className={styles.researchOrg}>Student Representative</span>
+                    <span className={styles.researchOrg}>Harvard Statistics Department</span>
                   </div>
                   <div className={styles.researchBody}>
-                    <h3 className={styles.researchTitle}>Harvard Statistics Department, Committee on Equity, Diversity, Inclusion, and Belonging</h3>
+                    <h3 className={styles.researchTitle}>Committee on Equity, Diversity, Inclusion, and Belonging</h3>
                     <p className={styles.researchDesc}>Working to make the Statistics community more equitable and inclusive.</p>
                   </div>
                 </div>
