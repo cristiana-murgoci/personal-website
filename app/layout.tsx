@@ -22,24 +22,61 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cristiana Murgoci",
+  metadataBase: new URL("https://cristianamurgoci.com"),
+  title: {
+    default: "Cristiana Murgoci",
+    template: "%s · Cristiana Murgoci",
+  },
   description:
-    "Researcher at the intersection of AI safety, statistics, and physical automation.",
+    "Researcher at the intersection of AI safety, statistics, and physical automation. Harvard Statistics & CS with a concurrent Master's in Statistics.",
+  authors: [{ name: "Cristiana Murgoci", url: "https://cristianamurgoci.com" }],
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
       { url: "/icon.png", type: "image/png", sizes: "512x512" },
     ],
-    apple: [
-      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
-    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
     title: "Cristiana Murgoci",
     description:
       "Researcher at the intersection of AI safety, statistics, and physical automation.",
     type: "website",
+    url: "https://cristianamurgoci.com",
+    images: [
+      { url: "/headshot.jpg", width: 800, height: 1067, alt: "Cristiana Murgoci" },
+    ],
   },
+  twitter: {
+    card: "summary",
+    title: "Cristiana Murgoci",
+    description:
+      "Researcher at the intersection of AI safety, statistics, and physical automation.",
+    images: ["/headshot.jpg"],
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Cristiana Murgoci",
+  url: "https://cristianamurgoci.com",
+  image: "https://cristianamurgoci.com/headshot.jpg",
+  jobTitle: "Researcher",
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Harvard University",
+  },
+  knowsAbout: [
+    "AI Safety",
+    "Statistics",
+    "Machine Learning",
+    "Algorithmic Game Theory",
+    "Mechanism Design",
+    "Quantum Computing",
+    "Differential Privacy",
+  ],
+  sameAs: ["https://linkedin.com/in/cristiana-murgoci"],
 };
 
 export default function RootLayout({
@@ -48,8 +85,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${cormorant.variable} ${spaceMono.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${cormorant.variable} ${spaceMono.variable}`}
+    >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {children}
       </body>
     </html>
