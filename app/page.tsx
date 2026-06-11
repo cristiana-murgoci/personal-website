@@ -165,7 +165,7 @@ export default function Home() {
               differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
             </p>
             <p>
-              I also build. Recently, I cofounded Telos, a startup in physical automation forecasting,
+              Recently, I cofounded Telos, a startup in physical automation forecasting,
               where I helped raise $500,000 and earned us a place in Y Combinator&apos;s
               Summer 2026 batch. Committing full-time would have meant taking a gap year,
               which isn&apos;t an option as an international student on a visa, so I decided
