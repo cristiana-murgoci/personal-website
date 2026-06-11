@@ -169,7 +169,7 @@ export default function Home() {
               where I helped raise $500,000 and earned us a place in Y Combinator&apos;s
               Summer 2026 batch. Committing full-time would have meant taking a gap year,
               which isn&apos;t an option as an international student on a visa, so I decided
-              to step down and finish my Harvard degree. I graduate in December 2026 — so
+              to step down and finish my Harvard degree. I graduate in December 2026, so
               very soon I&apos;ll be launching and raising again.
             </p>
           </div>
