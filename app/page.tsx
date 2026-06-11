@@ -209,7 +209,7 @@ export default function Home() {
               </div>
               <div className={styles.researchBody}>
                 <h3 className={styles.researchTitle}>Telos (YC S26)</h3>
-                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Led fundraising efforts contributing to $500,000 raised, and was accepted into Y Combinator&apos;s Summer 2026 batch as a founder. Chose to finish my Harvard degree, so I couldn&apos;t be part of it any more — but I was happy to contribute and learned a lot along the way.</p>
+                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Led fundraising efforts contributing to $500,000 raised, and was accepted into Y Combinator&apos;s Summer 2026 batch as a founder. Chose to finish my Harvard degree, so I couldn&apos;t be part of it any more, but I was happy to contribute and learned a lot along the way.</p>
               </div>
             </div>
 
