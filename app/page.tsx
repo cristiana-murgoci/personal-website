@@ -206,7 +206,7 @@ export default function Home() {
                 <span className={styles.researchOrg}>Co-founder &amp; COO</span>
               </div>
               <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>Telos</h3>
+                <h3 className={styles.researchTitle}>Telos (YC S26)</h3>
                 <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Led fundraising efforts contributing to $500,000 raised, and was accepted into Y Combinator&apos;s Summer 2026 batch as a founder. Chose to complete my Harvard degree rather than take a gap year.</p>
               </div>
             </div>
