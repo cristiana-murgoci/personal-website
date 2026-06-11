@@ -164,6 +164,12 @@ export default function Home() {
               broadly, I am drawn to questions at the intersection of fairness and system design:
               differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
             </p>
+            <p>
+              I also build. I cofounded Telos, a startup in physical automation forecasting,
+              where I helped raise $500,000 and earned us a place in Y Combinator&apos;s
+              Summer 2026 batch. I chose to finish my Harvard degree rather than take a gap
+              year, and I graduate in December 2026.
+            </p>
           </div>
         </section>
 
@@ -193,6 +199,17 @@ export default function Home() {
             <div className={styles.sectionRule} />
           </div>
           <div className={styles.researchList}>
+
+            <div className={styles.researchItem}>
+              <div className={styles.researchMeta}>
+                <span className={styles.researchYear}>2026</span>
+                <span className={styles.researchOrg}>Co-founder &amp; COO</span>
+              </div>
+              <div className={styles.researchBody}>
+                <h3 className={styles.researchTitle}>Telos</h3>
+                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Led fundraising efforts contributing to $500,000 raised, and the company was accepted into Y Combinator&apos;s Summer 2026 batch. Chose to complete my Harvard degree rather than take a gap year — graduating December 2026 with an AB in CS, Statistics, and Economics and a concurrent master&apos;s in Statistics.</p>
+              </div>
+            </div>
 
             <div className={styles.researchItem}>
               <div className={styles.researchMeta}>
