@@ -207,7 +207,7 @@ export default function Home() {
               </div>
               <div className={styles.researchBody}>
                 <h3 className={styles.researchTitle}>Telos</h3>
-                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Led fundraising efforts contributing to $500,000 raised, and the company was accepted into Y Combinator&apos;s Summer 2026 batch. Chose to complete my Harvard degree rather than take a gap year — graduating December 2026 with an AB in CS, Statistics, and Economics and a concurrent master&apos;s in Statistics.</p>
+                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Led fundraising efforts contributing to $500,000 raised, and was accepted into Y Combinator&apos;s Summer 2026 batch as a founder. Chose to complete my Harvard degree rather than take a gap year.</p>
               </div>
             </div>
 
