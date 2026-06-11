@@ -167,8 +167,8 @@ export default function Home() {
             <p>
               I also build. Recently, I cofounded Telos, a startup in physical automation forecasting,
               where I helped raise $500,000 and earned us a place in Y Combinator&apos;s
-              Summer 2026 batch. I chose to finish my Harvard degree rather than take a gap
-              year, and I graduate in December 2026.
+              Summer 2026 batch. I declined the offer to finish my Harvard degree rather
+              than take a gap year, and I graduate in December 2026.
             </p>
           </div>
         </section>
@@ -207,7 +207,7 @@ export default function Home() {
               </div>
               <div className={styles.researchBody}>
                 <h3 className={styles.researchTitle}>Telos (YC S26)</h3>
-                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Led fundraising efforts contributing to $500,000 raised, and was accepted into Y Combinator&apos;s Summer 2026 batch as a founder. Chose to complete my Harvard degree rather than take a gap year.</p>
+                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Led fundraising efforts contributing to $500,000 raised, and was accepted into Y Combinator&apos;s Summer 2026 batch as a founder. Declined the YC offer to complete my Harvard degree rather than take a gap year.</p>
               </div>
             </div>
 
