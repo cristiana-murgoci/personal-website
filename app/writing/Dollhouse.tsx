@@ -9,8 +9,6 @@ export type ShelfBook = {
   spine: string;
   author: string;
   link: string;
-  label: string;
-  yy: string;
   height: number;
   width: number;
   pattern: number;
@@ -116,11 +114,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
         </div>
 
         <div className={ws.houseStage}>
-          <span className={`${ws.flake} ${ws.f1}`} aria-hidden="true" />
-          <span className={`${ws.flake} ${ws.f2}`} aria-hidden="true" />
-          <span className={`${ws.flake} ${ws.f3}`} aria-hidden="true" />
-          <span className={`${ws.flake} ${ws.f4}`} aria-hidden="true" />
-          <span className={`${ws.flake} ${ws.f5}`} aria-hidden="true" />
+          <span className={ws.gable} aria-hidden="true" />
           <span className={ws.tower} aria-hidden="true">
             <i className={ws.vane} />
             <i className={ws.dome} />
@@ -163,6 +157,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                 <>
                   <span className={`${ws.fur} ${ws.fridge}`} aria-hidden="true" />
                   <span className={`${ws.fur} ${ws.stove}`} aria-hidden="true" />
+                  <span className={`${ws.fur} ${ws.kettle}`} aria-hidden="true"><i className={ws.steam} /></span>
                   <span className={`${ws.fur} ${ws.hood}`} aria-hidden="true" />
                 </>
               )}
@@ -173,6 +168,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
             <div className={ws.floorRow} style={{ height: 168 }}>
               {roomButton('bath', ws.roomBath, 'study',
                 <>
+                  <span className={`${ws.fur} ${ws.lightPool}`} aria-hidden="true" />
                   <span className={`${ws.fur} ${ws.swanWindow}`} aria-hidden="true" />
                   <span className={`${ws.fur} ${ws.desk}`} aria-hidden="true" />
                 </>
@@ -239,11 +235,13 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                                 ? { backgroundColor: book.color, color: book.textColor }
                                 : {}),
                             }}
-                            title={`${book.title} · ${book.author} · ${book.label}`}
-                            aria-label={`${book.title} by ${book.author}, read ${book.label}`}
+                            title={`${book.title} · ${book.author}`}
+                            aria-label={`${book.title} by ${book.author}`}
                           >
                             <span className={ws.spineTitle}>{book.spine}</span>
-                            <span className={ws.sticker}>&rsquo;{book.yy}</span>
+                            <span className={ws.spineFoot} aria-hidden="true">
+                              {book.author.split(/\s+/).map((w) => w[0]).filter(Boolean).join('').slice(0, 3).toUpperCase()}
+                            </span>
                           </a>
                         );
                       })}

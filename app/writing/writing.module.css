@@ -39,7 +39,23 @@
 }
 
 .spine:hover {
-  transform: translateY(-8px);
+  transform: rotate(-6deg);
+  z-index: 2;
+}
+
+/* Page block sliver at the top edge, gilt rules top and bottom */
+.spine::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(#EFE3C8, #EFE3C8),
+    linear-gradient(rgba(212, 175, 55, 0.85), rgba(212, 175, 55, 0.85)),
+    linear-gradient(rgba(212, 175, 55, 0.85), rgba(212, 175, 55, 0.85));
+  background-repeat: no-repeat;
+  background-size: 100% 3px, calc(100% - 8px) 2px, calc(100% - 8px) 2px;
+  background-position: 0 0, 4px 7px, 4px calc(100% - 16px);
 }
 
 .spineTitle {
@@ -54,19 +70,18 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 10px 0 6px;
+  padding: 12px 0 4px;
 }
 
-.sticker {
+/* Author initials at the spine foot */
+.spineFoot {
   font-family: var(--font-mono), monospace;
-  font-size: 9px;
+  font-size: 7px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;
   text-align: center;
-  background: #EFE8D4;
-  color: var(--text);
-  border-top: 2px solid var(--text);
-  padding: 2px 0 1px;
+  opacity: 0.75;
+  padding-bottom: 5px;
 }
 
 /* Leather bindings — validated categorical palette, fixed order */
@@ -153,14 +168,45 @@
 
 .houseStage {
   position: relative;
-  padding: 104px 22px 18px;
+  padding: 150px 22px 18px;
   background: linear-gradient(
-    #8E7C96 0 22px,
-    #A9848E 22px 44px,
-    #C98D85 44px 68px,
-    #E39481 68px 92px,
-    #EF9C7B 92px 118px,
-    #F5A886 118px 100%
+    #8E7C96 0 30px,
+    #A9848E 30px 60px,
+    #C98D85 60px 90px,
+    #E39481 90px 120px,
+    #EF9C7B 120px 150px,
+    #F5A886 150px 100%
+  );
+}
+
+/* Stepped gable triangle behind the tower, snow caps on every step */
+.gable {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 190px;
+  height: 52px;
+  z-index: 1;
+  background: #E8EEF3;
+  clip-path: polygon(
+    50% 0, 60% 0, 60% 20%, 70% 20%, 70% 40%, 80% 40%, 80% 60%, 90% 60%, 90% 80%, 100% 80%, 100% 100%,
+    0 100%, 0 80%, 10% 80%, 10% 60%, 20% 60%, 20% 40%, 30% 40%, 30% 20%, 40% 20%, 40% 0
+  );
+}
+
+.gable::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 6px);
+  background: #5B6C88;
+  background-image: repeating-linear-gradient(90deg, rgba(38, 48, 79, 0.3) 0 2px, transparent 2px 12px);
+  clip-path: polygon(
+    50% 0, 60% 0, 60% 20%, 70% 20%, 70% 40%, 80% 40%, 80% 60%, 90% 60%, 90% 80%, 100% 80%, 100% 100%,
+    0 100%, 0 80%, 10% 80%, 10% 60%, 20% 60%, 20% 40%, 30% 40%, 30% 20%, 40% 20%, 40% 0
   );
 }
 
@@ -202,93 +248,98 @@
 /* Bell tower above the roofline */
 .tower {
   position: absolute;
-  top: 12px;
+  top: 18px;
   left: 50%;
   transform: translateX(-50%);
-  width: 44px;
-  height: 92px;
+  width: 48px;
+  height: 116px;
   z-index: 2;
 }
 
+/* White cupola body: cornice line, three red-lit arched openings, base band */
 .belfry {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 46px;
+  height: 52px;
   background: #F1EAD8;
   border: 2px solid var(--text);
   display: block;
+  background-image:
+    linear-gradient(rgba(26, 24, 22, 0.35), rgba(26, 24, 22, 0.35)),
+    linear-gradient(#E2574C, #E2574C),
+    linear-gradient(#E2574C, #E2574C),
+    linear-gradient(#E2574C, #E2574C),
+    linear-gradient(#E2574C, #E2574C),
+    linear-gradient(#E2574C, #E2574C),
+    linear-gradient(#E2574C, #E2574C),
+    linear-gradient(rgba(26, 24, 22, 0.25), rgba(26, 24, 22, 0.25));
+  background-repeat: no-repeat;
+  background-size:
+    100% 2px,
+    4px 4px, 8px 18px,
+    4px 3px, 8px 14px,
+    4px 3px, 8px 14px,
+    100% 4px;
+  background-position:
+    0 4px,
+    20px 12px, 18px 16px,
+    7px 17px, 5px 20px,
+    33px 17px, 31px 20px,
+    0 100%;
 }
 
-.belfry::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 8px;
-  transform: translateX(-50%);
-  width: 16px;
-  height: 26px;
-  background: #1A1816;
-  background-image: radial-gradient(circle at 50% 40%, #F59E0B 3px, transparent 3px);
-}
-
+/* Red stepped dome with shingle ribs */
 .dome {
   position: absolute;
-  bottom: 44px;
+  bottom: 50px;
   left: 0;
   width: 100%;
-  height: 34px;
+  height: 36px;
   background: #A33B2E;
+  background-image: repeating-linear-gradient(90deg, rgba(26, 24, 22, 0.28) 0 2px, transparent 2px 8px);
   clip-path: polygon(
-    50% 0, 62% 18%, 62% 36%, 74% 36%, 74% 62%, 88% 62%, 88% 100%,
-    12% 100%, 12% 62%, 26% 62%, 26% 36%, 38% 36%, 38% 18%
+    50% 0, 58% 0, 58% 12%, 66% 12%, 66% 28%, 74% 28%, 74% 48%, 84% 48%, 84% 72%, 94% 72%, 94% 100%,
+    6% 100%, 6% 72%, 16% 72%, 16% 48%, 26% 48%, 26% 28%, 34% 28%, 34% 12%, 42% 12%, 42% 0
   );
   filter: drop-shadow(0 2px 0 rgba(26, 24, 22, 0.5));
   display: block;
 }
 
-.dome::after {
-  content: '';
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
-  background: #D4AF37;
-}
-
-/* Weathervane above the dome */
+/* Weathervane: rod with gold ball, swallowtail banner, arrow crossbar */
 .vane {
   position: absolute;
-  top: -18px;
+  top: -26px;
   left: 50%;
   width: 2px;
-  height: 20px;
+  height: 28px;
   background: #1A1816;
   display: block;
   z-index: 3;
+  box-shadow: -1px 24px 0 1px #D4AF37;
 }
 
 .vane::before {
   content: '';
   position: absolute;
-  top: 4px;
-  left: -12px;
-  width: 26px;
-  height: 2px;
+  top: 0;
+  left: -13px;
+  width: 13px;
+  height: 7px;
   background: #1A1816;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 28% 50%);
 }
 
 .vane::after {
   content: '';
   position: absolute;
-  top: 1px;
-  left: -16px;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-right: 6px solid #1A1816;
+  top: 10px;
+  left: -18px;
+  width: 26px;
+  height: 8px;
+  background: #1A1816;
+  clip-path: polygon(0 50%, 30% 0, 30% 35%, 100% 35%, 100% 65%, 30% 65%, 30% 100%);
 }
 
 /* Snowbank under the house */
@@ -312,28 +363,6 @@
   background-image:
     repeating-linear-gradient(78deg, rgba(30, 24, 34, 0.9) 0 2px, transparent 2px 13px),
     repeating-linear-gradient(-71deg, rgba(30, 24, 34, 0.8) 0 2px, transparent 2px 17px);
-}
-
-/* Falling snow */
-.flake {
-  position: absolute;
-  top: 0;
-  width: 3px;
-  height: 3px;
-  background: #F7FAFC;
-  z-index: 6;
-  animation: fall 9s steps(26, end) infinite;
-}
-
-.f1 { left: 8%; animation-delay: 0s; }
-.f2 { left: 28%; animation-delay: -3s; animation-duration: 11s; }
-.f3 { left: 52%; animation-delay: -6s; }
-.f4 { left: 72%; animation-delay: -1.5s; animation-duration: 10s; }
-.f5 { left: 90%; animation-delay: -4.5s; animation-duration: 12s; }
-
-@keyframes fall {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(620px); opacity: 1; }
 }
 
 .floorRow {
@@ -416,8 +445,11 @@
 .roomLibrary {
   width: 58%;
   background: #E7D9B4;
-  background-image: radial-gradient(rgba(74, 46, 27, 0.2) 1.5px, transparent 1.5px);
-  background-size: 14px 14px;
+  /* the arc near the ceiling hints at the reading room's plaster vault */
+  background-image:
+    radial-gradient(ellipse 230px 64px at 50% -8px, transparent 0 87%, rgba(74, 46, 27, 0.25) 87% 93%, transparent 93%),
+    radial-gradient(rgba(74, 46, 27, 0.2) 1.5px, transparent 1.5px);
+  background-size: 100% 100%, 14px 14px;
 }
 
 /* ── Furniture (pixel blocks) ────────────────────────── */
@@ -457,6 +489,14 @@
   height: 60px;
   background: #8A7B66;
   border: 2px solid var(--text);
+  /* running-bond stone courses: mortar rows plus offset head joints */
+  background-image:
+    linear-gradient(rgba(26, 24, 22, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 24, 22, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 24, 22, 0.22) 1px, transparent 1px);
+  background-size: 16px 8px, 16px 16px, 16px 16px;
+  background-position: 0 0, 0 0, 8px 8px;
+  box-shadow: inset 0 4px 0 #6B4226;
 }
 
 .flame {
@@ -533,6 +573,51 @@
   clip-path: polygon(28% 0, 72% 0, 100% 100%, 0 100%);
 }
 
+/* Brass kettle on the right burner; it sings */
+.kettle {
+  left: 48%;
+  bottom: 44px;
+  width: 20px;
+  height: 12px;
+  background: #A8842C;
+  border: 2px solid var(--text);
+}
+
+.kettle::before {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 1px;
+  width: 6px;
+  height: 5px;
+  background: #A8842C;
+  border: 2px solid var(--text);
+  border-left: none;
+}
+
+.kettle::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: -8px;
+  width: 8px;
+  height: 7px;
+  border: 2px solid var(--text);
+  border-bottom: none;
+}
+
+.steam {
+  position: absolute;
+  right: -8px;
+  top: -10px;
+  width: 3px;
+  height: 3px;
+  background: #EFE8D4;
+  display: block;
+  opacity: 0;
+  animation: puff 1.6s steps(3, end) infinite;
+}
+
 .miniCase {
   left: 6%;
   bottom: 0;
@@ -595,26 +680,42 @@
   background-image: linear-gradient(transparent 0 10px, rgba(26, 24, 22, 0.35) 10px 12px, transparent 12px);
 }
 
-/* Gold-framed portrait */
+/* Gold-framed portrait, with a tiny sitter in burgundy */
 .portrait {
   left: 46%;
   top: 14px;
-  width: 16px;
-  height: 20px;
-  background: #6B5138;
+  width: 18px;
+  height: 22px;
+  background-image:
+    radial-gradient(circle at 50% 40%, #F3C6A5 2.5px, transparent 2.5px),
+    radial-gradient(circle at 50% 32%, #3E2C1E 4px, transparent 4px),
+    linear-gradient(transparent 0 12px, #7C2430 12px);
+  background-color: #6B5138;
   border: 2px solid #D4AF37;
   outline: 1px solid var(--text);
 }
 
-/* Artichoke pendant lamp */
+/* Artichoke pendant lamp: cord, three scalloped tiers, lit bulb */
 .pendant {
   right: 20%;
-  top: 2px;
-  width: 22px;
-  height: 18px;
+  top: 0;
+  width: 26px;
+  height: 26px;
   background: #EFE3C8;
-  border: 2px solid var(--text);
-  clip-path: polygon(50% 0, 100% 45%, 80% 45%, 95% 100%, 5% 100%, 20% 45%, 0 45%);
+  background-image:
+    radial-gradient(circle at 50% 86%, #F5C36B 3px, transparent 3px),
+    linear-gradient(
+      transparent 0 38%, rgba(26, 24, 22, 0.28) 38% 42%,
+      transparent 42% 68%, rgba(26, 24, 22, 0.28) 68% 72%, transparent 72%
+    );
+  clip-path: polygon(
+    46% 0, 54% 0, 54% 14%, 68% 14%, 76% 40%, 88% 40%, 94% 70%, 100% 70%, 84% 100%,
+    16% 100%, 0 70%, 6% 70%, 12% 40%, 24% 40%, 32% 14%, 46% 14%
+  );
+  /* ink outline faked with stacked shadows, since clip-path eats borders */
+  filter:
+    drop-shadow(1px 0 0 #1A1816) drop-shadow(-1px 0 0 #1A1816)
+    drop-shadow(0 1px 0 #1A1816) drop-shadow(0 -1px 0 #1A1816);
 }
 
 /* Wrought-iron candle chandelier (Adams library) */
@@ -697,7 +798,7 @@
 .tl1 { left: 35%; }
 .tl2 { left: 51%; }
 
-/* Swan stained-glass window (the study) */
+/* Swan stained-glass window (the study): beak, head, wing, neck, body, pond */
 .swanWindow {
   left: 50%;
   transform: translateX(-50%);
@@ -706,15 +807,36 @@
   height: 80px;
   background: #D9B44A;
   background-image:
-    radial-gradient(circle at 50% 14%, #F7F3EC 3px, transparent 3px),
+    linear-gradient(#B45309, #B45309),
+    linear-gradient(#F7F3EC, #F7F3EC),
+    linear-gradient(#E4DBC0, #E4DBC0),
+    linear-gradient(#F7F3EC, #F7F3EC),
+    linear-gradient(#F7F3EC, #F7F3EC),
+    linear-gradient(rgba(35, 80, 75, 0.55), rgba(35, 80, 75, 0.55)),
+    linear-gradient(rgba(35, 80, 75, 0.45), rgba(35, 80, 75, 0.45)),
     linear-gradient(rgba(26, 24, 22, 0.45) 1px, transparent 1px),
     linear-gradient(90deg, rgba(26, 24, 22, 0.45) 1px, transparent 1px);
-  background-size: 100% 100%, 10px 10px, 10px 10px;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
+  background-size: 3px 2px, 7px 4px, 12px 4px, 3px 12px, 20px 9px, 24px 2px, 16px 2px, 10px 10px, 10px 10px;
+  background-position: 11px 31px, 14px 29px, 21px 46px, 18px 32px, 16px 43px, 14px 55px, 20px 59px, 0 0, 0 0;
   clip-path: polygon(
     0 24%, 10% 24%, 10% 12%, 24% 12%, 24% 4%, 76% 4%, 76% 12%, 90% 12%, 90% 24%, 100% 24%,
     100% 100%, 0 100%
   );
   filter: drop-shadow(2px 2px 0 rgba(26, 24, 22, 0.5));
+}
+
+/* Amber light pooling on the study floor beneath the window */
+.lightPool {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 84px;
+  height: 24px;
+  background: rgba(245, 158, 11, 0.22);
+  background-image: repeating-linear-gradient(90deg, rgba(26, 24, 22, 0.16) 0 2px, transparent 2px 12px);
+  clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+  pointer-events: none;
 }
 
 .desk {
@@ -823,6 +945,12 @@
   50% { transform: translateY(-3px); }
 }
 
+@keyframes puff {
+  0% { transform: translateY(0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-3px); opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pixieGirl {
     animation: none;
@@ -830,11 +958,8 @@
   }
   .flame,
   .cursor::after,
-  .flake {
+  .steam {
     animation: none;
-  }
-  .flake {
-    display: none;
   }
   .spine,
   .spine:hover {

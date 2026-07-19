@@ -21,6 +21,7 @@ type Book = {
   author: string;
   link: string;
   cover: string;
+  pages: number | null;
   readAt: Date | null;
 };
 
@@ -64,6 +65,7 @@ async function fetchShelf(): Promise<Book[]> {
           author: decodeEntities(field(block, 'author_name')).replace(/\s+/g, ' '),
           link: field(block, 'link'),
           cover: field(block, 'book_image_url'),
+          pages: parseInt(field(block, 'num_pages'), 10) || null,
           readAt: dateRaw ? new Date(dateRaw) : null,
         });
       }
@@ -73,16 +75,6 @@ async function fetchShelf(): Promise<Book[]> {
     // Goodreads unreachable: render the page without the library
   }
   return books;
-}
-
-function monthYear(d: Date | null): string {
-  if (!d || isNaN(d.getTime())) return '';
-  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
-}
-
-function yearSticker(d: Date | null): string {
-  if (!d || isNaN(d.getTime())) return '';
-  return String(d.getUTCFullYear()).slice(-2);
 }
 
 // Deterministic per-book geometry so the shelf is stable across renders
@@ -159,10 +151,11 @@ export default async function WritingPage() {
         spine: b.title.split(':')[0].trim(),
         author: b.author,
         link: b.link,
-        label: monthYear(b.readAt),
-        yy: yearSticker(b.readAt),
         height: 132 + (h % 8) * 8,
-        width: 34 + ((h >> 3) % 3) * 5,
+        // Spine thickness from the real page count, hashed fallback when absent
+        width: b.pages
+          ? Math.max(26, Math.min(58, Math.round(22 + b.pages / 14)))
+          : 34 + ((h >> 3) % 3) * 5,
         pattern: h % 3,
         color: cc?.color,
         textColor: cc?.textColor,
