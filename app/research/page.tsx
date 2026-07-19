@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import styles from '../page.module.css';
-import TabNav from '../components/TabNav';
 
 export const metadata: Metadata = {
   title: 'Research',
@@ -15,7 +14,7 @@ const research = [
     link: "/MM_for_AI_Alignment.pdf",
     org: "Senior Thesis · Harvard Statistics & CS",
     description:
-      "Proposes training a market-maker model to forecast a human's reflective judgment after exposure to all relevant arguments, while adversaries surface information that most shifts that forecast. Developed during the AISES fellowship (Summer 2025). A simulation probe showed that prompting alone makes the market-maker worse — it over-corrects on weak counterarguments — establishing why training competitiveness is the core research question. The full proposal pairs MM with ELK-style probes, process supervision, and cross-examination, evaluated against RLHF and Debate baselines on truthfulness, calibration, and deception robustness.",
+      "Proposes training a market-maker model to forecast a human's reflective judgment after exposure to all relevant arguments, while adversaries surface information that most shifts that forecast. Developed during the AISES fellowship (Summer 2025). A simulation probe showed that prompting alone makes the market-maker worse because it over-corrects on weak counterarguments, establishing why training competitiveness is the core research question. The full proposal pairs MM with ELK-style probes, process supervision, and cross-examination, evaluated against RLHF and Debate baselines on truthfulness, calibration, and deception robustness.",
     tags: ["AI alignment", "mechanism design", "LLMs"],
   },
   {
@@ -103,9 +102,7 @@ const research = [
 
 export default function ResearchPage() {
   return (
-    <main className={styles.main}>
-      <TabNav />
-      <div className={styles.content}>
+    <div className={styles.content}>
         <section className={styles.section}>
           <div className={styles.researchList}>
             {research.map((item, i) => (
@@ -144,7 +141,6 @@ export default function ResearchPage() {
         <footer className={styles.footer}>
           <p>Cristiana Murgoci · {new Date().getFullYear()}</p>
         </footer>
-      </div>
-    </main>
+    </div>
   );
 }

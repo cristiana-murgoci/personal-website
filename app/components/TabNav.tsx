@@ -18,6 +18,7 @@ export default function TabNav() {
         <Link
           key={href}
           href={href}
+          scroll={false}
           className={`${styles.tabButton} ${pathname === href ? styles.tabActive : ''}`}
         >
           {label}

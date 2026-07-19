@@ -1,5 +1,4 @@
 import styles from "./page.module.css";
-import TabNav from "./components/TabNav";
 import SideNav from "./components/SideNav";
 
 type Course = { code: string; name: string };
@@ -118,30 +117,7 @@ function SkillRow({ items }: { items: string[] }) {
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-
-      {/* Hero */}
-      <section className={styles.hero}>
-        <div className={styles.heroText}>
-          <p className={styles.heroEyebrow}>Researcher · Builder · Harvard</p>
-          <h1 className={styles.name}>Cristiana Murgoci</h1>
-          <p className={styles.tagline}>
-            Researcher at the intersection of AI safety, statistics, and physical automation.
-          </p>
-          <p className={styles.heroMeta}>
-            Bachelor&apos;s in Statistics &amp; CS · Harvard College<br />
-            Master&apos;s in Statistics · Harvard GSAS
-          </p>
-        </div>
-        <div className={styles.heroPhotoFrame}>
-          <div className={styles.heroPhoto}>
-            <img src="/headshot.jpg" alt="Cristiana Murgoci" className={styles.headshot} />
-          </div>
-        </div>
-      </section>
-
-      <TabNav />
-
+    <>
       <div className={styles.content}>
 
         {/* About */}
@@ -165,12 +141,10 @@ export default function Home() {
               differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
             </p>
             <p>
-              Recently, I cofounded Telos, a startup in physical automation forecasting,
-              where I helped raise $500,000 and earned us a place in Y Combinator&apos;s
-              Summer 2026 batch. Committing full-time would have meant taking a gap year,
-              which isn&apos;t an option as an international student on a visa, so I decided
-              to step down and finish my Harvard degree. I graduate in December 2026, so
-              very soon I&apos;ll be launching and raising again.
+              Recently, I cofounded Telos, a startup in physical automation forecasting.
+              Our team was accepted into Y Combinator&apos;s Summer 2026 batch. I stepped
+              down before the batch began and chose to finish my Harvard degree. I graduate
+              in December 2026, and what comes next is already underway.
             </p>
           </div>
         </section>
@@ -208,8 +182,8 @@ export default function Home() {
                 <span className={styles.researchOrg}>Co-founder &amp; COO</span>
               </div>
               <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>Telos (YC S26)</h3>
-                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Led fundraising efforts contributing to $500,000 raised, and was accepted into Y Combinator&apos;s Summer 2026 batch as a founder. Chose to finish my Harvard degree, so I couldn&apos;t be part of it any more, but I was happy to contribute and learned a lot along the way.</p>
+                <h3 className={styles.researchTitle}>Telos</h3>
+                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Our team was accepted into Y Combinator&apos;s Summer 2026 batch. I stepped down before the batch began and chose to finish my Harvard degree. I learned more about building a company there than anywhere else.</p>
               </div>
             </div>
 
@@ -371,6 +345,6 @@ export default function Home() {
       </div>
 
       <SideNav />
-    </main>
+    </>
   );
 }

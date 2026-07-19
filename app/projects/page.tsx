@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import styles from '../page.module.css';
-import TabNav from '../components/TabNav';
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -10,9 +9,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return (
-    <main className={styles.main}>
-      <TabNav />
-      <div className={styles.content}>
+    <div className={styles.content}>
         <section className={styles.section}>
           <div className={styles.researchList}>
 
@@ -34,30 +31,6 @@ export default function ProjectsPage() {
                 </p>
                 <div className={styles.tags}>
                   {['differential privacy', 'algorithmic fairness', 'cryptography'].map(t => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.researchItem}>
-              <div className={styles.researchMeta}>
-                <span className={styles.researchYear}>Mar 2026 – present</span>
-                <span className={styles.researchOrg}>thauma.app</span>
-              </div>
-              <div className={styles.researchBody}>
-                <h2 className={styles.researchTitle}>
-                  <a href="https://thauma.app" target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid var(--border)', color: 'inherit' }}>Thauma ↗</a>
-                </h2>
-                <p className={styles.researchDesc}>
-                  A platform for connecting researchers with collaborators and curious people with projects worth working on.
-                  The name is the Greek word for wonder, the thing Aristotle said is the beginning of philosophy.
-                  Thauma lets researchers post projects with detailed scopes, researchers and students apply with written responses,
-                  and a dashboard tracks everything from first contact to accepted collaborator.
-                  Built on Next.js and Supabase.
-                </p>
-                <div className={styles.tags}>
-                  {['Next.js', 'Supabase', 'research infrastructure'].map(t => (
                     <span key={t} className={styles.tag}>{t}</span>
                   ))}
                 </div>
@@ -173,9 +146,9 @@ export default function ProjectsPage() {
                 <p className={styles.researchDesc}>
                   Modeled sportsbook pricing strategy as a game between naive and sophisticated bettors.
                   Naive bettors misperceive probabilities and are swayed by win/loss streaks; sophisticated bettors
-                  know the true odds. Simulated three boost scenarios — no promotion, one-time initial boost, and
-                  dynamic targeting of discouraged bettors — showing that dynamic targeting maximizes sportsbook
-                  profit by exploiting behavioral biases. Implemented in Python with full agent-based simulation.
+                  know the true odds. Simulated three boost scenarios: no promotion, one-time initial boost, and
+                  dynamic targeting of discouraged bettors. The simulations showed that dynamic targeting maximizes
+                  sportsbook profit by exploiting behavioral biases. Implemented in Python with full agent-based simulation.
                 </p>
                 <div className={styles.tags}>
                   {['game theory', 'agent-based simulation', 'behavioral economics', 'Python'].map(t => (
@@ -216,7 +189,6 @@ export default function ProjectsPage() {
         <footer className={styles.footer}>
           <p>Cristiana Murgoci · {new Date().getFullYear()}</p>
         </footer>
-      </div>
-    </main>
+    </div>
   );
 }

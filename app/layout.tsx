@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond, Space_Mono } from "next/font/google";
 import "./globals.css";
+import styles from "./page.module.css";
+import SiteHeader from "./components/SiteHeader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -94,7 +96,10 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <main className={styles.main}>
+          <SiteHeader />
+          {children}
+        </main>
       </body>
     </html>
   );
