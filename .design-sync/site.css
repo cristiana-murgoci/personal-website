@@ -1,0 +1,10 @@
+/* Fonts for the Casa Cristiana kit. The site loads these via next/font at
+   runtime, so there are no @font-face files in the repo; designs built with
+   this DS get them from Google instead. */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --font-mono: 'Space Mono', monospace;
+  --font-inter: 'Inter', system-ui, sans-serif;
+  --font-cormorant: 'Cormorant Garamond', serif;
+}

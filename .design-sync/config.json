@@ -1,0 +1,29 @@
+{
+  "projectId": "78f2e8f1-3c65-48e1-9b0a-9267e9713ea7",
+  "shape": "package",
+  "pkg": "cristiana-murgoci",
+  "globalName": "CasaCristiana",
+  "srcDir": "app",
+  "entry": ".design-sync/entry.ts",
+  "readmeHeader": ".design-sync/conventions.md",
+  "tsconfig": "tsconfig.json",
+  "componentSrcMap": {
+    "Dollhouse": "app/writing/Dollhouse.tsx",
+    "SideNav": null,
+    "SplitText": null,
+    "TabNav": null,
+    "HeroReveal": null,
+    "SiteHeader": null,
+    "FadeUp": null,
+    "SmoothScroll": null,
+    "ChipPhoto": null
+  },
+  "dtsPropsFor": {
+    "Dollhouse": "/** Books shown on the library.sys shelf; pass [] for an empty library. */ books: Array<{ id: string; title: string; spine: string; author: string; link: string; height: number; width: number; pattern: number; color?: string; textColor?: string }>;"
+  },
+  "tokensGlob": "app/globals.css",
+  "cssEntry": ".design-sync/site.css",
+  "overrides": {
+    "Dollhouse": { "cardMode": "single", "primaryStory": "TheHouse", "viewport": "760x960" }
+  }
+}
