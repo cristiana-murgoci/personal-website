@@ -16,53 +16,100 @@ export type ShelfBook = {
   textColor?: string;
 };
 
-type RoomId = 'attic' | 'living' | 'kitchen' | 'bath' | 'library';
+type RoomId = 'collectors' | 'botanical' | 'kitchen' | 'living' | 'study' | 'library';
+
+// All geometry is in percent of the cutaway image (1149 x 928):
+// box = clickable hotspot, chip = label chip center (covers the baked-in text),
+// pos = where the scholar's feet land.
+const ROOMS: Record<
+  RoomId,
+  {
+    label: string;
+    line: string;
+    box: { l: number; t: number; w: number; h: number };
+    pos: { x: number; y: number };
+  }
+> = {
+  collectors: {
+    label: "collectors' study",
+    line: '❦ curiosities, catalogued and adored',
+    box: { l: 3.5, t: 32.4, w: 29.5, h: 21 },
+    pos: { x: 17, y: 52.9 },
+  },
+  botanical: {
+    label: 'botanical research',
+    line: '§ the ferns are pressed; the globe still spins',
+    box: { l: 33, t: 32.4, w: 34, h: 21 },
+    pos: { x: 48, y: 52.9 },
+  },
+  kitchen: {
+    label: 'geography & tea',
+    line: '¶ tea first, geography after',
+    box: { l: 67, t: 32.4, w: 30, h: 21 },
+    pos: { x: 81, y: 52.9 },
+  },
+  living: {
+    label: 'living & study',
+    line: '❦ the hearth crackles by the chaise',
+    box: { l: 3.5, t: 54.4, w: 46.5, h: 21.5 },
+    pos: { x: 24, y: 75.4 },
+  },
+  study: {
+    label: 'study',
+    line: '❧ press enter to sit by the swan window',
+    box: { l: 50, t: 54.4, w: 32, h: 21.5 },
+    pos: { x: 63, y: 75.4 },
+  },
+  library: {
+    label: 'library.sys',
+    line: '▸ press enter to open library.sys',
+    box: { l: 3.5, t: 76.4, w: 93, h: 22 },
+    pos: { x: 48, y: 96.9 },
+  },
+};
 
 const ADJ: Record<RoomId, Partial<Record<'left' | 'right' | 'up' | 'down', RoomId>>> = {
-  attic: { down: 'living' },
-  living: { right: 'kitchen', up: 'attic', down: 'bath' },
-  kitchen: { left: 'living', up: 'attic', down: 'library' },
-  bath: { right: 'library', up: 'living' },
-  library: { left: 'bath', up: 'kitchen' },
+  collectors: { right: 'botanical', down: 'living' },
+  botanical: { left: 'collectors', right: 'kitchen', down: 'study' },
+  kitchen: { left: 'botanical', down: 'study' },
+  living: { right: 'study', up: 'collectors', down: 'library' },
+  study: { left: 'living', up: 'kitchen', down: 'library' },
+  library: { up: 'living' },
 };
 
-const POS: Record<RoomId, { x: number; y: number }> = {
-  attic: { x: 372, y: 118 },
-  living: { x: 210, y: 296 },
-  kitchen: { x: 380, y: 296 },
-  bath: { x: 116, y: 474 },
-  library: { x: 330, y: 474 },
-};
-
-const LINES: Record<RoomId, string> = {
-  attic: '✦ snow settles on the dormer glass',
-  living: '❦ the hearth crackles; the deck glows amber',
-  kitchen: '§ the kettle sings over the stove',
-  bath: '❧ the swan window catches the last light',
-  library: '▸ press enter to open library.sys',
-};
+const ROOM_IDS = Object.keys(ROOMS) as RoomId[];
 
 const BOOKS_PER_SHELF = 12;
 
 export default function Dollhouse({ books }: { books: ShelfBook[] }) {
   const [room, setRoom] = useState<RoomId>('living');
-  const [line, setLine] = useState<string>(LINES.living);
+  const [line, setLine] = useState<string>(ROOMS.living.line);
+  const [view, setView] = useState<'inside' | 'outside'>('inside');
   const [libraryOpen, setLibraryOpen] = useState(false);
+  const [swanOpen, setSwanOpen] = useState(false);
 
   const goTo = useCallback((r: RoomId) => {
     setRoom(r);
-    setLine(LINES[r]);
+    setLine(ROOMS[r].line);
   }, []);
 
   const interact = useCallback(() => {
     if (room === 'library') setLibraryOpen(true);
-    else setLine(LINES[room]);
+    else if (room === 'study') setSwanOpen(true);
+    else setLine(ROOMS[room].line);
   }, [room]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (libraryOpen) {
-        if (e.key === 'Escape') setLibraryOpen(false);
+      if (libraryOpen || swanOpen) {
+        if (e.key === 'Escape') {
+          setLibraryOpen(false);
+          setSwanOpen(false);
+        }
+        return;
+      }
+      if (view === 'outside') {
+        if (e.key === 'Enter' || e.key === 'Escape') setView('inside');
         return;
       }
       const dir =
@@ -83,127 +130,124 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [room, libraryOpen, goTo, interact]);
+  }, [room, view, libraryOpen, swanOpen, goTo, interact]);
 
   const shelves: ShelfBook[][] = [];
   for (let i = 0; i < books.length; i += BOOKS_PER_SHELF) {
     shelves.push(books.slice(i, i + BOOKS_PER_SHELF));
   }
 
-  const roomButton = (id: RoomId, className: string, label: string, children: React.ReactNode) => (
-    <button
-      type="button"
-      className={`${ws.room} ${className} ${room === id ? ws.roomActive : ''}`}
-      aria-label={id === 'library' ? 'Walk to the library and open the bookshelf' : `Walk to the ${label}`}
-      onClick={() => {
-        if (room === id) interact();
-        else goTo(id);
-      }}
-    >
-      {children}
-      <span className={ws.roomTag}>{label}</span>
-    </button>
-  );
-
   return (
     <div className={ws.houseScroll}>
-      <div className={ws.osWindow}>
+      <div className={`${ws.osWindow} ${ws.houseWindow}`}>
         <div className={ws.osTitleBar}>
-          <span>casa_cristiana.exe</span>
+          <span>casa.exe</span>
           <span className={ws.osButtons} aria-hidden="true">─ □ ✕</span>
         </div>
 
-        <div className={ws.houseStage}>
-          <span className={ws.gable} aria-hidden="true" />
-          <span className={ws.tower} aria-hidden="true">
-            <i className={ws.vane} />
-            <i className={ws.dome} />
-            <i className={ws.belfry} />
-          </span>
-          <div className={ws.roof} aria-hidden="true">
-            <i className={ws.dormer} />
-            <i className={ws.dormer} />
-            <i className={ws.dormer} />
-            <i className={ws.dormer} />
-          </div>
+        <div className={ws.stage}>
+          {view === 'inside' ? (
+            <>
+              <img
+                src="/house/cutaway.png"
+                width={1083}
+                height={905}
+                alt="Pixel art cutaway of a library house"
+                className={ws.houseImg}
+              />
+              {ROOM_IDS.map((id) => {
+                const r = ROOMS[id];
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    className={ws.hotspot}
+                    style={{
+                      left: `${r.box.l}%`,
+                      top: `${r.box.t}%`,
+                      width: `${r.box.w}%`,
+                      height: `${r.box.h}%`,
+                    }}
+                    aria-label={
+                      id === 'library'
+                        ? 'Walk to the library and open the bookshelf'
+                        : id === 'study'
+                          ? 'Walk to the study and visit the swan window'
+                          : `Walk to ${r.label}`
+                    }
+                    onClick={() => {
+                      if (room === id) interact();
+                      else goTo(id);
+                    }}
+                  />
+                );
+              })}
+              <span
+                className={ws.spriteAnchor}
+                style={{ left: `${ROOMS[room].pos.x}%`, top: `${ROOMS[room].pos.y}%` }}
+                aria-hidden="true"
+              >
+                <i className={ws.pixieGirl} />
+              </span>
+            </>
+          ) : (
+            <button
+              type="button"
+              className={ws.outsideView}
+              onClick={() => setView('inside')}
+              aria-label="Go back inside the house"
+            >
+              <img
+                src="/house/exterior.png"
+                width={1370}
+                height={768}
+                alt="Pixel art of a red brick Georgian house with a cupola"
+                className={ws.houseImg}
+              />
+            </button>
+          )}
+        </div>
 
-          <div className={ws.house}>
-            {/* Attic */}
-            <div className={ws.floorRow} style={{ height: 140 }}>
-              {roomButton('attic', ws.roomAttic, 'attic',
-                <>
-                  <span className={`${ws.fur} ${ws.bunk}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.garland}`} aria-hidden="true">✦ ✦ ✦</span>
-                  <span className={`${ws.fur} ${ws.pendant}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.rugAttic}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.blueSofa}`} aria-hidden="true" />
-                </>
-              )}
-            </div>
-            <div className={ws.housePlank} aria-hidden="true" />
-
-            {/* Middle floor */}
-            <div className={ws.floorRow} style={{ height: 168 }}>
-              {roomButton('living', ws.roomLiving, 'living',
-                <>
-                  <span className={`${ws.fur} ${ws.portrait}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.fireplace}`} aria-hidden="true"><i className={ws.flame}>♥</i></span>
-                  <span className={`${ws.fur} ${ws.rugLiving}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.sofa}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.crt}`} aria-hidden="true"><i className={ws.cursor} /></span>
-                </>
-              )}
-              {roomButton('kitchen', ws.roomKitchen, 'kitchen',
-                <>
-                  <span className={`${ws.fur} ${ws.fridge}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.stove}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.kettle}`} aria-hidden="true"><i className={ws.steam} /></span>
-                  <span className={`${ws.fur} ${ws.hood}`} aria-hidden="true" />
-                </>
-              )}
-            </div>
-            <div className={ws.housePlank} aria-hidden="true" />
-
-            {/* Ground floor */}
-            <div className={ws.floorRow} style={{ height: 168 }}>
-              {roomButton('bath', ws.roomBath, 'study',
-                <>
-                  <span className={`${ws.fur} ${ws.lightPool}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.swanWindow}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.desk}`} aria-hidden="true" />
-                </>
-              )}
-              {roomButton('library', ws.roomLibrary, 'library',
-                <>
-                  <span className={`${ws.fur} ${ws.vaultArc}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.chandelier}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.miniCase}`} aria-hidden="true">
-                    <i /><i /><i /><i /><i /><i /><i />
-                  </span>
-                  <span className={`${ws.fur} ${ws.curtWindow}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.longTable}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.tableLamp} ${ws.tl1}`} aria-hidden="true" />
-                  <span className={`${ws.fur} ${ws.tableLamp} ${ws.tl2}`} aria-hidden="true" />
-                </>
-              )}
-            </div>
-            <div className={ws.housePlank} aria-hidden="true" />
-
-            {/* The pixie */}
-            <span
-              className={ws.pixieGirl}
-              style={{ left: POS[room].x, top: POS[room].y }}
-              aria-hidden="true"
-            />
-          </div>
-
-          <div className={ws.snowGround} aria-hidden="true" />
-          <div className={ws.bramble} aria-hidden="true" />
-
-          <p className={ws.statusLine} role="status">{line}</p>
-          <p className={ws.hudHint}>← ↑ → ↓ wander · enter interact · or click a room</p>
+        <div className={ws.hud}>
+          <p className={ws.statusLine} role="status">
+            {view === 'inside' ? line : '☖ home, seen from the yard'}
+          </p>
+          <p className={ws.hudHint}>
+            {view === 'inside'
+              ? '← ↑ → ↓ wander · enter interact · or click a room'
+              : 'enter or click to come back inside'}
+          </p>
+          <button
+            type="button"
+            className={ws.viewBtn}
+            onClick={() => setView(view === 'inside' ? 'outside' : 'inside')}
+          >
+            {view === 'inside' ? '▸ step outside' : '▸ come back inside'}
+          </button>
         </div>
       </div>
+
+      {swanOpen && (
+        <div className={ws.overlay} role="dialog" aria-modal="true" aria-label="The swan window">
+          <div className={`${ws.osWindow} ${ws.swanWindowBox}`}>
+            <div className={ws.osTitleBar}>
+              <span>swan_window.sys — the study</span>
+              <button type="button" className={ws.osClose} onClick={() => setSwanOpen(false)} aria-label="Close">
+                ✕
+              </button>
+            </div>
+            <div className={ws.swanBody}>
+              <img
+                src="/house/swan.png"
+                width={896}
+                height={1195}
+                alt="Pixel art of an arched stained-glass window with a swan"
+                className={ws.houseImg}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {libraryOpen && (
         <div className={ws.overlay} role="dialog" aria-modal="true" aria-label="Library">

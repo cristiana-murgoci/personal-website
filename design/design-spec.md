@@ -1,7 +1,7 @@
 # The House, a design spec
 
 The Writing page of cristianamurgoci.com is a playable pixel dollhouse called
-`casa_cristiana.exe`. This document is the design package for it: what the piece
+`casa.exe`. This document is the design package for it: what the piece
 is trying to convey, the rules every object follows, the state of each object,
 and the detail backlog. Reference photos live in [references/](references/).
 
@@ -19,9 +19,12 @@ Three feelings, in priority order:
    animations, a patrolling sprite, a window that opens into a library.
 2. **Warmth.** Candlelight, leather, wood, snow outside but never inside.
    Nothing neon, nothing sterile, nothing hustling.
-3. **Craft.** Everything is drawn by hand in CSS, no image assets in the scene.
-   The pixel grid is honest: hard edges, no gradients that pretend to be light,
-   motion that steps instead of glides.
+3. **Craft.** The scenes are authored pixel-art images (the vision boards in
+   references/), served pixelated and never smoothed; the garbled labels the
+   generator baked in are erased by the stitch script, and no labels are drawn
+   over the art. Rooms name themselves through the status line. The interactive
+   layer on top is hand-built: hotspots, the sprite, the overlays. Motion still
+   steps instead of glides.
 
 ## Aesthetic pillars
 
@@ -51,8 +54,12 @@ a swallowtail banner, an arrow crossbar, and a gold ball at its base. A
 snowbank under the house and a hedge of bare brambles in the foreground. The
 snow is still; it sits on the roofline and never falls.
 
-**Structure**: three floors in cutaway, like a dollhouse. Attic; living and
-kitchen; study and library. Mahogany planks between floors, brick side walls.
+**Structure**: the scene is the vision cutaway (ref 10) with the exterior
+render's rooftop (ref 12) grafted on in place of the illustration's floating
+top floor; `scripts/stitch-house.mjs` rebuilds it. Three floors in cutaway:
+collectors' study, botanical research, and geography & tea; living & study and
+the study with the swan window; the full-width library. A "step outside" view
+shows the exterior render whole.
 
 ## The rooms
 
