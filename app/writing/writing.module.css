@@ -35,6 +35,7 @@
   border: 2px solid var(--text);
   box-shadow: 3px 3px 0 rgba(26, 24, 22, 0.28);
   text-decoration: none;
+  transform-origin: 100% 100%;
   transition: transform 0.15s steps(2, end);
 }
 
@@ -716,6 +717,21 @@
   filter:
     drop-shadow(1px 0 0 #1A1816) drop-shadow(-1px 0 0 #1A1816)
     drop-shadow(0 1px 0 #1A1816) drop-shadow(0 -1px 0 #1A1816);
+}
+
+/* Stepped arc hinting at the plaster vault (ref 01) */
+.vaultArc {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 210px;
+  height: 24px;
+  background: rgba(239, 232, 212, 0.45);
+  clip-path: polygon(
+    0 100%, 0 76%, 10% 76%, 10% 48%, 26% 48%, 26% 20%, 42% 20%, 42% 0,
+    58% 0, 58% 20%, 74% 20%, 74% 48%, 90% 48%, 90% 76%, 100% 76%, 100% 100%
+  );
+  pointer-events: none;
 }
 
 /* Wrought-iron candle chandelier (Adams library) */

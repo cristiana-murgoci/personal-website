@@ -155,6 +155,9 @@ listed here so the spec can point at them precisely.
 | `07-music-room.jpg` | Carved crest, paneled doors, grand piano, organ | paneling detail; a future music room candidate |
 | `08-mezzanine-lounge.jpg` | Two-story library, artichoke pendant, blue sofa, red rug | attic corner furniture, pendant lamp |
 | `09-spiral-stair.jpg` | Red spiral staircase, mezzanine, blue sofa | staircase candidate for connecting floors |
+| `10-vision-cutaway.png` | Pixel vision board: full cutaway library-house with spiral stair | the target for the Phase 4 expansion, room density, label chips |
+| `11-vision-swan.png` | Pixel vision board: swan stained-glass window, full detail | the study window's north star |
+| `12-vision-exterior.png` | Pixel vision board: brick Georgian facade with cupola | roofline, dormers, pediment shapes for the exterior |
 
 A note on these photos: if this repository is or becomes public, the photos
 become public with it. People are visible in some of them. Crop or leave out

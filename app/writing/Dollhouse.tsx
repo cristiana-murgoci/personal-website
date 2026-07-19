@@ -175,6 +175,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
               )}
               {roomButton('library', ws.roomLibrary, 'library',
                 <>
+                  <span className={`${ws.fur} ${ws.vaultArc}`} aria-hidden="true" />
                   <span className={`${ws.fur} ${ws.chandelier}`} aria-hidden="true" />
                   <span className={`${ws.fur} ${ws.miniCase}`} aria-hidden="true">
                     <i /><i /><i /><i /><i /><i /><i />
