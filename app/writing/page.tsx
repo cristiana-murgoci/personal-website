@@ -19,10 +19,8 @@ type Book = {
   id: string;
   title: string;
   author: string;
-  link: string;
   cover: string;
   pages: number | null;
-  readAt: Date | null;
 };
 
 function field(block: string, tag: string): string {
@@ -53,20 +51,14 @@ async function fetchShelf(): Promise<Book[]> {
       const xml = await res.text();
       const items = Array.from(xml.matchAll(/<item>([\s\S]*?)<\/item>/g));
       for (const [, block] of items) {
-        const dateRaw =
-          field(block, 'user_read_at') ||
-          field(block, 'user_date_added') ||
-          field(block, 'pubDate');
         const title = decodeEntities(field(block, 'title'));
         if (!title) continue;
         books.push({
           id: field(block, 'book_id'),
           title,
           author: decodeEntities(field(block, 'author_name')).replace(/\s+/g, ' '),
-          link: field(block, 'link'),
           cover: field(block, 'book_image_url'),
           pages: parseInt(field(block, 'num_pages'), 10) || null,
-          readAt: dateRaw ? new Date(dateRaw) : null,
         });
       }
       if (items.length < 100) break;
@@ -137,8 +129,10 @@ async function coverColor(url: string): Promise<{ color: string; textColor: stri
 }
 
 export default async function WritingPage() {
+  // Ordered by a salted hash of the book id: stable across builds, but says
+  // nothing about when anything was read.
   const sorted = (await fetchShelf()).sort(
-    (a, b) => (b.readAt?.getTime() ?? 0) - (a.readAt?.getTime() ?? 0)
+    (a, b) => hashId('s' + a.id) - hashId('s' + b.id) || a.id.localeCompare(b.id)
   );
 
   const shelfBooks: ShelfBook[] = await Promise.all(
@@ -148,9 +142,9 @@ export default async function WritingPage() {
       return {
         id: b.id,
         title: b.title,
-        spine: b.title.split(':')[0].trim(),
+        // Short title only: cut at any subtitle separator (colon, spaced dash, paren)
+        spine: b.title.split(/[:(]|\s[-–—]\s/)[0].trim(),
         author: b.author,
-        link: b.link,
         height: 132 + (h % 8) * 8,
         // Spine thickness from the real page count, hashed fallback when absent
         width: b.pages

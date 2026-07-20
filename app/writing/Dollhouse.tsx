@@ -8,7 +8,6 @@ export type ShelfBook = {
   title: string;
   spine: string;
   author: string;
-  link: string;
   height: number;
   width: number;
   pattern: number;
@@ -439,7 +438,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
         <div className={ws.overlay} role="dialog" aria-modal="true" aria-label="Library">
           <div className={`${ws.osWindow} ${ws.libraryWindow}`}>
             <div className={ws.osTitleBar}>
-              <span>library.sys — {books.length} volumes, newest first</span>
+              <span>library.sys — {books.length} volumes</span>
               <button type="button" className={ws.osClose} onClick={() => setLibraryOpen(false)} aria-label="Close library">
                 ✕
               </button>
@@ -456,11 +455,9 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                         const bg = art?.bg ?? book.color;
                         const fg = book.textColor;
                         return (
-                          <a
+                          <button
                             key={book.id}
-                            href={book.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            type="button"
                             className={`${ws.spine} ${ws[`c${i % 6}`]} ${art ? '' : pattern}`}
                             style={{
                               height: book.height,
@@ -480,7 +477,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                                 </span>
                               </>
                             )}
-                          </a>
+                          </button>
                         );
                       })}
                     </div>
@@ -488,7 +485,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                   </div>
                 ))}
               </div>
-              <p className={ws.caption}>esc to close · titles link to goodreads</p>
+              <p className={ws.caption}>esc to close</p>
             </div>
           </div>
         </div>

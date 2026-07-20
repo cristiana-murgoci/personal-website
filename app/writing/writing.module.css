@@ -44,6 +44,14 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  /* Spines render as <button>s; strip the UA button chrome */
+  appearance: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  text-align: inherit;
+  background: none;
+  cursor: pointer;
   border: 2px solid var(--text);
   box-shadow: 3px 3px 0 rgba(26, 24, 22, 0.28);
   text-decoration: none;
