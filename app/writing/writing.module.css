@@ -10,22 +10,34 @@
 
 /* ── Bookcase (lives inside library.sys) ─────────────── */
 
+/* The bookcase: a dark-academia wooden carcass the shelves are recessed into */
 .shelfUnit {
   position: relative;
-  width: fit-content;
-  min-width: 100%;
-  padding-top: 6px;
+  width: 100%;
+  background: #22160D;
+  border: 9px solid #4A2E1B;
+  box-shadow:
+    inset 0 0 0 2px #1A1008,
+    6px 6px 0 rgba(26, 24, 22, 0.3);
 }
 
-.shelfTier + .shelfTier {
-  margin-top: 30px;
+/* Each tier is a shadowed recess; the books sit on the plank at its base */
+.shelfTier {
+  position: relative;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 8px),
+    linear-gradient(#2C1D11, #1E130A);
+  box-shadow:
+    inset 0 7px 11px rgba(0, 0, 0, 0.55),
+    inset 0 -1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .shelfRow {
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
   gap: 7px;
-  padding: 0 18px;
+  padding: 16px 16px 0;
 }
 
 .spine {
@@ -44,19 +56,16 @@
   z-index: 2;
 }
 
-/* Page block sliver at the top edge, gilt rules top and bottom */
+/* A thin page-block sliver at the top edge (no gilt rules) */
 .spine::before {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(#EFE3C8, #EFE3C8),
-    linear-gradient(rgba(212, 175, 55, 0.85), rgba(212, 175, 55, 0.85)),
-    linear-gradient(rgba(212, 175, 55, 0.85), rgba(212, 175, 55, 0.85));
+  background-image: linear-gradient(#EFE3C8, #EFE3C8);
   background-repeat: no-repeat;
-  background-size: 100% 3px, calc(100% - 8px) 2px, calc(100% - 8px) 2px;
-  background-position: 0 0, 4px 7px, 4px calc(100% - 16px);
+  background-size: 100% 3px;
+  background-position: 0 0;
 }
 
 .spineTitle {
@@ -66,12 +75,22 @@
   font-family: var(--font-mono), monospace;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
   text-transform: uppercase;
-  white-space: nowrap;
+  text-align: center;
+  white-space: normal;
   overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 12px 0 4px;
+  padding: 12px 1px 5px;
+  max-height: 100%;
+}
+
+/* Iconic classics: a single pixel-art glyph, centred on the spine */
+.spineGlyph {
+  align-self: center;
+  margin: auto;
+  max-width: 96%;
+  image-rendering: pixelated;
 }
 
 /* Author initials at the spine foot */
@@ -108,10 +127,10 @@
 }
 
 .plank {
-  height: 12px;
-  background: #5C4028;
-  border: 2px solid var(--text);
-  box-shadow: 4px 4px 0 rgba(26, 24, 22, 0.2);
+  height: 14px;
+  background: linear-gradient(#6B4A2C, #45301A);
+  border-top: 2px solid #7C5A38;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.5);
 }
 
 /* ── Brass-and-leather window chrome ─────────────────── */
@@ -173,7 +192,25 @@
 .stage {
   position: relative;
   font-size: 0;
-  container-type: inline-size;
+}
+
+/* Inside view: a fixed window that clips the zoomed-in world */
+.viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
+  font-size: 0;
+  background: #8FC3EA;
+}
+
+/* The zoomed-in world; the camera translates it to follow the scholar */
+.world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.45s steps(9, end);
+  will-change: transform;
 }
 
 .houseImg {
@@ -336,7 +373,8 @@
   .pixieGirl {
     animation: none;
   }
-  .spriteAnchor {
+  .spriteAnchor,
+  .world {
     transition: none;
   }
   .spine,
