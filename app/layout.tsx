@@ -3,6 +3,11 @@ import { Inter, Cormorant_Garamond, Space_Mono } from "next/font/google";
 import "./globals.css";
 import styles from "./page.module.css";
 import SiteHeader from "./components/SiteHeader";
+import ThemeToggle from "./components/ThemeToggle";
+
+// Runs before paint: apply the saved theme, or the OS preference on first visit,
+// so the page never flashes light before switching to dark.
+const themeInit = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
 
 const inter = Inter({
   subsets: ["latin"],
@@ -90,12 +95,15 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${cormorant.variable} ${spaceMono.variable}`}
+      suppressHydrationWarning
     >
       <body>
+        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <ThemeToggle />
         <main className={styles.main}>
           <SiteHeader />
           {children}

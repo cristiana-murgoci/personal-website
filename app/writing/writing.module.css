@@ -194,8 +194,9 @@
   font-weight: 700;
   line-height: 1;
   background: #EFE8D4;
-  color: var(--text);
-  border: 2px solid var(--text);
+  /* fixed ink so the label stays legible on the cream chip in dark mode too */
+  color: #1A1816;
+  border: 2px solid #1A1816;
   box-shadow: 2px 2px 0 rgba(212, 175, 55, 0.5);
   padding: 3px 6px;
   cursor: pointer;
@@ -237,6 +238,18 @@
   width: 100%;
   height: auto;
   image-rendering: pixelated;
+}
+
+/* Day scene in light mode, night scene in dark mode. Only one is ever
+   displayed; both are the same size so the world layout never shifts. */
+.nightScene {
+  display: none;
+}
+:global(:root[data-theme='dark']) .dayScene {
+  display: none;
+}
+:global(:root[data-theme='dark']) .nightScene {
+  display: block;
 }
 
 /* Invisible room hotspots over the cutaway */
@@ -334,8 +347,9 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   background: #EFE8D4;
-  color: var(--text);
-  border: 2px solid var(--text);
+  /* fixed ink so the label stays legible on the cream chip in dark mode too */
+  color: #1A1816;
+  border: 2px solid #1A1816;
   box-shadow: 2px 2px 0 rgba(212, 175, 55, 0.5);
   padding: 3px 8px;
   cursor: pointer;
@@ -446,29 +460,32 @@
   50% { transform: translateY(-5px); }
 }
 
+/* Tentacle sits ON TOP of the cover; its book area is knocked out to transparent
+   so the coded cover shows through, with both tip and arm overlapping the front. */
 .carryTentacle {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
-  z-index: 1;
+  z-index: 2;
 }
 
-/* The coded cover, painted over the book area baked into the tentacle art
-   (detected book rect ≈ x 22%–76.5%, y 10%–75.4% of the PNG). */
+/* The coded cover, sitting behind the tentacle in the knocked-out book area
+   (book rect ≈ x 22%–76.5%, y 10%–75.4% of the PNG). */
 .carryCover {
   position: absolute;
   left: 20.4%;
   top: 9.2%;
   width: 57.2%;
   height: 67%;
-  z-index: 2;
+  z-index: 1;
   border: 2px solid #1A1008;
   box-shadow: 5px 6px 0 rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
-  padding: 8% 7% 7%;
+  justify-content: space-between;
+  padding: 8% 5% 7%;
   font-family: var(--font-mono), monospace;
 }
 
@@ -482,14 +499,23 @@
 }
 
 .carryTitle {
-  font-size: clamp(11px, 4.6cqw, 17px);
+  font-size: clamp(10px, 3.9cqw, 15px);
   font-weight: 700;
   line-height: 1.28;
   letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+/* The cover art, enlarged and centred between the title and author, for books
+   that have a glyph. Its solid background matches the cover so it blends. */
+.carryCoverIcon {
+  align-self: center;
+  max-width: 60%;
+  max-height: 44%;
+  image-rendering: auto;
 }
 
 .carryAuthor {
-  margin-top: auto;
   font-size: clamp(9px, 3.1cqw, 12px);
   letter-spacing: 0.05em;
   opacity: 0.85;

@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --bg:           #F7F3EC;
   --bg-subtle:    #EDE8DE;
   --border:       #C8C2B4;
@@ -8,6 +9,22 @@
   --text-faint:   #78716C;
   --accent:       #0369A1;
   --accent-warm:  #92400E;
+}
+
+/* Dark mode: a warm near-black to match the dark-academia palette, easy on the
+   eyes. Toggled by data-theme on <html>; the inline script in the layout sets
+   it before paint so there is no flash. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg:           #181310;
+  --bg-subtle:    #211B15;
+  --border:       #3C352B;
+  --border-light: #2B251E;
+  --text:         #EDE6D7;
+  --text-muted:   #B6AE9D;
+  --text-faint:   #988F7E;
+  --accent:       #6FB2E0;
+  --accent-warm:  #D69B5C;
 }
 
 * {
@@ -27,6 +44,34 @@ body {
   font-family: var(--font-inter), system-ui, sans-serif;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme toggle, fixed top-right, out of the way of the bottom-right side nav */
+.themeToggle {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  z-index: 60;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono), monospace;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.themeToggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 ::selection {

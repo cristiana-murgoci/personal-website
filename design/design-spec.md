@@ -70,6 +70,16 @@ render's own dithered pixel sky extended (edge-replicated) to every canvas edge
 rather than a flat fill, so it reads as one cohesive gradient with no seam. The
 script prints the W / H / ROOF constants Dollhouse.tsx needs.
 
+**Day and night.** The site has a light/dark theme toggle (top-right; honours the
+OS preference on first visit, then remembers the choice; an inline script applies
+it before paint so there is no flash). The house follows it: light mode shows the
+day scenes, dark mode shows night versions with a starry navy sky, a darkened
+roof, the interior rooms still warmly lit, and a scatter of exterior windows
+glowing amber. `scripts/night-house.mjs` derives `*-night.png` from the day
+images (region-aware for the cutaway so interiors stay lit; colour-based window
+lighting for the exterior). Dollhouse.tsx renders both scenes and CSS swaps them
+on `:root[data-theme]`, so no JS runs on toggle.
+
 Ten rooms across three floors: west chamber, collectors' study, botanical
 research, geography & tea, map annex (top); morning room, living & study, study,
 reading room (middle); the full-width library (bottom). The four wing rooms

@@ -163,6 +163,15 @@ const SPINE_ART: Record<string, SpineArt> = {
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
+// Dark or light ink for legible text on a given hex background.
+function readableOn(hex: string): string {
+  const n = hex.replace('#', '');
+  const r = parseInt(n.slice(0, 2), 16);
+  const g = parseInt(n.slice(2, 4), 16);
+  const b = parseInt(n.slice(4, 6), 16);
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.55 ? '#1A1816' : '#F7F3EC';
+}
+
 function artFor(b: ShelfBook) {
   return SPINE_ART[normTitle(b.spine)] ?? SPINE_ART[normTitle(b.title)];
 }
@@ -355,6 +364,12 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
   // Stable palette index for the fallback leather colours (order-preserving).
   const colorIndex = new Map(books.map((b, i) => [b.id, i] as const));
 
+  // Presented cover: books with a glyph get the art's colour (so the enlarged
+  // icon blends) and legible ink; the rest use their own cover colour.
+  const presentedArt = presented ? artFor(presented) : null;
+  const presentedBg = presentedArt ? presentedArt.bg : presented?.color ?? '#B8B8B8';
+  const presentedFg = presentedArt ? readableOn(presentedArt.bg) : presented?.textColor ?? '#1A1816';
+
   return (
     <div className={ws.houseScroll}>
       <div className={`${ws.osWindow} ${ws.houseWindow}`}>
@@ -374,7 +389,14 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                 width={W}
                 height={H}
                 alt="Pixel art cutaway of a library house"
-                className={ws.houseImg}
+                className={`${ws.houseImg} ${ws.dayScene}`}
+              />
+              <img
+                src="/house/cutaway-night.png"
+                width={W}
+                height={H}
+                alt="Pixel art cutaway of the library house at night, rooms lit"
+                className={`${ws.houseImg} ${ws.nightScene}`}
               />
               {ROOM_IDS.map((id) => {
                 const r = ROOMS[id];
@@ -425,7 +447,14 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                 width={1370}
                 height={768}
                 alt="Pixel art of a red brick Georgian house with a cupola"
-                className={ws.houseImg}
+                className={`${ws.houseImg} ${ws.dayScene}`}
+              />
+              <img
+                src="/house/exterior-night.png"
+                width={1370}
+                height={768}
+                alt="Pixel art of the red brick house at night with lit windows"
+                className={`${ws.houseImg} ${ws.nightScene}`}
               />
             </button>
           </div>
@@ -542,12 +571,12 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                     <img className={ws.carryTentacle} src="/house/tentacle.png" alt="" aria-hidden="true" />
                     <div
                       className={ws.carryCover}
-                      style={{
-                        backgroundColor: presented.color ?? '#B8B8B8',
-                        color: presented.textColor ?? '#1A1816',
-                      }}
+                      style={{ backgroundColor: presentedBg, color: presentedFg }}
                     >
                       <span className={ws.carryTitle}>{presented.title}</span>
+                      {presentedArt && (
+                        <img className={ws.carryCoverIcon} src={presentedArt.img} alt="" aria-hidden="true" />
+                      )}
                       <span className={ws.carryAuthor}>{presented.author}</span>
                     </div>
                   </div>
