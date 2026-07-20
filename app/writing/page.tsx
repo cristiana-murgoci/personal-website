@@ -128,6 +128,20 @@ async function coverColor(url: string): Promise<{ color: string; textColor: stri
   }
 }
 
+// Titles that need a manual short form on the spine when the automatic
+// subtitle-cut isn't enough. Matched by prefix (case-insensitive).
+const SPINE_OVERRIDES: [RegExp, string][] = [
+  [/^the myth of sisyphus/i, 'The Myth of Sisyphus'],
+];
+
+// The spine label: a manual override if one matches, else the title with any
+// trailing subtitle trimmed (colon, spaced dash, or a space-then-paren — never
+// a leading paren), falling back to the full title so it's never empty.
+function spineLabel(title: string): string {
+  for (const [re, short] of SPINE_OVERRIDES) if (re.test(title)) return short;
+  return title.split(/:|\s[-–—]\s|\s\(/)[0].trim() || title.trim();
+}
+
 export default async function WritingPage() {
   // Ordered by a salted hash of the book id: stable across builds, but says
   // nothing about when anything was read.
@@ -142,8 +156,7 @@ export default async function WritingPage() {
       return {
         id: b.id,
         title: b.title,
-        // Short title only: cut at any subtitle separator (colon, spaced dash, paren)
-        spine: b.title.split(/[:(]|\s[-–—]\s/)[0].trim(),
+        spine: spineLabel(b.title),
         author: b.author,
         height: 132 + (h % 8) * 8,
         // Spine thickness from the real page count, hashed fallback when absent
@@ -169,10 +182,6 @@ export default async function WritingPage() {
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>The House</span>
-          <div className={styles.sectionRule} />
-        </div>
         <Dollhouse books={shelfBooks} />
       </section>
 

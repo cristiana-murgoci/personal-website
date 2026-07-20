@@ -146,6 +146,7 @@ type SpineArt = {
   img: string;
   label: string;
   bg: string; // spine colour, sampled from the art's own background
+  anchor?: 'bottom'; // sit the art at the foot of the spine instead of centred
 };
 
 const SPINE_ART: Record<string, SpineArt> = {
@@ -153,10 +154,10 @@ const SPINE_ART: Record<string, SpineArt> = {
   'animal farm': { img: '/house/spines/animal_farm.png', label: "a pig's face", bg: '#FAB1C2' },
   'thinking fast and slow': { img: '/house/spines/thinking_fast_and_slow.png', label: 'a pencil', bg: '#F9F9F9' },
   'lord of the flies': { img: '/house/spines/lord_of_the_flies.png', label: 'a crowned fly', bg: '#1E3F22' },
-  'i am malala': { img: '/house/spines/malala.png', label: 'a portrait of Malala', bg: '#55B0BA' },
+  'i am malala': { img: '/house/spines/malala.png', label: 'a portrait of Malala', bg: '#55B0BA', anchor: 'bottom' },
   'the metamorphosis': { img: '/house/spines/metamorphosis.png', label: 'a beetle', bg: '#658426' },
   'nexus': { img: '/house/spines/nexus.png', label: 'a pigeon', bg: '#F7F3E6' },
-  'unmasking ai': { img: '/house/spines/unmasking_ai.png', label: 'a face beside a white mask', bg: '#050505' },
+  'unmasking ai': { img: '/house/spines/unmasking_ai.png', label: 'a face beside a white mask', bg: '#050505', anchor: 'bottom' },
   'the privileged poor': { img: '/house/spines/privileged_poor.png', label: 'a heraldic crest', bg: '#1A3E62' },
 };
 
@@ -170,13 +171,17 @@ function artFor(b: ShelfBook) {
 // non-art titles wrap onto a second vertical line and need two columns.
 function spineWidth(b: ShelfBook) {
   if (artFor(b)) return Math.max(b.width, 40);
+  // Very long titles need three vertical columns; keep the spine wide enough
+  // that the last column can't be clipped.
+  if (b.spine.length > 24) return Math.max(b.width, 42);
   return b.spine.length > 12 ? Math.max(b.width, 34) : b.width;
 }
 
 // The cover art is shown tiny and centred, scaled down smoothly (not
 // pixelated) so none of the original detail is lost.
 function PixelGlyph({ art }: { art: SpineArt }) {
-  return <img className={ws.spineGlyph} src={art.img} alt={art.label} />;
+  const cls = art.anchor === 'bottom' ? `${ws.spineGlyph} ${ws.spineGlyphBottom}` : ws.spineGlyph;
+  return <img className={cls} src={art.img} alt={art.label} />;
 }
 
 // Balance the books across shelves so every row is nearly full, then let

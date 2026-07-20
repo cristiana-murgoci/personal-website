@@ -4,7 +4,7 @@ import styles from '../page.module.css';
 export const metadata: Metadata = {
   title: 'Research',
   description:
-    'Research by Cristiana Murgoci on AI alignment, multi-agent collusion, quantum ML, and trading strategy. Senior thesis on market-making for AI alignment at Harvard.',
+    'Research by Cristiana Murgoci on AI alignment, multi-agent collusion, quantum ML, and trading strategy. AISES research on market-making for AI alignment.',
 };
 
 const research = [
@@ -12,7 +12,7 @@ const research = [
     year: "2025 – present",
     title: "Market Making for AI Alignment",
     link: "/MM_for_AI_Alignment.pdf",
-    org: "Senior Thesis · Harvard Statistics & CS",
+    org: "AISES Research",
     description:
       "Proposes training a market-maker model to forecast a human's reflective judgment after exposure to all relevant arguments, while adversaries surface information that most shifts that forecast. Developed during the AISES fellowship (Summer 2025). A simulation probe showed that prompting alone makes the market-maker worse because it over-corrects on weak counterarguments, establishing why training competitiveness is the core research question. The full proposal pairs MM with ELK-style probes, process supervision, and cross-examination, evaluated against RLHF and Debate baselines on truthfulness, calibration, and deception robustness.",
     tags: ["AI alignment", "mechanism design", "LLMs"],
