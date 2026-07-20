@@ -1,7 +1,7 @@
 # The House, a design spec
 
 The Writing page of cristianamurgoci.com is a playable pixel dollhouse called
-`casa.exe`. This document is the design package for it: what the piece
+`dollhouse.exe`. This document is the design package for it: what the piece
 is trying to convey, the rules every object follows, the state of each object,
 and the detail backlog. Reference photos live in [references/](references/).
 
@@ -29,7 +29,7 @@ Three feelings, in priority order:
 ## Aesthetic pillars
 
 - **90s cyberdeck bones.** The scene lives inside a fake OS window with a title
-  bar (`casa_cristiana.exe`) and spawns a dialog (`library.sys`). Text is Space
+  bar (`dollhouse.exe`) and spawns a dialog (`library.sys`). Text is Space
   Mono, the same face as the site hero. Motion uses `steps()` timing so things
   hop like sprites. The one anachronism inside the period fiction: a brass
   terminal with an amber cursor, glowing in the sitting room.
@@ -54,12 +54,41 @@ a swallowtail banner, an arrow crossbar, and a gold ball at its base. A
 snowbank under the house and a hedge of bare brambles in the foreground. The
 snow is still; it sits on the roofline and never falls.
 
-**Structure**: the scene is the vision cutaway (ref 10) with the exterior
-render's rooftop (ref 12) grafted on in place of the illustration's floating
-top floor; `scripts/stitch-house.mjs` rebuilds it. Three floors in cutaway:
-collectors' study, botanical research, and geography & tea; living & study and
-the study with the swan window; the full-width library. A "step outside" view
-shows the exterior render whole.
+**Structure**: `scripts/stitch-house.mjs` builds the scene. It takes the vision
+cutaway body (ref 10, below the floating top floor), erases the garbled baked
+labels, then MIRROR-EXTENDS it into symmetric left/right wings so the building
+is wide enough to match the roof's window count (Georgian symmetry; mirroring
+keeps every floor's color band and divider aligned at the seam). Dark red-brick
+side-wall columns (matching the exterior's brick, `rgb(143,69,54)`) mark the
+building's outer walls. The exterior render's roof (ref 12) sits on top,
+stretched horizontally by the exterior's real eave-to-wall ratio (1278/1243) so
+the roof is wider than the walls and OVERHANGS them, not flush with the wall
+edges; the vertical scale is unchanged so the roof height and the W/H/ROOF
+constants stay stable. Everything floats on sky, so panning to either side
+reveals the brick wall, the roof overhang, and sky beyond. The sky is the roof
+render's own dithered pixel sky extended (edge-replicated) to every canvas edge
+rather than a flat fill, so it reads as one cohesive gradient with no seam. The
+script prints the W / H / ROOF constants Dollhouse.tsx needs.
+
+Ten rooms across three floors: west chamber, collectors' study, botanical
+research, geography & tea, map annex (top); morning room, living & study, study,
+reading room (middle); the full-width library (bottom). The four wing rooms
+(west chamber, map annex, morning room, reading room) are MIRROR FILLER, generic
+until the surgical passes; they carry visible mirror seams (e.g. the double
+kitchen, paired anatomy posters) that room-by-room edits will replace. A "step
+outside" view shows the exterior render whole, full-fit.
+
+**The inside camera**: the world renders so the viewport always shows
+VIEW_NATIVE_W (940) native image pixels across its width, keeping every room the
+same on-screen size (the scale chosen earlier from a zoom ladder) no matter the
+screen size; the camera then pans across the wider building instead of shrinking
+it. It's clipped to a fixed 8:5 window and translated with stepped motion to
+keep the scholar seated at SPRITE_Y_FRAC (0.62) down the frame, not dead-center,
+so there is headroom above her; on the top floor this reveals the pediment and
+dormers of the roof without forcing the whole roof into view. It is clamped at
+the scene edges (near a boundary she drifts from that seat but stays in frame,
+and the clamp reveals the sky-gap edges). Room geometry is authored in percent
+of the full cutaway image. Motion steps.
 
 ## The rooms
 
