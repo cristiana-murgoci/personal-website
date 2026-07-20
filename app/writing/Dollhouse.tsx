@@ -138,353 +138,27 @@ const GAP = 7; // must match .shelfRow gap in the stylesheet
 const ROW_PAD = 16; // must match .shelfRow horizontal padding
 const DEFAULT_ROW_W = 808; // width assumed before the shelf is measured
 
-// ── Iconic classics wear a glyph, not a title ─────────────────────
-// A recognisable book gets a single pixel-art symbol instead of its title, so
-// the spine reads as a hint rather than a label. Each glyph carries its own
-// palette; any char missing from the palette (including '.' and ' ') is left
-// transparent, so the spine's own colour shows through. A classic may also
-// override its spine colour. New art is added here one classic at a time.
+// ── Iconic books wear their cover art, not a title ────────────────
+// A recognisable book shows a tiny copy of its original pixel-art cover
+// (a PNG in public/house/spines) instead of a title. The spine is painted
+// the art's own background colour so the little image sits on it seamlessly.
+// Keyed by the normalised title; new art is added here one book at a time.
 type SpineArt = {
-  grid: string[];
-  palette: Record<string, string>;
+  img: string;
   label: string;
-  bg?: string;
-  fg?: string;
-  width?: number; // spine thickness so the glyph has room to read
+  bg: string; // spine colour, sampled from the art's own background
 };
 
-// 1984 — a red spine with a single watching eye. W = sclera, G = iris,
-// D = pupil; the two 'R' glints stay transparent so the red spine shows
-// through the pupil, just like the reference art.
-const EYE_1984 = [
-  '.......WWWWW.......',
-  '.....WWWWWWWWW.....',
-  '....WWWWWWWWWWW....',
-  '...WWWWGGGGWWWWW...',
-  '..WWWWGGGGGGWWWWW..',
-  '..WWWGGDDDGGGWWWWW.',
-  '.WWWWGDDDRDGGWWWWW.',
-  '.WWWWGDDRDDGGWWWWW.',
-  '.WWWWGDDDDDGGWWWWW.',
-  '..WWWGDDDDDGGWWWWW.',
-  '..WWWWGDDDGGWWWWW..',
-  '...WWWWGGGGWWWWW...',
-  '....WWWWWWWWWWW....',
-  '.....WWWWWWWWW.....',
-  '.......WWWWW.......',
-];
-
-// Animal Farm — a pink spine with a pig's face. O = outline, i = inner ear,
-// B = eyes, S/o/N = snout, fill and nostrils; the face itself is the spine's
-// own pink showing through.
-const PIG_ANIMAL_FARM = [
-  '.OO............OO.',
-  '.OiO..........OiO.',
-  '.OiiO........OiiO.',
-  '.OiiiO......OiiiO.',
-  '.OOOOOOOOOOOOOOOO.',
-  '.O..............O.',
-  '.O..............O.',
-  '.O...BB....BB...O.',
-  '.O...BB....BB...O.',
-  '.O..............O.',
-  '.O..............O.',
-  '.O....oooooo....O.',
-  '.O....oSNSNo....O.',
-  '.O....oSNSNo....O.',
-  '.O....oooooo....O.',
-  '.O..............O.',
-  '.OOOOOOOOOOOOOOOO.',
-];
-
-// Thinking, Fast and Slow — a pencil down a paper-white spine. K = graphite
-// and ferrule, w = wood, Y/y = body, g = ferrule bands, R = eraser.
-const PENCIL_TFS = [
-  '....KK....',
-  '...wKKw...',
-  '...wKKw...',
-  '..wwKKww..',
-  '..wwwwww..',
-  '..YYYYYy..',
-  '..YYYYYy..',
-  '..YYYYYy..',
-  '..YYYYYy..',
-  '..YYYYYy..',
-  '..YYYYYy..',
-  '..YYYYYy..',
-  '..YYYYYy..',
-  '..YYYYYy..',
-  '..KgKgKg..',
-  '..gKgKgK..',
-  '..KgKgKg..',
-  '..gKgKgK..',
-  '..KgKgKg..',
-  '..gKgKgK..',
-  '..KgKgKg..',
-  '..RRRRRR..',
-  '..RRRRRR..',
-  '...RRRR...',
-];
-
-// Lord of the Flies — a crowned fly on a forest-green spine. C/c = crown,
-// G = neck, K = body, W = wings; the green shows through everywhere else.
-const FLY_LOTF = [
-  '......CC.CC.CC......',
-  '......CCcCCcCC......',
-  '......CCCCCCCC......',
-  '......cCCCCCCc......',
-  '........GGGG........',
-  '........GGGG........',
-  '........KKKK........',
-  '........KKKK........',
-  '.....WWKKKKKKWW.....',
-  '....WWWKKKKKKWWW....',
-  '..WWWWWKKKKKKWWWWW..',
-  '.WWWWWWKKKKKKWWWWWW.',
-  '.WWWW...KKKK...WWWW.',
-  '..WWW...KKKK...WWW..',
-  '...WW...KKKK...WW...',
-  '.........KK.........',
-  '.........KK.........',
-];
-
-// I Am Malala — a portrait on a turquoise spine. P/p = hijab, Y = trim,
-// S = face, H = hair.
-const MALALA = [
-  '......PPPPPP......',
-  '.....PPPPPPPP.....',
-  '....PPPPPPPPPP....',
-  '...PPPPPPPPPPPP...',
-  '...PPYHHHHHHYPP...',
-  '...PPYHSSSSHYPP...',
-  '..PPYSSSSSSSSYPP..',
-  '..PPYSSSSSSSSYPP..',
-  '..PPYSSSSSSSSYPP..',
-  '..PPYSSSSSSSSYPP..',
-  '...PPYSSSSSSYPP...',
-  '..PPPPPPPPPPPPPP..',
-  '.PPPPYPPPPPPYPPPP.',
-  'PPPPYPPPPPPPPYPPPP',
-  'PPPYPPPPPPPPPPYPPP',
-  'PPPPPPPPPPPPPPPPPP',
-  'PPPPPPPPPPPPPPPPPP',
-  'PPPPPPPPPPPPPPPPPP',
-];
-
-// The Metamorphosis — a black beetle on an olive spine. K is the whole insect;
-// the green shows through around the legs and antennae.
-const BEETLE = [
-  '.....K.......K.....',
-  '.....K.......K.....',
-  '......K.....K......',
-  '......K.....K......',
-  '.......KKKKK.......',
-  '.......KKKKK.......',
-  '.KK...KKKKKKK...KK.',
-  '..KKKKKKKKKKKKKKK..',
-  '.....KKKKKKKKK.....',
-  '.....KKKKKKKKK.....',
-  '....KKKKKKKKKKK....',
-  '.KKKKKKKKKKKKKKKKK.',
-  'KK..KKKKKKKKKKK..KK',
-  '.....KKKKKKKKK.....',
-  '.....KKKKKKKKK.....',
-  '.....KKKKKKKKK.....',
-  '...KKKKKKKKKKKKK...',
-  '.KK...KKKKKKK...KK.',
-  '.......KKKKK.......',
-  '........KKK........',
-];
-
-// Nexus — a pigeon on a cream spine, facing right. B/b = body and tail,
-// E = eye, k = beak, X/W = wing bars, C = belly, R = feet.
-const PIGEON_NEXUS = [
-  '.................BBB..',
-  '................BBBBB.',
-  '................BBBEB.',
-  '...............BBBBBB.',
-  '...............BBBBBBk',
-  '..............BBBBBB..',
-  '............BBBBBBBB..',
-  '........BBBBBBBBBBBB..',
-  '......BBBBBBBBBBBBBB..',
-  '.....BBBBBBBBBBBBBBB..',
-  '.bbbbBBXWXWXWBBBBBBB..',
-  'bbbbbBBWXWXWXBBBBBB...',
-  '.bbbbBBXWXWXWBBBBB....',
-  '......BBBBBBBBBB......',
-  '........CCCCCCCC......',
-  '.........CCCCCC.......',
-  '..........RRRR........',
-  '...........RR.........',
-  '...........RR.........',
-];
-
-// Unmasking AI — a split portrait on a black spine: brown face (S/d) on the
-// left, a pale mask (W/g) held over the right, tan eye (E), black eye holes (K),
-// red garment and nails (R). The black shows through everywhere else.
-const UNMASKING_AI = [
-  '...dddddd...WWWWW...',
-  '..dddddddd.WWWWWWW..',
-  '.ddSSSSSSSWWWWWWWWW.',
-  '.SSSSSSSSSWWWWWWWWW.',
-  '.SSddddddSWWWWWggWW.',
-  '.SWWWWWWWSWWWWWWWWW.',
-  '.SWKKEKKSSWWWKKKKWW.',
-  '.SSKKKKSSSWWWKKKKWW.',
-  '.SSWWWWSSSWWWWWWWWW.',
-  '.SSSSSSSSSWWWWWWWWW.',
-  '.SSSSSSSddgWWWWWWWW.',
-  '.SSSSSSSSdgWWWWWWWW.',
-  '.SSSSSSSSSWWWWWWWSR.',
-  '.SSSSddddSWWWWWWSSR.',
-  '.SSSddddddWWWWWSSSR.',
-  '.SSSSSSSSSWWWWSSSSR.',
-  '.SSSSSSSSSWWWSSSSSS.',
-  '.RRRSSSSSSWWSSSSSSS.',
-  '.RRRRRR.....SSSSSSS.',
-  '.RRRRRRR............',
-  '.RRRRRR.............',
-  '.RRRR...............',
-];
-
-// The Privileged Poor — a red crest on a navy spine. R is the shield; the
-// navy shows through the cut-outs (top slot, side slots, centre cross) and
-// around the stepped point.
-const CREST = [
-  '.............',
-  '.............',
-  '..RRRRRRRRR..',
-  '..RRR...RRR..',
-  '..RRRRRRRRR..',
-  '..R..RRR..R..',
-  '..R..RRR..R..',
-  '..RRRRRRRRR..',
-  '..RRRR.RRRR..',
-  '..RRR...RRR..',
-  '..RRRR.RRRR..',
-  '...RRRRRRR...',
-  '....RRRRR....',
-  '.....RRR.....',
-  '......R......',
-];
-
 const SPINE_ART: Record<string, SpineArt> = {
-  '1984': {
-    grid: EYE_1984,
-    palette: { W: '#F2EEE4', G: '#4C4A48', D: '#1B1F27' },
-    label: 'a watching eye',
-    bg: '#C4291D',
-    fg: '#F2EEE4',
-    width: 48,
-  },
-  'animal farm': {
-    grid: PIG_ANIMAL_FARM,
-    palette: {
-      O: '#C486A0',
-      i: '#E3B49A',
-      B: '#211C1C',
-      S: '#F2D6B8',
-      o: '#E3B891',
-      N: '#2E2622',
-    },
-    label: "a pig's face",
-    bg: '#E9B4C1',
-    fg: '#5A2E3A',
-    width: 46,
-  },
-  'thinking fast and slow': {
-    grid: PENCIL_TFS,
-    palette: {
-      K: '#202020',
-      w: '#F0D3A6',
-      Y: '#F2A31C',
-      y: '#DB8B10',
-      g: '#C0C0C0',
-      R: '#E13A2C',
-    },
-    label: 'a pencil',
-    bg: '#ECE6D7',
-    fg: '#1C1917',
-    width: 46,
-  },
-  'lord of the flies': {
-    grid: FLY_LOTF,
-    palette: {
-      C: '#A3B183',
-      c: '#7F8F63',
-      G: '#6C6C6C',
-      K: '#15140F',
-      W: '#D8D6CE',
-    },
-    label: 'a crowned fly',
-    bg: '#303D28',
-    fg: '#D8D6CE',
-    width: 48,
-  },
-  'i am malala': {
-    grid: MALALA,
-    palette: {
-      P: '#DD1F76',
-      p: '#A81A5F',
-      Y: '#F6C61C',
-      S: '#E6B78C',
-      H: '#3E2618',
-    },
-    label: 'a portrait of Malala',
-    bg: '#40AEBE',
-    fg: '#F2EEE4',
-    width: 48,
-  },
-  'the metamorphosis': {
-    grid: BEETLE,
-    palette: { K: '#17140F' },
-    label: 'a beetle',
-    bg: '#6E7C3E',
-    fg: '#17140F',
-    width: 48,
-  },
-  'nexus': {
-    grid: PIGEON_NEXUS,
-    palette: {
-      B: '#7C6A6A',
-      b: '#5E4F4F',
-      E: '#1A1614',
-      k: '#D9D3C5',
-      X: '#201C1A',
-      W: '#E8E3D6',
-      C: '#E4DCC8',
-      R: '#D9603C',
-    },
-    label: 'a pigeon',
-    bg: '#F2EEE3',
-    fg: '#5E4F4F',
-    width: 50,
-  },
-  'unmasking ai': {
-    grid: UNMASKING_AI,
-    palette: {
-      S: '#6B4230',
-      d: '#43291D',
-      W: '#CBD3D5',
-      g: '#9BA7AB',
-      K: '#0C0C0C',
-      E: '#C9A878',
-      R: '#D8271E',
-    },
-    label: 'a face beside a white mask',
-    bg: '#0E0E0E',
-    fg: '#CBD3D5',
-    width: 50,
-  },
-  'the privileged poor': {
-    grid: CREST,
-    palette: { R: '#BC4636' },
-    label: 'a heraldic crest',
-    bg: '#2E3C54',
-    fg: '#BC4636',
-    width: 46,
-  },
+  '1984': { img: '/house/spines/1984.png', label: 'a watching eye', bg: '#D50200' },
+  'animal farm': { img: '/house/spines/animal_farm.png', label: "a pig's face", bg: '#FAB1C2' },
+  'thinking fast and slow': { img: '/house/spines/thinking_fast_and_slow.png', label: 'a pencil', bg: '#F9F9F9' },
+  'lord of the flies': { img: '/house/spines/lord_of_the_flies.png', label: 'a crowned fly', bg: '#1E3F22' },
+  'i am malala': { img: '/house/spines/malala.png', label: 'a portrait of Malala', bg: '#55B0BA' },
+  'the metamorphosis': { img: '/house/spines/metamorphosis.png', label: 'a beetle', bg: '#658426' },
+  'nexus': { img: '/house/spines/nexus.png', label: 'a pigeon', bg: '#F7F3E6' },
+  'unmasking ai': { img: '/house/spines/unmasking_ai.png', label: 'a face beside a white mask', bg: '#050505' },
+  'the privileged poor': { img: '/house/spines/privileged_poor.png', label: 'a heraldic crest', bg: '#1A3E62' },
 };
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
@@ -493,44 +167,17 @@ function artFor(b: ShelfBook) {
   return SPINE_ART[normTitle(b.spine)] ?? SPINE_ART[normTitle(b.title)];
 }
 
-// Classics need room for their glyph; non-classic long titles wrap onto a
-// second vertical line and need room for two columns of text.
+// Books with cover art get an even spine to sit the little image on; long
+// non-art titles wrap onto a second vertical line and need two columns.
 function spineWidth(b: ShelfBook) {
-  const art = artFor(b);
-  if (art) return Math.max(b.width, art.width ?? 34);
+  if (artFor(b)) return Math.max(b.width, 40);
   return b.spine.length > 12 ? Math.max(b.width, 34) : b.width;
 }
 
+// The cover art is shown tiny and centred, scaled down smoothly (not
+// pixelated) so none of the original detail is lost.
 function PixelGlyph({ art }: { art: SpineArt }) {
-  const h = art.grid.length;
-  const w = art.grid[0]?.length ?? 0;
-  // Render at a whole-number pixel scale so every cell lands on exact pixels.
-  // A fractional scale (from sizing to a % of the spine) lets crispEdges snap
-  // adjacent cells onto the same pixel, which drops thin one-cell details.
-  // Keep the glyph small; thinner grids get a bigger scale so they still read.
-  const scale = w <= 14 ? 3 : 2;
-  const cells: { x: number; y: number; fill: string }[] = [];
-  art.grid.forEach((row, y) =>
-    row.split('').forEach((c, x) => {
-      const fill = art.palette[c];
-      if (fill) cells.push({ x, y, fill });
-    })
-  );
-  return (
-    <svg
-      className={ws.spineGlyph}
-      width={w * scale}
-      height={h * scale}
-      viewBox={`0 0 ${w} ${h}`}
-      role="img"
-      aria-label={art.label}
-      shapeRendering="crispEdges"
-    >
-      {cells.map(({ x, y, fill }) => (
-        <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={fill} />
-      ))}
-    </svg>
-  );
+  return <img className={ws.spineGlyph} src={art.img} alt={art.label} />;
 }
 
 // Balance the books across shelves so every row is nearly full, then let
@@ -807,7 +454,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                         const pattern = book.pattern === 1 ? ws.stripes : book.pattern === 2 ? ws.dots : '';
                         const art = artFor(book);
                         const bg = art?.bg ?? book.color;
-                        const fg = art?.fg ?? book.textColor;
+                        const fg = book.textColor;
                         return (
                           <a
                             key={book.id}

@@ -86,11 +86,15 @@
 }
 
 /* Iconic classics: a single pixel-art glyph, centred on the spine */
+/* Iconic books: a tiny copy of the original cover art, centred on the spine.
+   Scaled down smoothly (default rendering) so no detail is lost. */
 .spineGlyph {
+  display: block;
   align-self: center;
   margin: auto;
-  max-width: 96%;
-  image-rendering: pixelated;
+  max-width: 76%;
+  max-height: 50%;
+  image-rendering: auto;
 }
 
 /* Author initials at the spine foot */
