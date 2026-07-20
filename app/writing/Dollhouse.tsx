@@ -237,6 +237,11 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
   const [view, setView] = useState<'inside' | 'outside'>('inside');
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [swanOpen, setSwanOpen] = useState(false);
+  // A book lifted off the shelf by the tentacle, shown cover-forward so the
+  // full title and author read (the spines are truncated and the links are off).
+  const [presented, setPresented] = useState<ShelfBook | null>(null);
+  const [shelving, setShelving] = useState(false); // true while it lowers back
+  const [lifted, setLifted] = useState(false); // drives the rise/lower transition
 
   // Measure the shelf so books can be packed to fill each row exactly.
   const shelfRef = useRef<HTMLDivElement>(null);
@@ -251,6 +256,30 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
     ro.observe(el);
     return () => ro.disconnect();
   }, [libraryOpen]);
+
+  // Rise/lower is a CSS transition on `lifted`: mount below, then flip up on the
+  // next frame so the transition actually plays; flip down when shelving.
+  useEffect(() => {
+    if (presented && !shelving) {
+      const raf = requestAnimationFrame(() => setLifted(true));
+      const t = setTimeout(() => setLifted(true), 60); // fallback if rAF is throttled
+      return () => {
+        cancelAnimationFrame(raf);
+        clearTimeout(t);
+      };
+    }
+    setLifted(false);
+  }, [presented, shelving]);
+
+  // When a book starts shelving, clear it once the lower transition finishes.
+  useEffect(() => {
+    if (!shelving) return;
+    const t = setTimeout(() => {
+      setPresented(null);
+      setShelving(false);
+    }, 650);
+    return () => clearTimeout(t);
+  }, [shelving]);
 
   // Measure the viewport so the camera can keep the scholar in frame.
   const vpRef = useRef<HTMLDivElement>(null);
@@ -289,8 +318,12 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
     const onKey = (e: KeyboardEvent) => {
       if (libraryOpen || swanOpen) {
         if (e.key === 'Escape') {
-          setLibraryOpen(false);
-          setSwanOpen(false);
+          // Esc reshelves a lifted book first, then closes the window
+          if (presented && !shelving) setShelving(true);
+          else {
+            setLibraryOpen(false);
+            setSwanOpen(false);
+          }
         }
         return;
       }
@@ -316,7 +349,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [room, view, libraryOpen, swanOpen, goTo, interact]);
+  }, [room, view, libraryOpen, swanOpen, presented, shelving, goTo, interact]);
 
   const shelves = packShelves(books, Math.max(160, shelfW - 2 * ROW_PAD));
   // Stable palette index for the fallback leather colours (order-preserving).
@@ -471,6 +504,10 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                             }}
                             title={`${book.title} · ${book.author}`}
                             aria-label={`${book.title} by ${book.author}`}
+                            onClick={() => {
+                              setPresented(book);
+                              setShelving(false);
+                            }}
                           >
                             {art ? (
                               <PixelGlyph art={art} />
@@ -492,6 +529,31 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
               </div>
               <p className={ws.caption}>esc to close</p>
             </div>
+            {presented && (
+              <div
+                className={ws.bookStage}
+                role="dialog"
+                aria-modal="true"
+                aria-label={`${presented.title} by ${presented.author}`}
+                onClick={() => setShelving(true)}
+              >
+                <div className={`${ws.carry} ${lifted ? ws.carryUp : ''}`}>
+                  <div className={ws.carryBob}>
+                    <img className={ws.carryTentacle} src="/house/tentacle.png" alt="" aria-hidden="true" />
+                    <div
+                      className={ws.carryCover}
+                      style={{
+                        backgroundColor: presented.color ?? '#B8B8B8',
+                        color: presented.textColor ?? '#1A1816',
+                      }}
+                    >
+                      <span className={ws.carryTitle}>{presented.title}</span>
+                      <span className={ws.carryAuthor}>{presented.author}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
