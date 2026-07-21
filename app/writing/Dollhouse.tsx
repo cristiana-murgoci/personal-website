@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { type CSSProperties, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ws from './writing.module.css';
 
 export type ShelfBook = {
@@ -193,6 +193,24 @@ function PixelGlyph({ art }: { art: SpineArt }) {
   return <img className={cls} src={art.img} alt={art.label} />;
 }
 
+const authorInitials = (author: string) =>
+  author.split(/\s+/).map((w) => w[0]).filter(Boolean).join('').slice(0, 3).toUpperCase();
+
+// The face of a spine: its cover glyph, or its title + author initials. Shared
+// by the shelf and by the falling clone so the two look identical.
+function SpineFace({ book }: { book: ShelfBook }) {
+  const art = artFor(book);
+  if (art) return <PixelGlyph art={art} />;
+  return (
+    <>
+      <span className={ws.spineTitle}>{book.spine}</span>
+      <span className={ws.spineFoot} aria-hidden="true">
+        {authorInitials(book.author)}
+      </span>
+    </>
+  );
+}
+
 // Balance the books across shelves so every row is nearly full, then let
 // justify-content flush both ends. rowsNeeded fixes the shelf count from a
 // hard greedy pass; the second pass spreads books evenly toward that count.
@@ -240,6 +258,25 @@ function packShelves(books: ShelfBook[], usable: number): ShelfBook[][] {
   return shelves;
 }
 
+// The lifted-book reveal plays in beats: the clicked book is tugged forward off
+// the shelf and tumbles out of frame, a held empty pause, then the tentacle
+// rises carrying it back cover-first; `shelving` lowers it away again.
+type Phase = 'fall' | 'pause' | 'present' | 'shelving';
+
+// Where the clicked spine sits inside the library window, so the falling clone
+// can start life exactly on top of it (no jarring twin). dropY is how far it
+// must travel to clear the bottom edge.
+type FallRect = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  dropY: number;
+  // The spine's on-screen transform at the click (its hover tilt, if any), so
+  // the clone starts exactly where the spine was — angle and size continuous.
+  startTransform: string;
+};
+
 export default function Dollhouse({ books }: { books: ShelfBook[] }) {
   const [room, setRoom] = useState<RoomId>('living');
   const [line, setLine] = useState<string>(ROOMS.living.line);
@@ -249,8 +286,12 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
   // A book lifted off the shelf by the tentacle, shown cover-forward so the
   // full title and author read (the spines are truncated and the links are off).
   const [presented, setPresented] = useState<ShelfBook | null>(null);
-  const [shelving, setShelving] = useState(false); // true while it lowers back
+  const [phase, setPhase] = useState<Phase>('fall'); // which beat is playing
+  const [fallRect, setFallRect] = useState<FallRect | null>(null); // clicked spine's box
+  const [pulled, setPulled] = useState(false); // book tugged forward off the shelf
+  const [dropped, setDropped] = useState(false); // book tumbles down and out
   const [lifted, setLifted] = useState(false); // drives the rise/lower transition
+  const libWinRef = useRef<HTMLDivElement>(null);
 
   // Measure the shelf so books can be packed to fill each row exactly.
   const shelfRef = useRef<HTMLDivElement>(null);
@@ -266,29 +307,64 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
     return () => ro.disconnect();
   }, [libraryOpen]);
 
-  // Rise/lower is a CSS transition on `lifted`: mount below, then flip up on the
-  // next frame so the transition actually plays; flip down when shelving.
+  // Beat 1 — the clicked book is tugged forward off the shelf, hangs a moment,
+  // then tumbles down and out. (Reduced motion skips straight to the reveal.)
   useEffect(() => {
-    if (presented && !shelving) {
-      const raf = requestAnimationFrame(() => setLifted(true));
-      const t = setTimeout(() => setLifted(true), 60); // fallback if rAF is throttled
-      return () => {
-        cancelAnimationFrame(raf);
-        clearTimeout(t);
-      };
+    if (!presented || phase !== 'fall') return;
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      setPhase('present');
+      return;
     }
-    setLifted(false);
-  }, [presented, shelving]);
+    const raf = requestAnimationFrame(() => setPulled(true)); // pull forward
+    const kick = setTimeout(() => setPulled(true), 60); // fallback if rAF is throttled
+    const tumble = setTimeout(() => setDropped(true), 1750); // slow pull + a beat, then let go
+    const done = setTimeout(() => setPhase('pause'), 2500);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(kick);
+      clearTimeout(tumble);
+      clearTimeout(done);
+    };
+  }, [presented, phase]);
 
-  // When a book starts shelving, clear it once the lower transition finishes.
+  // Beat 2 — a long, dramatic empty beat before the tentacle turns up.
   useEffect(() => {
-    if (!shelving) return;
+    if (!presented || phase !== 'pause') return;
+    const t = setTimeout(() => setPhase('present'), 2200);
+    return () => clearTimeout(t);
+  }, [presented, phase]);
+
+  // Beat 3 — the tentacle rises, carrying the book cover-forward. Mount below,
+  // then flip up on the next frame so the transition actually plays.
+  useEffect(() => {
+    if (!presented || phase !== 'present') return;
+    const raf = requestAnimationFrame(() => setLifted(true));
+    const kick = setTimeout(() => setLifted(true), 60); // fallback if rAF is throttled
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(kick);
+    };
+  }, [presented, phase]);
+
+  // Reshelve — lower the tentacle, then clear once the transition finishes.
+  useEffect(() => {
+    if (phase !== 'shelving') return;
+    setLifted(false);
     const t = setTimeout(() => {
       setPresented(null);
-      setShelving(false);
-    }, 650);
+      setFallRect(null);
+      setPulled(false);
+      setDropped(false);
+      setPhase('fall');
+    }, 1150);
     return () => clearTimeout(t);
-  }, [shelving]);
+  }, [phase]);
+
+  // Click/tap the darkened stage: hurry the intro along, or reshelve once up.
+  const advanceStage = useCallback(() => {
+    setPhase((p) => (p === 'present' ? 'shelving' : p === 'fall' || p === 'pause' ? 'present' : p));
+  }, []);
 
   // Measure the viewport so the camera can keep the scholar in frame.
   const vpRef = useRef<HTMLDivElement>(null);
@@ -328,8 +404,16 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
       if (libraryOpen || swanOpen) {
         if (e.key === 'Escape') {
           // Esc reshelves a lifted book first, then closes the window
-          if (presented && !shelving) setShelving(true);
-          else {
+          if (presented && phase === 'present') {
+            setPhase('shelving');
+          } else if (presented && phase !== 'shelving') {
+            // still mid-intro: cancel it outright
+            setPresented(null);
+            setFallRect(null);
+            setPulled(false);
+            setDropped(false);
+            setPhase('fall');
+          } else if (!presented) {
             setLibraryOpen(false);
             setSwanOpen(false);
           }
@@ -358,7 +442,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [room, view, libraryOpen, swanOpen, presented, shelving, goTo, interact]);
+  }, [room, view, libraryOpen, swanOpen, presented, phase, goTo, interact]);
 
   const shelves = packShelves(books, Math.max(160, shelfW - 2 * ROW_PAD));
   // Stable palette index for the fallback leather colours (order-preserving).
@@ -370,12 +454,23 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
   const presentedBg = presentedArt ? presentedArt.bg : presented?.color ?? '#B8B8B8';
   const presentedFg = presentedArt ? readableOn(presentedArt.bg) : presented?.textColor ?? '#1A1816';
 
+  // The falling clone wears the same leather/pattern/colour as the shelf spine.
+  const presentedIdx = presented ? colorIndex.get(presented.id) ?? 0 : 0;
+  const presentedPattern =
+    presented?.pattern === 1 ? ws.stripes : presented?.pattern === 2 ? ws.dots : '';
+  const spineBg = presentedArt?.bg ?? presented?.color;
+  const spineFg = presented?.textColor;
+
   return (
     <div className={ws.houseScroll}>
       <div className={`${ws.osWindow} ${ws.houseWindow}`}>
         <div className={ws.osTitleBar}>
           <span>dollhouse.exe</span>
-          <span className={ws.osButtons} aria-hidden="true">─ □ ✕</span>
+          <span className={ws.osButtons} aria-hidden="true">
+            <i className={`${ws.osChip} ${ws.osMin}`} />
+            <i className={`${ws.osChip} ${ws.osMax}`} />
+            <i className={`${ws.osChip} ${ws.osClz}`}>✕</i>
+          </span>
         </div>
 
         {view === 'inside' ? (
@@ -503,9 +598,9 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
 
       {libraryOpen && (
         <div className={ws.overlay} role="dialog" aria-modal="true" aria-label="Library">
-          <div className={`${ws.osWindow} ${ws.libraryWindow}`}>
+          <div className={`${ws.osWindow} ${ws.libraryWindow}`} ref={libWinRef}>
             <div className={ws.osTitleBar}>
-              <span>library.sys — {books.length} volumes</span>
+              <span>library.sys</span>
               <button type="button" className={ws.osClose} onClick={() => setLibraryOpen(false)} aria-label="Close library">
                 ✕
               </button>
@@ -529,25 +624,43 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                             style={{
                               height: book.height,
                               width: spineWidth(book),
+                              // Hidden (but still holding its slot) while it's the book on the tentacle
+                              visibility: presented?.id === book.id ? 'hidden' : undefined,
                               ...(bg ? { backgroundColor: bg, color: fg } : {}),
                             }}
                             title={`${book.title} · ${book.author}`}
                             aria-label={`${book.title} by ${book.author}`}
-                            onClick={() => {
+                            onClick={(e) => {
+                              const lib = libWinRef.current;
+                              const el = e.currentTarget;
+                              if (lib) {
+                                // Snapshot the spine's live transform (its hover tilt), then
+                                // clear it so we measure the true, un-rotated box.
+                                const startTransform = getComputedStyle(el).transform;
+                                const prev = el.style.transform;
+                                el.style.transform = 'none';
+                                const lw = lib.getBoundingClientRect();
+                                const sr = el.getBoundingClientRect();
+                                el.style.transform = prev;
+                                const top = sr.top - lw.top - lib.clientTop;
+                                setFallRect({
+                                  left: sr.left - lw.left - lib.clientLeft,
+                                  top,
+                                  width: sr.width,
+                                  height: sr.height,
+                                  // Always far enough to clear the bottom edge, never negative
+                                  dropY: Math.max(sr.height + 80, lib.clientHeight - top + sr.height + 60),
+                                  startTransform,
+                                });
+                              }
                               setPresented(book);
-                              setShelving(false);
+                              setPulled(false);
+                              setDropped(false);
+                              setLifted(false);
+                              setPhase('fall');
                             }}
                           >
-                            {art ? (
-                              <PixelGlyph art={art} />
-                            ) : (
-                              <>
-                                <span className={ws.spineTitle}>{book.spine}</span>
-                                <span className={ws.spineFoot} aria-hidden="true">
-                                  {book.author.split(/\s+/).map((w) => w[0]).filter(Boolean).join('').slice(0, 3).toUpperCase()}
-                                </span>
-                              </>
-                            )}
+                            <SpineFace book={book} />
                           </button>
                         );
                       })}
@@ -564,23 +677,46 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                 role="dialog"
                 aria-modal="true"
                 aria-label={`${presented.title} by ${presented.author}`}
-                onClick={() => setShelving(true)}
+                onClick={advanceStage}
               >
-                <div className={`${ws.carry} ${lifted ? ws.carryUp : ''}`}>
-                  <div className={ws.carryBob}>
-                    <img className={ws.carryTentacle} src="/house/tentacle.png" alt="" aria-hidden="true" />
-                    <div
-                      className={ws.carryCover}
-                      style={{ backgroundColor: presentedBg, color: presentedFg }}
-                    >
-                      <span className={ws.carryTitle}>{presented.title}</span>
-                      {presentedArt && (
-                        <img className={ws.carryCoverIcon} src={presentedArt.img} alt="" aria-hidden="true" />
-                      )}
-                      <span className={ws.carryAuthor}>{presented.author}</span>
+                {phase === 'fall' && fallRect && (
+                  <div
+                    className={`${ws.fallClone} ${ws[`c${presentedIdx % 6}`]} ${presentedArt ? '' : presentedPattern} ${pulled ? ws.fallPull : ''} ${dropped ? ws.fallDrop : ''}`}
+                    style={
+                      {
+                        left: fallRect.left,
+                        top: fallRect.top,
+                        width: fallRect.width,
+                        height: fallRect.height,
+                        '--dropY': `${fallRect.dropY}px`,
+                        // Begin at the spine's exact tilt; once pulling, drop this so the
+                        // .fallPull class transform takes over and animates from here.
+                        ...(pulled ? {} : { transform: fallRect.startTransform }),
+                        ...(spineBg ? { backgroundColor: spineBg, color: spineFg } : {}),
+                      } as CSSProperties
+                    }
+                    aria-hidden="true"
+                  >
+                    <SpineFace book={presented} />
+                  </div>
+                )}
+                {(phase === 'present' || phase === 'shelving') && (
+                  <div className={`${ws.carry} ${lifted ? ws.carryUp : ''} ${phase === 'shelving' ? ws.carryShelving : ''}`}>
+                    <div className={ws.carryBob}>
+                      <img className={ws.carryTentacle} src="/house/tentacle.png" alt="" aria-hidden="true" />
+                      <div
+                        className={ws.carryCover}
+                        style={{ backgroundColor: presentedBg, color: presentedFg }}
+                      >
+                        <span className={ws.carryTitle}>{presented.title}</span>
+                        {presentedArt && (
+                          <img className={ws.carryCoverIcon} src={presentedArt.img} alt="" aria-hidden="true" />
+                        )}
+                        <span className={ws.carryAuthor}>{presented.author}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </div>

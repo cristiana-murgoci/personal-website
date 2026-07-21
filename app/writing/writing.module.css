@@ -52,10 +52,13 @@
   text-align: inherit;
   background: none;
   cursor: pointer;
-  border: 2px solid var(--text);
+  /* fixed ink so the bookshelf keeps its daytime look in dark mode (no light edges) */
+  border: 2px solid #1C1917;
   box-shadow: 3px 3px 0 rgba(26, 24, 22, 0.28);
   text-decoration: none;
-  transform-origin: 100% 100%;
+  /* Pivot on the base centre — shared with the falling clone so the hover tilt
+     carries straight into the pull with no jump in angle or position. */
+  transform-origin: 50% 100%;
   transition: transform 0.15s steps(2, end);
 }
 
@@ -184,8 +187,49 @@
   letter-spacing: 0.08em;
 }
 
+/* Fake window controls: flat 2D parchment buttons, the same chrome as the
+   library.sys × (cream face, uniform ink border, gold offset drop shadow) */
 .osButtons {
-  letter-spacing: 0.2em;
+  display: flex;
+  gap: 4px;
+}
+
+.osChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 16px;
+  box-sizing: border-box;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1;
+  /* fixed ink so the glyphs stay legible on the cream button in dark mode too */
+  color: #1A1816;
+  background: #EFE8D4;
+  border: 2px solid #1A1816;
+  box-shadow: 2px 2px 0 rgba(212, 175, 55, 0.5);
+}
+
+/* Classic glyphs, drawn crisp: low minimize bar, maximized-window square, × */
+.osMin {
+  align-items: flex-end;
+}
+.osMin::before {
+  content: '';
+  width: 8px;
+  height: 2px;
+  margin-bottom: 2px;
+  background: #1A1816;
+}
+.osMax::before {
+  content: '';
+  width: 7px;
+  height: 6px;
+  border: 1.5px solid #1A1816;
+  border-top-width: 2.5px;
 }
 
 .osClose {
@@ -426,8 +470,55 @@
   inset: 0;
   z-index: 1;
   overflow: hidden;
-  background: rgba(20, 12, 8, 0.72);
+  /* No dimming — the tentacle works over the fully lit shelf, as it would in life */
+  background: transparent;
   cursor: pointer;
+}
+
+/* Beat 1 — the clicked book. A clone of the spine, dropped onto its exact spot
+   (the real spine is hidden underneath), so it reads as the same book lifting
+   out. It wears the spine's leather/pattern/colour classes; here we copy the
+   spine's box chrome (border, page sliver) and give it the fall choreography. */
+.fallClone {
+  position: absolute;
+  z-index: 3;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  /* fixed ink to match the shelf spine in both themes */
+  border: 2px solid #1C1917;
+  box-shadow: 3px 3px 0 rgba(26, 24, 22, 0.28);
+  transform-origin: 50% 100%;
+  /* A slow, cautious pull, the way you ease a book off a shelf. Near-constant
+     velocity (no mid-burst) so the book grows at one steady pace, with just a
+     soft landing at the end; .fallDrop overrides with a quick gravity curve. */
+  transition: transform 1.4s cubic-bezier(0.3, 0.32, 0.5, 1);
+  will-change: transform;
+}
+
+/* Same cream page-block sliver as a shelf spine */
+.fallClone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(#EFE3C8, #EFE3C8);
+  background-repeat: no-repeat;
+  background-size: 100% 3px;
+  background-position: 0 0;
+}
+
+/* Tugged forward off the shelf and up toward you, hanging a beat. Rotation
+   continues the hover lean (~-6deg) rather than fighting it, so the angle reads
+   as one continuous motion from hover through pull. */
+.fallPull {
+  transform: translateY(-16px) scale(1.14) rotate(-8deg);
+}
+
+/* Then let go — tumbles down past the bottom edge (--dropY set per book) */
+.fallDrop {
+  transform: translateY(var(--dropY)) scale(1.02) rotate(122deg);
+  transition: transform 0.66s cubic-bezier(0.5, 0, 0.9, 0.35);
 }
 
 /* The rig: your tentacle art + a coded cover, rising from below the window */
@@ -441,11 +532,17 @@
      with the tail still overshooting past the bottom (well beyond the bob), so
      the tentacle always reads as continuing out of frame — no visible edge. */
   transform: translate(-50%, 112%);
-  transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Very slow and unhurried on the way up, with a soft overshoot so it settles
+     rather than snaps; .carryShelving lowers it away more briskly. */
+  transition: transform 2.5s cubic-bezier(0.34, 1.1, 0.5, 1);
 }
 
 .carryUp {
   transform: translate(-50%, 9%);
+}
+
+.carryShelving {
+  transition: transform 1.1s cubic-bezier(0.5, 0, 0.7, 0.4);
 }
 
 .carryBob {
@@ -469,6 +566,10 @@
   height: 100%;
   image-rendering: pixelated;
   z-index: 2;
+  /* A crisp dark cast of the arm's own silhouette, offset down-right with no
+     blur — matching the site's hard pixel shadows (spines, cover) — so the
+     tentacle reads as floating just above the cover and shelf. */
+  filter: drop-shadow(4px 5px 0 rgba(0, 0, 0, 0.3));
 }
 
 /* The coded cover, sitting behind the tentacle in the knocked-out book area
@@ -503,7 +604,9 @@
   font-weight: 700;
   line-height: 1.28;
   letter-spacing: 0.01em;
-  text-wrap: balance;
+  /* Greedy wrap: pack each line full before breaking, so no words drop early
+     (text-wrap: balance would even out the lines and waste horizontal space) */
+  text-wrap: wrap;
 }
 
 /* The cover art, enlarged and centred between the title and author, for books
@@ -529,4 +632,5 @@
     animation: none;
   }
   .carryUp { transform: translate(-50%, 9%); }
+  .fallClone { transition: none; }
 }
