@@ -20,7 +20,7 @@ export default function ProjectsPage() {
               </div>
               <div className={styles.researchBody}>
                 <h2 className={styles.researchTitle}>
-                  <a href="/CS1261_Unofficial_Lecture_Notes_Murgoci.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
+                  <a href="/notes" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>
                     Differential Privacy, Algorithmic Fairness &amp; Cryptography ↗
                   </a>
                 </h2>
