@@ -4,10 +4,18 @@ import styles from '../page.module.css';
 export const metadata: Metadata = {
   title: 'Research',
   description:
-    'Research by Cristiana Murgoci on AI alignment, multi-agent collusion, quantum ML, and trading strategy. AISES research on market-making for AI alignment.',
+    'Research by Cristiana Murgoci on AI alignment, multi-agent collusion, vision-language models for library cataloging, quantum ML, and trading strategy. AISES research on market-making for AI alignment.',
 };
 
 const research = [
+  {
+    year: "2026",
+    title: "AI Visual Discovery",
+    org: "Harvard Library",
+    description:
+      "Part of \"Beyond the Frame,\" a Harvard Library Advancing Open Knowledge grant project at Houghton Library. Working closely with librarians to automate the description and digitization of their special-collections photographs at scale, building and open-sourcing vision-language pipelines that generate catalog metadata and evaluating them against expert records so the methods stay accurate, reproducible, and open.",
+    tags: ["vision-language models", "AI cataloging", "special collections"],
+  },
   {
     year: "2025 – present",
     title: "Market Making for AI Alignment",
