@@ -13,8 +13,8 @@ const research = [
     title: "AI Visual Discovery",
     org: "Harvard Library",
     description:
-      "Part of \"Beyond the Frame,\" a Harvard Library Advancing Open Knowledge grant project at Houghton Library. Working closely with librarians to automate the description and digitization of their special-collections photographs at scale, building and open-sourcing vision-language pipelines that generate catalog metadata and evaluating them against expert records so the methods stay accurate, reproducible, and open.",
-    tags: ["vision-language models", "AI cataloging", "special collections"],
+      "Building and open-sourcing vision-language pipelines that generate catalog metadata for special-collections photographs, working closely with librarians to automate the description and digitization of Houghton Library's collections at scale, and evaluating the pipelines against expert records so the methods stay accurate, reproducible, and open. Part of \"Beyond the Frame,\" a Harvard Library Advancing Open Knowledge grant.",
+    tags: ["vision-language models", "AI cataloging", "model evaluation"],
   },
   {
     year: "2025 – present",

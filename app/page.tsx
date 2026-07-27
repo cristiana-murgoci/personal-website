@@ -1,5 +1,6 @@
 import styles from "./page.module.css";
 import SideNav from "./components/SideNav";
+import YCProof from "./components/YCProof";
 
 type Course = { code: string; name: string };
 type CourseSection = { label: string; courses: Course[] };
@@ -142,7 +143,7 @@ export default function Home() {
               differential privacy, algorithmic fairness, and what it means to build systems that benefit everyone.
             </p>
             <p>
-              Recently, I cofounded Telos, a startup in physical automation forecasting.
+              Recently, I cofounded Telos (now Robocurve), a startup in physical automation forecasting.
               Our team was accepted into Y Combinator&apos;s Summer 2026 batch. I stepped
               down before the batch began and chose to finish my Harvard degree. I graduate
               in December 2026, and what comes next is already underway.
@@ -183,8 +184,9 @@ export default function Home() {
                 <span className={styles.researchOrg}>Co-founder &amp; COO</span>
               </div>
               <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>Telos</h3>
+                <h3 className={styles.researchTitle}>Telos (now Robocurve)</h3>
                 <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Our team was accepted into Y Combinator&apos;s Summer 2026 batch. I stepped down before the batch began and chose to finish my Harvard degree. I learned more about building a company there than anywhere else.</p>
+                <YCProof />
               </div>
             </div>
 

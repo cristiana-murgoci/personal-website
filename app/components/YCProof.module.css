@@ -1,0 +1,108 @@
+/* Trigger chip that opens the acceptance popup, sits under the Telos entry */
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 5px 11px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.trigger:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+/* the little Y Combinator mark before the label */
+.mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  font-weight: 700;
+  font-size: 11px;
+  color: #fff;
+  background: #F26522; /* YC orange */
+  border-radius: 1px;
+}
+
+/* ── Popup ─────────────────────────────────────────────── */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(26, 24, 22, 0.62);
+  backdrop-filter: blur(2px);
+  animation: fade 0.16s ease;
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.card {
+  position: relative;
+  max-width: min(760px, 94vw);
+  max-height: 88vh;
+  overflow: auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caption {
+  margin: 0;
+  padding: 10px 14px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  border-top: 1px solid var(--border);
+}
+
+.close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  line-height: 1;
+  color: #1A1816;
+  background: #EFE8D4;
+  border: 1px solid #1A1816;
+  cursor: pointer;
+}
+
+.close:hover {
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim { animation: none; }
+}
