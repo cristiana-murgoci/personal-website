@@ -1,13 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import s from './YCProof.module.css';
 
-// A small chip under the Telos entry that opens the (redacted) YC acceptance
-// screenshot in a popup. The image is public/yc-accepted.png, produced by
-// scripts/redact-yc.mjs so co-founders' names never reach the page.
+// A small Y Combinator logo, sitting next to the Telos title, that opens the
+// acceptance screenshot (public/yc-accepted.png) in a popup. The popup is
+// portalled to <body> so it never nests inside the heading.
 export default function YCProof() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!open) return;
@@ -23,34 +27,40 @@ export default function YCProof() {
     };
   }, [open]);
 
+  const popup = (
+    <div
+      className={s.scrim}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Y Combinator acceptance"
+      onClick={() => setOpen(false)}
+    >
+      <div className={s.card} onClick={(e) => e.stopPropagation()}>
+        <button type="button" className={s.close} onClick={() => setOpen(false)} aria-label="Close">
+          ✕
+        </button>
+        <img
+          src="/yc-accepted.png"
+          alt="Y Combinator applications page showing Telos accepted into the Summer 2026 batch"
+          className={s.image}
+        />
+        <p className={s.caption}>Y Combinator · Summer 2026 · accepted</p>
+      </div>
+    </div>
+  );
+
   return (
     <>
-      <button type="button" className={s.trigger} onClick={() => setOpen(true)}>
+      <button
+        type="button"
+        className={s.trigger}
+        onClick={() => setOpen(true)}
+        aria-label="View the Y Combinator acceptance"
+        title="View the YC acceptance"
+      >
         <span className={s.mark} aria-hidden="true">Y</span>
-        view the YC acceptance
       </button>
-
-      {open && (
-        <div
-          className={s.scrim}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Y Combinator acceptance"
-          onClick={() => setOpen(false)}
-        >
-          <div className={s.card} onClick={(e) => e.stopPropagation()}>
-            <button type="button" className={s.close} onClick={() => setOpen(false)} aria-label="Close">
-              ✕
-            </button>
-            <img
-              src="/yc-accepted.png"
-              alt="Y Combinator applications page showing Telos accepted into the Summer 2026 batch"
-              className={s.image}
-            />
-            <p className={s.caption}>Y Combinator · Summer 2026 · accepted</p>
-          </div>
-        </div>
-      )}
+      {mounted && open ? createPortal(popup, document.body) : null}
     </>
   );
 }

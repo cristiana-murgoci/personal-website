@@ -184,9 +184,8 @@ export default function Home() {
                 <span className={styles.researchOrg}>Co-founder &amp; COO</span>
               </div>
               <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>Telos (now Robocurve)</h3>
+                <h3 className={styles.researchTitle}>Telos (now Robocurve)<YCProof /></h3>
                 <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Our team was accepted into Y Combinator&apos;s Summer 2026 batch. I stepped down before the batch began and chose to finish my Harvard degree. I learned more about building a company there than anywhere else.</p>
-                <YCProof />
               </div>
             </div>
 

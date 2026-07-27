@@ -1,38 +1,33 @@
-/* Trigger chip that opens the acceptance popup, sits under the Telos entry */
+/* Trigger: just the Y Combinator logo, sitting inline next to the Telos title */
 .trigger {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  margin-top: 12px;
-  padding: 5px 11px;
-  font-family: var(--font-mono), monospace;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
-  border-radius: 2px;
+  vertical-align: middle;
+  margin-left: 9px;
+  padding: 0;
+  border: none;
+  background: none;
+  line-height: 0;
   cursor: pointer;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.12s ease;
 }
 
 .trigger:hover {
-  color: var(--text);
-  border-color: var(--text-muted);
+  transform: translateY(-1px);
 }
 
-/* the little Y Combinator mark before the label */
+/* the Y Combinator mark: orange square with a white Y */
 .mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 15px;
-  height: 15px;
+  width: 19px;
+  height: 19px;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 14px;
   color: #fff;
-  background: #F26522; /* YC orange */
-  border-radius: 1px;
+  background: #FB651E; /* YC orange */
+  border-radius: 2px;
 }
 
 /* ── Popup ─────────────────────────────────────────────── */
@@ -81,26 +76,26 @@
   border-top: 1px solid var(--border);
 }
 
+/* Retro parchment close button, same chrome as the dollhouse library.sys × */
 .close {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 30px;
-  height: 30px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  top: 10px;
+  right: 10px;
   font-family: var(--font-mono), monospace;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 700;
   line-height: 1;
   color: #1A1816;
   background: #EFE8D4;
-  border: 1px solid #1A1816;
+  border: 2px solid #1A1816;
+  box-shadow: 2px 2px 0 rgba(212, 175, 55, 0.5);
+  padding: 4px 7px;
   cursor: pointer;
 }
 
-.close:hover {
-  background: #fff;
+.close:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
