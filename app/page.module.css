@@ -267,6 +267,19 @@
   letter-spacing: -0.01em;
 }
 
+/* Small org logo sitting inline next to a title (not clickable). Constrained on
+   both axes with aspect preserved, so wide wordmarks and square marks alike
+   stay a tidy inline size. */
+.orgLogo {
+  max-height: 19px;
+  max-width: 88px;
+  width: auto;
+  height: auto;
+  margin-left: 8px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
 .researchDesc {
   font-size: 15px;
   color: var(--text-muted);

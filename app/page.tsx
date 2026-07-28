@@ -184,7 +184,7 @@ export default function Home() {
                 <span className={styles.researchOrg}>Co-founder &amp; COO</span>
               </div>
               <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}>Telos (now Robocurve)<YCProof /></h3>
+                <h3 className={styles.researchTitle}>Telos (now <a href="https://robocurve.org" target="_blank" rel="noopener noreferrer">Robocurve ↗</a>)<YCProof /></h3>
                 <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Our team was accepted into Y Combinator&apos;s Summer 2026 batch. I stepped down before the batch began and chose to finish my Harvard degree. I learned more about building a company there than anywhere else.</p>
               </div>
             </div>
@@ -195,7 +195,7 @@ export default function Home() {
                 <span className={styles.researchOrg}>AGI Strategy Reading Group</span>
               </div>
               <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="https://haist.ai" target="_blank" rel="noopener noreferrer">Harvard AI Safety Student Team ↗</a></h3>
+                <h3 className={styles.researchTitle}><a href="https://haist.ai" target="_blank" rel="noopener noreferrer">Harvard AI Safety Student Team ↗</a><img src="/aisst.png" alt="Harvard AI Safety Student Team logo" className={styles.orgLogo} /></h3>
                 <p className={styles.researchDesc}>Engaging with technical and governance literature on long-range AGI strategy and transformative AI risk.</p>
               </div>
             </div>
@@ -217,7 +217,7 @@ export default function Home() {
                 <span className={styles.researchOrg}>Director of Programming</span>
               </div>
               <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="https://www.wecodeconference.com" target="_blank" rel="noopener noreferrer">Harvard WECode ↗</a></h3>
+                <h3 className={styles.researchTitle}><a href="https://www.wecodeconference.com" target="_blank" rel="noopener noreferrer">Harvard WECode ↗</a><img src="/wecode.png" alt="Harvard WECode logo" className={styles.orgLogo} /></h3>
                 <p className={styles.researchDesc}>Leading programming for the world&apos;s largest student-run undergraduate tech conference, organized by undergraduate women at Harvard. Responsible for speaker curation, session design, and the intellectual direction of the conference.</p>
               </div>
             </div>
@@ -228,7 +228,7 @@ export default function Home() {
                 <span className={styles.researchOrg}>President</span>
               </div>
               <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="https://www.scholarsoffinance.org" target="_blank" rel="noopener noreferrer">Scholars of Finance, Harvard Chapter ↗</a></h3>
+                <h3 className={styles.researchTitle}><a href="https://www.scholarsoffinance.org" target="_blank" rel="noopener noreferrer">Scholars of Finance, Harvard Chapter ↗</a><img src="/sof.png" alt="Scholars of Finance logo" className={styles.orgLogo} /></h3>
                 <p className={styles.researchDesc}>Founded and scaled the Harvard chapter: recruited members, built a mentorship program pairing experienced students with newer ones, ran speaker sessions with industry leaders, and served as primary liaison to the national organization.</p>
               </div>
             </div>
@@ -239,7 +239,7 @@ export default function Home() {
                 <span className={styles.researchOrg}>Academic Coordinator</span>
               </div>
               <div className={styles.researchBody}>
-                <h3 className={styles.researchTitle}><a href="https://harvardquantum.com" target="_blank" rel="noopener noreferrer">Harvard Quantum Computing Association ↗</a></h3>
+                <h3 className={styles.researchTitle}><a href="https://harvardquantum.com" target="_blank" rel="noopener noreferrer">Harvard Quantum Computing Association ↗</a><img src="/HUQCA.png" alt="Harvard Quantum Computing Association logo" className={styles.orgLogo} /></h3>
                 <p className={styles.researchDesc}>Organized weekly talks with CEOs and researchers in quantum computing. Led a Qiskit reading group and developed peer-led study groups.</p>
               </div>
             </div>
