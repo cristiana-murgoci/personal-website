@@ -36,12 +36,13 @@ const coursework: CourseEntry[] = [
     ],
   },
   {
-    dept: "Economics",
+    dept: "Economics & Entrepreneurship",
     courses: [
       { code: "ECON 10A", name: "Principles of Economics: Microeconomics" },
       { code: "ECON 10B", name: "Principles of Economics: Macroeconomics" },
       { code: "ECON 1011A", name: "Intermediate Microeconomics: Advanced" },
       { code: "ECON 1021", name: "Using Markets to Solve Social Problems" },
+      { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
     ],
   },
   {
@@ -61,12 +62,6 @@ const coursework: CourseEntry[] = [
       { code: "EXPOS 20", name: "Expository Writing: Gender & Mental Health" },
       { code: "GENED 1033", name: "Conflict Resolution in a Divided World" },
       { code: "GENED 1159", name: "American Capitalism" },
-    ],
-  },
-  {
-    dept: "Entrepreneurship",
-    courses: [
-      { code: "ENG-SCI 139", name: "Innovation in Science and Engineering" },
     ],
   },
 ];
