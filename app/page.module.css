@@ -470,21 +470,53 @@
 
 /* ── Mobile ───────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .hero    { padding: 48px 24px 40px; }
   .content { padding: 0 24px 72px; }
   .section { padding: 40px 0; }
 
+  /* The hero as one long single column reads like a receipt. Keep the type
+     full-width, then seat the photo and the degree lines side by side. The
+     text wrapper dissolves (display: contents) so its children can be placed
+     on the hero grid directly. */
+  .hero {
+    padding: 48px 24px 40px;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'eyebrow eyebrow'
+      'name    name'
+      'tagline tagline'
+      'photo   meta';
+    gap: 0 18px;
+  }
+
+  .heroText { display: contents; }
+
+  .heroEyebrow {
+    grid-area: eyebrow;
+    margin-bottom: 24px;
+  }
+
   /* Keep the name on one line by scaling it to the screen instead of clipping */
   .name {
+    grid-area: name;
     font-size: clamp(22px, 8.2vw, 34px);
     margin-bottom: 24px;
   }
 
-  .heroEyebrow { margin-bottom: 24px; }
+  .tagline {
+    grid-area: tagline;
+    margin-bottom: 28px;
+  }
+
+  .heroMeta {
+    grid-area: meta;
+    align-self: center;
+    font-size: 12px;
+  }
 
   .heroPhotoFrame {
-    width: 160px;
-    height: 213px;
+    grid-area: photo;
+    width: 128px;
+    height: 170px;
   }
 
   /* All four tabs on one line; scrollable as a safety net on very narrow phones.

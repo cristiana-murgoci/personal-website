@@ -133,9 +133,14 @@ const ROOM_IDS = Object.keys(ROOMS) as RoomId[];
 // ── Bookshelf layout ──────────────────────────────────────────────
 // Books are packed to fill each shelf edge-to-edge (no ragged right gap);
 // the exact split depends on the measured shelf width, so it happens at render.
-const GAP = 7; // must match .shelfRow gap in the stylesheet
-const ROW_PAD = 16; // must match .shelfRow horizontal padding
+// Gap and padding are set inline on each row (scaled with the shelf zoom).
+const GAP = 7; // row gap at full size
+const ROW_PAD = 16; // row horizontal padding at full size
 const DEFAULT_ROW_W = 808; // width assumed before the shelf is measured
+// A row this wide holds ~7 average spines at full size; narrower shelves
+// zoom out proportionally (never below half size) so a phone row holds
+// around 7 books instead of 4–5 oversized ones, while titles stay readable.
+const FULL_SIZE_ROW_W = 360;
 
 // ── Iconic books wear their cover art, not a title ────────────────
 // A recognisable book shows a tiny copy of its original pixel-art cover
@@ -214,16 +219,21 @@ function SpineFace({ book }: { book: ShelfBook }) {
 // Balance the books across shelves so every row is nearly full, then let
 // justify-content flush both ends. rowsNeeded fixes the shelf count from a
 // hard greedy pass; the second pass spreads books evenly toward that count.
-function packShelves(books: ShelfBook[], usable: number): ShelfBook[][] {
+function packShelves(
+  books: ShelfBook[],
+  usable: number,
+  width: (b: ShelfBook) => number,
+  gap: number
+): ShelfBook[][] {
   if (books.length === 0) return [];
   const rowsNeeded = (() => {
     let rows = 1;
     let w = 0;
     for (const b of books) {
-      const add = (w > 0 ? GAP : 0) + spineWidth(b);
+      const add = (w > 0 ? gap : 0) + width(b);
       if (w > 0 && w + add > usable) {
         rows++;
-        w = spineWidth(b);
+        w = width(b);
       } else {
         w += add;
       }
@@ -232,15 +242,15 @@ function packShelves(books: ShelfBook[], usable: number): ShelfBook[][] {
   })();
   if (rowsNeeded <= 1) return [books];
 
-  const totalW = books.reduce((s, b) => s + spineWidth(b), 0);
+  const totalW = books.reduce((s, b) => s + width(b), 0);
   // Target row width counts the gaps too, so the last row isn't left starved.
-  const totalContent = totalW + Math.max(0, books.length - rowsNeeded) * GAP;
+  const totalContent = totalW + Math.max(0, books.length - rowsNeeded) * gap;
   const target = Math.min(usable, totalContent / rowsNeeded);
   const shelves: ShelfBook[][] = [];
   let cur: ShelfBook[] = [];
   let w = 0;
   books.forEach((b) => {
-    const add = (cur.length ? GAP : 0) + spineWidth(b);
+    const add = (cur.length ? gap : 0) + width(b);
     const overflow = cur.length > 0 && w + add > usable;
     // Break for balance once this row has met its share; the final row (once
     // rowsNeeded-1 are placed) simply collects the rest, never overflowing.
@@ -248,7 +258,7 @@ function packShelves(books: ShelfBook[], usable: number): ShelfBook[][] {
     if (overflow || balanced) {
       shelves.push(cur);
       cur = [b];
-      w = spineWidth(b);
+      w = width(b);
     } else {
       cur.push(b);
       w += add;
@@ -444,7 +454,13 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [room, view, libraryOpen, swanOpen, presented, phase, goTo, interact]);
 
-  const shelves = packShelves(books, Math.max(160, shelfW - 2 * ROW_PAD));
+  // Shelf zoom: 1 on a full-width window, shrinking on narrow screens so a
+  // row keeps holding ~7 books; spines never drop below half size.
+  const spineScale = Math.min(1, Math.max(0.5, (shelfW - 2 * ROW_PAD) / FULL_SIZE_ROW_W));
+  const rowPad = Math.round(ROW_PAD * spineScale);
+  const rowGap = Math.max(3, Math.round(GAP * spineScale));
+  const scaledSpineW = (b: ShelfBook) => Math.max(16, Math.round(spineWidth(b) * spineScale));
+  const shelves = packShelves(books, Math.max(120, shelfW - 2 * rowPad), scaledSpineW, rowGap);
   // Stable palette index for the fallback leather colours (order-preserving).
   const colorIndex = new Map(books.map((b, i) => [b.id, i] as const));
 
@@ -606,7 +622,11 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
 
       {libraryOpen && (
         <div className={ws.overlay} role="dialog" aria-modal="true" aria-label="Library">
-          <div className={`${ws.osWindow} ${ws.libraryWindow}`} ref={libWinRef}>
+          <div
+            className={`${ws.osWindow} ${ws.libraryWindow}`}
+            ref={libWinRef}
+            style={{ '--spine-scale': spineScale } as CSSProperties}
+          >
             <div className={ws.osTitleBar}>
               <span>library.sys</span>
               <button type="button" className={ws.osClose} onClick={() => setLibraryOpen(false)} aria-label="Close library">
@@ -617,7 +637,10 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
               <div className={ws.shelfUnit} ref={shelfRef}>
                 {shelves.map((shelf, r) => (
                   <div key={r} className={ws.shelfTier}>
-                    <div className={ws.shelfRow}>
+                    <div
+                      className={ws.shelfRow}
+                      style={{ gap: rowGap, padding: `${rowPad}px ${rowPad}px 0` }}
+                    >
                       {shelf.map((book) => {
                         const i = colorIndex.get(book.id) ?? 0;
                         const pattern = book.pattern === 1 ? ws.stripes : book.pattern === 2 ? ws.dots : '';
@@ -630,8 +653,8 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                             type="button"
                             className={`${ws.spine} ${ws[`c${i % 6}`]} ${art ? '' : pattern}`}
                             style={{
-                              height: book.height,
-                              width: spineWidth(book),
+                              height: Math.round(book.height * spineScale),
+                              width: scaledSpineW(book),
                               // Hidden (but still holding its slot) while it's the book on the tentacle
                               visibility: presented?.id === book.id ? 'hidden' : undefined,
                               ...(bg ? { backgroundColor: bg, color: fg } : {}),
