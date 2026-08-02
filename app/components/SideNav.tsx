@@ -44,7 +44,7 @@ export default function SideNav() {
         right: '40px',
         bottom: '48px',
         zIndex: 40,
-        display: 'flex',
+        /* display comes from the .sidenav class so the mobile media query can hide it */
         flexDirection: 'column',
         gap: '2px',
         opacity: visible ? 1 : 0,

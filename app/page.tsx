@@ -157,7 +157,7 @@ export default function Home() {
               <div key={i} className={styles.awardRow}>
                 <div className={styles.awardLeft}>
                   <span className={styles.awardName}>{a.name}</span>
-                  <span className={styles.awardOrg}>· {a.org}</span>
+                  <span className={styles.awardOrg}><span className={styles.awardSep}>· </span>{a.org}</span>
                 </div>
                 <span className={styles.awardYear}>{a.year}</span>
               </div>

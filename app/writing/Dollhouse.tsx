@@ -560,9 +560,17 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
             {view === 'inside' ? line : '☖ home, seen from the yard'}
           </p>
           <p className={ws.hudHint}>
-            {view === 'inside'
-              ? '← ↑ → ↓ wander · the view follows you · enter interact'
-              : 'enter or click to come back inside'}
+            {view === 'inside' ? (
+              <>
+                <span className={ws.hintKeys}>← ↑ → ↓ wander · the view follows you · enter interact</span>
+                <span className={ws.hintTouch}>tap a room to wander · tap it again to interact</span>
+              </>
+            ) : (
+              <>
+                <span className={ws.hintKeys}>enter or click to come back inside</span>
+                <span className={ws.hintTouch}>tap the house to come back inside</span>
+              </>
+            )}
           </p>
           <button
             type="button"

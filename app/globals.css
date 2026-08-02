@@ -95,5 +95,5 @@ a:hover {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-.sidenav { display: flex; }
+.sidenav { display: flex; flex-direction: column; }
 @media (max-width: 1100px) { .sidenav { display: none; } }

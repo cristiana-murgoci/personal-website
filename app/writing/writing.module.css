@@ -384,6 +384,14 @@
   margin: 0;
 }
 
+/* Keyboard hints on devices with hover; touch hints everywhere else */
+.hintTouch { display: none; }
+
+@media (hover: none) {
+  .hintKeys  { display: none; }
+  .hintTouch { display: inline; }
+}
+
 .viewBtn {
   margin-top: 10px;
   font-family: var(--font-mono), monospace;

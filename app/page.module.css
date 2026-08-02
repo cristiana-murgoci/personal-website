@@ -26,12 +26,6 @@
   }
 }
 
-@media (max-width: 600px) {
-  .tabBar {
-    padding: 0 24px;
-  }
-}
-
 .tabButton {
   display: inline-block;
   font-family: var(--font-mono), 'Space Mono', monospace;
@@ -56,23 +50,6 @@
 .tabActive {
   color: var(--accent);
   border-bottom-color: var(--accent);
-}
-
-@media (max-width: 600px) {
-  .tabBar { padding: 0 24px; }
-  .tabButton { padding: 14px 16px; font-size: 10px; }
-}
-
-@media (max-width: 600px) {
-  .hero {
-    grid-template-columns: 1fr;
-    padding: 64px 24px 56px;
-    gap: 32px;
-  }
-  .heroPhoto {
-    width: 140px;
-    height: 140px;
-  }
 }
 
 /* ── Hero ─────────────────────────────────────────────── */
@@ -197,15 +174,6 @@
 }
 
 .prose p {
-  font-family: var(--font-mono), 'Space Mono', monospace;
-  font-size: 14px;
-  line-height: 2;
-  color: var(--text-muted);
-  font-weight: 400;
-  text-align: justify;
-}
-
-.prose p:first-child {
   font-family: var(--font-mono), 'Space Mono', monospace;
   font-size: 14px;
   line-height: 2;
@@ -479,11 +447,69 @@
   text-transform: uppercase;
 }
 
+/* ── Tablet ───────────────────────────────────────────── */
+/* Between the phone and laptop layouts the fixed 320px photo column plus the
+   nowrap name no longer fit side by side; shrink the photo first, then stack. */
+@media (max-width: 1000px) {
+  .hero {
+    grid-template-columns: 1fr 220px;
+    gap: 48px;
+  }
+  .heroPhotoFrame {
+    width: 180px;
+    height: 240px;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
 /* ── Mobile ───────────────────────────────────────────── */
 @media (max-width: 600px) {
   .hero    { padding: 48px 24px 40px; }
   .content { padding: 0 24px 72px; }
   .section { padding: 40px 0; }
+
+  /* Keep the name on one line by scaling it to the screen instead of clipping */
+  .name {
+    font-size: clamp(22px, 8.2vw, 34px);
+    margin-bottom: 24px;
+  }
+
+  .heroEyebrow { margin-bottom: 24px; }
+
+  .heroPhotoFrame {
+    width: 160px;
+    height: 213px;
+  }
+
+  /* All four tabs on one line; scrollable as a safety net on very narrow phones.
+     Extra right padding keeps the last tab clear of the fixed theme toggle. */
+  .tabBar {
+    display: flex;
+    padding: 0 56px 0 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabBar::-webkit-scrollbar { display: none; }
+  .tabButton {
+    padding: 14px 10px;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Justified monospace forms rivers at narrow measures; rag right instead */
+  .prose p,
+  .researchDesc,
+  .contactNote {
+    text-align: left;
+  }
 
   .researchItem,
   .skillGroup {
@@ -496,6 +522,23 @@
   .researchMeta {
     flex-direction: row;
     gap: 16px;
-    align-items: center;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+
+  /* Award rows: let names wrap instead of pushing the year off-screen */
+  .awardLeft {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .awardName { white-space: normal; }
+  .awardOrg  { white-space: normal; overflow: visible; }
+  .awardSep  { display: none; }
+  .awardYear { white-space: normal; text-align: right; max-width: 35%; }
+
+  /* The full college address is wider than a small phone at 15px mono */
+  .contactLine {
+    font-size: 13px;
+    overflow-wrap: anywhere;
   }
 }
