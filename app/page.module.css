@@ -412,6 +412,9 @@
     grid-template-columns: 90px 1fr;
     gap: 12px;
   }
+  /* Codes wider than the narrow column ("Qubit by Qubit") wrap instead of
+     running into the course name */
+  .courseCode { white-space: normal; }
 }
 
 /* ── Contact ──────────────────────────────────────────── */

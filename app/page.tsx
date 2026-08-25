@@ -50,6 +50,7 @@ const coursework: CourseEntry[] = [
     courses: [
       { code: "PHYSICS 143A", name: "Quantum Mechanics I" },
       { code: "PHYSICS 151", name: "Mechanics" },
+      { code: "USQIS", name: "Fermilab's Quantum Information Science Summer School" },
       { code: "Qubit by Qubit", name: "Introduction to Quantum Computing" },
     ],
   },
