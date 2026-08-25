@@ -437,6 +437,10 @@
   padding: 20px 18px;
   max-height: 70vh;
   overflow: auto;
+  /* Reserve the scrollbar's column up front: the shelf zoom is derived from
+     the measured shelf width, so a scrollbar that comes and goes with content
+     height would otherwise oscillate the measurement and flicker the shelf. */
+  scrollbar-gutter: stable;
   background: var(--bg);
 }
 

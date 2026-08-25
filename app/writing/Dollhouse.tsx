@@ -138,8 +138,8 @@ const GAP = 7; // row gap at full size
 const ROW_PAD = 16; // row horizontal padding at full size
 const DEFAULT_ROW_W = 808; // width assumed before the shelf is measured
 // A row this wide holds ~7 average spines at full size; narrower shelves
-// zoom out proportionally (never below half size) so a phone row holds
-// around 7 books instead of 4–5 oversized ones, while titles stay readable.
+// zoom out proportionally so a phone row holds around 7 books instead of
+// 4–5 oversized ones, while titles stay readable.
 const FULL_SIZE_ROW_W = 360;
 
 // ── Iconic books wear their cover art, not a title ────────────────
@@ -455,8 +455,10 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
   }, [room, view, libraryOpen, swanOpen, presented, phase, goTo, interact]);
 
   // Shelf zoom: 1 on a full-width window, shrinking on narrow screens so a
-  // row keeps holding ~7 books; spines never drop below half size.
-  const spineScale = Math.min(1, Math.max(0.5, (shelfW - 2 * ROW_PAD) / FULL_SIZE_ROW_W));
+  // row keeps holding ~7 books. The floor matches the spine type's 7px floor
+  // (0.7 × 10px): geometry must never shrink past the type, or multi-column
+  // vertical titles grow wider than their spines and bleed onto neighbours.
+  const spineScale = Math.min(1, Math.max(0.7, (shelfW - 2 * ROW_PAD) / FULL_SIZE_ROW_W));
   const rowPad = Math.round(ROW_PAD * spineScale);
   const rowGap = Math.max(3, Math.round(GAP * spineScale));
   const scaledSpineW = (b: ShelfBook) => Math.max(16, Math.round(spineWidth(b) * spineScale));
