@@ -84,7 +84,6 @@ const skills = {
 };
 
 const awards = [
-  { year: '2026',                         name: 'Intellectual Contribution Award',                                org: 'Harvard · Cabot House' },
   { year: '2024',                         name: 'Honor Medal for Outstanding Results in International Olympiads',  org: 'Institute of Atomic Physics' },
   { year: '2022',                         name: 'Silver Medal · Best Female Contestant',                          org: 'European Physics Olympiad' },
   { year: '2022',                         name: 'Finalist, Biomedical Engineering Category',                      org: 'Regeneron ISEF' },
@@ -141,7 +140,7 @@ export default function Home() {
             <p>
               Recently, I cofounded Telos (now Robocurve), a startup in physical automation forecasting.
               Our team was accepted into Y Combinator&apos;s Summer 2026 batch. I stepped
-              down before the batch began and chose to finish my Harvard degree. I graduate
+              down and chose to finish my Harvard degree. I graduate
               in December 2026, and what comes next is already underway.
             </p>
           </div>
@@ -153,6 +152,23 @@ export default function Home() {
             <span className={styles.sectionLabel}>Awards &amp; Honours</span>
             <div className={styles.sectionRule} />
           </div>
+
+          {/* Featured: the citation is worth reading in full, so it sits above
+              the table rather than being squeezed into a row */}
+          <div className={styles.awardFeature}>
+            <h3 className={styles.awardFeatureTitle}>
+              <span>Intellectual Contribution Award</span>
+              <span className={styles.awardFeatureOrg}>Cabot House, Harvard College, 2026</span>
+            </h3>
+            <p className={styles.awardFeatureCitation}>
+              &ldquo;Recognizes individuals who, through critical questioning, dialogue, and
+              capacity to integrate knowledge across boundaries, enliven the intellectual
+              atmosphere of the House. The award recognizes that a commitment to truth and
+              knowledge as ends in themselves embodies the essence of a liberal education
+              and a responsible citizen.&rdquo;
+            </p>
+          </div>
+
           <div className={styles.awardsList}>
             {awards.map((a, i) => (
               <div key={i} className={styles.awardRow}>
@@ -181,7 +197,7 @@ export default function Home() {
               </div>
               <div className={styles.researchBody}>
                 <h3 className={styles.researchTitle}>Telos (now <a href="https://robocurve.org" target="_blank" rel="noopener noreferrer">Robocurve ↗</a>)<YCProof /></h3>
-                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Our team was accepted into Y Combinator&apos;s Summer 2026 batch. I stepped down before the batch began and chose to finish my Harvard degree. I learned more about building a company there than anywhere else.</p>
+                <p className={styles.researchDesc}>Co-founded a startup in physical automation forecasting. Our team was accepted into Y Combinator&apos;s Summer 2026 batch. I stepped down and chose to finish my Harvard degree. I learned more about building a company there than anywhere else.</p>
               </div>
             </div>
 
