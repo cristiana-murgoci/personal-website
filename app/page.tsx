@@ -203,6 +203,17 @@ export default function Home() {
 
             <div className={styles.researchItem}>
               <div className={styles.researchMeta}>
+                <span className={styles.researchYear}>Sep 2026 – present</span>
+                <span className={styles.researchOrg}>SEAS Teaching Fellow</span>
+              </div>
+              <div className={styles.researchBody}>
+                <h3 className={styles.researchTitle}>CS 1210: Theoretical Computer Science</h3>
+                <p className={styles.researchDesc}>Teaching a weekly section for Harvard&apos;s introduction to theoretical computer science, covering automata, computability, and complexity. Holding office hours, grading, and developing and test-solving problem sets and exams. Completed the <a href="/seas-inclusive-pedagogy-training.png" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', borderBottom: '1px solid var(--border)' }}>SEAS Inclusive Pedagogy Training ↗</a>.</p>
+              </div>
+            </div>
+
+            <div className={styles.researchItem}>
+              <div className={styles.researchMeta}>
                 <span className={styles.researchYear}>Sep 2025 – present</span>
                 <span className={styles.researchOrg}>AGI Strategy Reading Group</span>
               </div>
