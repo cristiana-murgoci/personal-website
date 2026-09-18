@@ -51,7 +51,10 @@ async function fetchShelf(): Promise<Book[]> {
       const xml = await res.text();
       const items = Array.from(xml.matchAll(/<item>([\s\S]*?)<\/item>/g));
       for (const [, block] of items) {
-        const title = decodeEntities(field(block, 'title'));
+        // Trailing parentheticals are Goodreads edition noise ("The Fall
+        // (Vintage International)"), never part of the title; a leading
+        // paren ("(Not) Getting Paid...") is kept.
+        const title = decodeEntities(field(block, 'title')).replace(/\s+\([^)]*\)\s*$/, '');
         if (!title) continue;
         books.push({
           id: field(block, 'book_id'),
