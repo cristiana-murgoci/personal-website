@@ -214,6 +214,17 @@ export default function Home() {
 
             <div className={styles.researchItem}>
               <div className={styles.researchMeta}>
+                <span className={styles.researchYear}>Sep 2026 – present</span>
+                <span className={styles.researchOrg}>SAVE Fellow</span>
+              </div>
+              <div className={styles.researchBody}>
+                <h3 className={styles.researchTitle}><a href="https://www.ethics.harvard.edu/Fellowship-in-Values-Engagement" target="_blank" rel="noopener noreferrer">Edmond &amp; Lily Safra Center for Ethics ↗</a></h3>
+                <p className={styles.researchDesc}>Cabot House&apos;s Student Ambassador in Values Engagement. Paired with the Center&apos;s resident FiVE Fellow (Fellowship in Values Engagement) to host weekly Dining Hall Dialogues and FiVE dinners, open discussions about questions that matter, and to keep the undergraduate perspective central to the Center&apos;s work in the Houses.</p>
+              </div>
+            </div>
+
+            <div className={styles.researchItem}>
+              <div className={styles.researchMeta}>
                 <span className={styles.researchYear}>Sep 2025 – present</span>
                 <span className={styles.researchOrg}>AGI Strategy Reading Group</span>
               </div>
