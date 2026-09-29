@@ -83,7 +83,10 @@ const jsonLd = {
     "Quantum Computing",
     "Differential Privacy",
   ],
-  sameAs: ["https://linkedin.com/in/cristiana-murgoci"],
+  sameAs: [
+    "https://linkedin.com/in/cristiana-murgoci",
+    "https://github.com/cristiana-murgoci",
+  ],
 };
 
 export default function RootLayout({

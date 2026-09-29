@@ -158,7 +158,7 @@ export default function Home() {
           <div className={styles.awardFeature}>
             <h3 className={styles.awardFeatureTitle}>
               <span>Intellectual Contribution Award</span>
-              <span className={styles.awardFeatureOrg}>Cabot House, Harvard College, 2026</span>
+              <span className={styles.awardFeatureOrg}>Cabot House, Harvard College, May 2026</span>
             </h3>
             <p className={styles.awardFeatureCitation}>
               &ldquo;Recognizes individuals who, through critical questioning, dialogue, and
@@ -364,6 +364,11 @@ export default function Home() {
             <p className={styles.contactLine}>
               <a href="mailto:cristiana_murgoci@college.harvard.edu" style={{ color: 'var(--accent)' }}>
                 cristiana_murgoci@college.harvard.edu
+              </a>
+            </p>
+            <p className={styles.contactLine}>
+              <a href="https://github.com/cristiana-murgoci" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>
+                GitHub
               </a>
             </p>
             <p className={styles.contactLine}>
