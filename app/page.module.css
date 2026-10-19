@@ -17,14 +17,14 @@
   top: 0;
   background: var(--bg);
   z-index: 10;
-  /* +20px so the first label's text (behind the button's 28px padding) sits
-     exactly on the content column's 48px text edge */
-  padding: 0 calc((100% - 920px) / 2 + 20px);
+  /* Tabs carry no side padding, so the first label and its active underline
+     sit exactly on the content column's 48px text edge */
+  padding: 0 calc((100% - 920px) / 2 + 48px);
 }
 
 @media (max-width: 1016px) {
   .tabBar {
-    padding: 0 20px;
+    padding: 0 48px;
   }
 }
 
@@ -38,7 +38,9 @@
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  padding: 18px 28px;
+  /* No side padding: the underline hugs the label. Spacing lives in margin. */
+  padding: 18px 0;
+  margin-right: 56px;
   cursor: pointer;
   margin-bottom: -1px;
   text-decoration: none;
@@ -565,14 +567,16 @@
      Extra right padding keeps the last tab clear of the fixed theme toggle. */
   .tabBar {
     display: flex;
-    /* 14px + the button's 10px padding = the mobile 24px text edge */
-    padding: 0 56px 0 14px;
+    /* 24px matches the mobile content gutter; extra right space clears the
+       fixed theme toggle */
+    padding: 0 56px 0 24px;
     overflow-x: auto;
     scrollbar-width: none;
   }
   .tabBar::-webkit-scrollbar { display: none; }
   .tabButton {
-    padding: 14px 10px;
+    padding: 14px 0;
+    margin-right: 20px;
     font-size: 9px;
     letter-spacing: 0.14em;
     white-space: nowrap;
