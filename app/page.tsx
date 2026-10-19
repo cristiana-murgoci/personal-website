@@ -161,11 +161,11 @@ export default function Home() {
               <span className={styles.awardFeatureOrg}>Cabot House, Harvard College, May 2026</span>
             </h3>
             <p className={styles.awardFeatureCitation}>
-              &ldquo;Recognizes individuals who, through critical questioning, dialogue, and
+              Recognizes individuals who, through critical questioning, dialogue, and
               capacity to integrate knowledge across boundaries, enliven the intellectual
               atmosphere of the House. The award recognizes that a commitment to truth and
               knowledge as ends in themselves embodies the essence of a liberal education
-              and a responsible citizen.&rdquo;
+              and a responsible citizen.
             </p>
           </div>
 
