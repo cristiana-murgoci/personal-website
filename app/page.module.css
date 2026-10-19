@@ -17,12 +17,14 @@
   top: 0;
   background: var(--bg);
   z-index: 10;
-  padding: 0 calc((100% - 920px) / 2);
+  /* +20px so the first label's text (behind the button's 28px padding) sits
+     exactly on the content column's 48px text edge */
+  padding: 0 calc((100% - 920px) / 2 + 20px);
 }
 
 @media (max-width: 1016px) {
   .tabBar {
-    padding: 0 48px;
+    padding: 0 20px;
   }
 }
 
@@ -563,7 +565,8 @@
      Extra right padding keeps the last tab clear of the fixed theme toggle. */
   .tabBar {
     display: flex;
-    padding: 0 56px 0 16px;
+    /* 14px + the button's 10px padding = the mobile 24px text edge */
+    padding: 0 56px 0 14px;
     overflow-x: auto;
     scrollbar-width: none;
   }

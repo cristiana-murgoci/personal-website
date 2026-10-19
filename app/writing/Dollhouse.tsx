@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { type CSSProperties, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import ws from './writing.module.css';
 
 export type ShelfBook = {
@@ -95,7 +95,7 @@ const ROOMS: Record<
   },
   study: {
     label: 'study',
-    line: '❧ press enter to sit by the swan window',
+    line: '❧ the swan window catches the light',
     box: { l: 50, t: 62.5, w: 20, h: 16.3 },
     pos: { x: 57, y: 78.1 },
   },
@@ -107,7 +107,7 @@ const ROOMS: Record<
   },
   library: {
     label: 'library.sys',
-    line: '▸ press enter to open library.sys',
+    line: '❧ the bookshelf is a tap away',
     box: { l: 5, t: 78.7, w: 90, h: 21.3 },
     pos: { x: 50, y: 98.9 },
   },
@@ -317,6 +317,41 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
     return () => ro.disconnect();
   }, [libraryOpen]);
 
+  // The active theme, read from <html data-theme> after hydration (null while
+  // server-rendering, so SSR and the first client render agree on "no scene
+  // image yet"). Only the active theme's art is mounted: Chromium fetches
+  // display:none images even with loading="lazy", so hiding the inactive
+  // scene in CSS made every visitor download both (~1.7 MB).
+  const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
+  useEffect(() => {
+    const el = document.documentElement;
+    const read = () => setTheme(el.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    read();
+    const mo = new MutationObserver(read);
+    mo.observe(el, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => mo.disconnect();
+  }, []);
+
+  // Warm the tentacle art as soon as the library opens, so the first book
+  // pull doesn't fetch and decode it mid-animation.
+  useEffect(() => {
+    if (!libraryOpen) return;
+    const img = new Image();
+    img.src = '/house/tentacle.png';
+  }, [libraryOpen]);
+
+  // After the page settles, quietly warm the other theme's cutaway so a
+  // theme flip doesn't pop in (the lazy imgs above skip it at load time).
+  useEffect(() => {
+    const t = setTimeout(() => {
+      for (const src of ['/house/cutaway.png', '/house/cutaway-night.png']) {
+        const img = new Image();
+        img.src = src;
+      }
+    }, 5000);
+    return () => clearTimeout(t);
+  }, []);
+
   // Beat 1 — the clicked book is tugged forward off the shelf, hangs a moment,
   // then tumbles down and out. (Reduced motion skips straight to the reveal.)
   useEffect(() => {
@@ -461,10 +496,18 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
   const spineScale = Math.min(1, Math.max(0.7, (shelfW - 2 * ROW_PAD) / FULL_SIZE_ROW_W));
   const rowPad = Math.round(ROW_PAD * spineScale);
   const rowGap = Math.max(3, Math.round(GAP * spineScale));
-  const scaledSpineW = (b: ShelfBook) => Math.max(16, Math.round(spineWidth(b) * spineScale));
-  const shelves = packShelves(books, Math.max(120, shelfW - 2 * rowPad), scaledSpineW, rowGap);
+  const scaledSpineW = useCallback(
+    (b: ShelfBook) => Math.max(16, Math.round(spineWidth(b) * spineScale)),
+    [spineScale]
+  );
+  // Memoized so the presentation beats (pulled/dropped/phase/lifted) don't
+  // repack and re-diff all the spines mid-animation.
+  const shelves = useMemo(
+    () => packShelves(books, Math.max(120, shelfW - 2 * rowPad), scaledSpineW, rowGap),
+    [books, shelfW, rowPad, rowGap, scaledSpineW]
+  );
   // Stable palette index for the fallback leather colours (order-preserving).
-  const colorIndex = new Map(books.map((b, i) => [b.id, i] as const));
+  const colorIndex = useMemo(() => new Map(books.map((b, i) => [b.id, i] as const)), [books]);
 
   // Presented cover: books with a glyph get the art's colour (so the enlarged
   // icon blends) and legible ink; the rest use their own cover colour.
@@ -497,20 +540,20 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
               className={ws.world}
               style={{ width: worldW, height: worldH, transform: `translate(${-camX}px, ${-camY}px)` }}
             >
-              <img
-                src="/house/cutaway.png"
-                width={W}
-                height={H}
-                alt="Pixel art cutaway of a library house"
-                className={`${ws.houseImg} ${ws.dayScene}`}
-              />
-              <img
-                src="/house/cutaway-night.png"
-                width={W}
-                height={H}
-                alt="Pixel art cutaway of the library house at night, rooms lit"
-                className={`${ws.houseImg} ${ws.nightScene}`}
-              />
+              {theme && (
+                <img
+                  src={theme === 'dark' ? '/house/cutaway-night.png' : '/house/cutaway.png'}
+                  width={W}
+                  height={H}
+                  decoding="async"
+                  alt={
+                    theme === 'dark'
+                      ? 'Pixel art cutaway of the library house at night, rooms lit'
+                      : 'Pixel art cutaway of a library house'
+                  }
+                  className={ws.houseImg}
+                />
+              )}
               {ROOM_IDS.map((id) => {
                 const r = ROOMS[id];
                 return (
@@ -538,12 +581,17 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
                   />
                 );
               })}
+              {/* The walk animates transform (compositor), never left/top (layout):
+                  X and Y keep their own step counts via two nested spans. The old
+                  -12/-36px centering margins are folded into the translates. */}
               <span
                 className={ws.spriteAnchor}
-                style={{ left: `${ROOMS[room].pos.x}%`, top: `${ROOMS[room].pos.y}%` }}
+                style={{ transform: `translateX(${sx - 12}px)` }}
                 aria-hidden="true"
               >
-                <i className={ws.pixieGirl} />
+                <span className={ws.spriteDrop} style={{ transform: `translateY(${sy - 36}px)` }}>
+                  <i className={ws.pixieGirl} />
+                </span>
               </span>
             </div>
           </div>
@@ -555,41 +603,30 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
               onClick={() => setView('inside')}
               aria-label="Go back inside the house"
             >
-              <img
-                src="/house/exterior.png"
-                width={1370}
-                height={768}
-                alt="Pixel art of a red brick Georgian house with a cupola"
-                className={`${ws.houseImg} ${ws.dayScene}`}
-              />
-              <img
-                src="/house/exterior-night.png"
-                width={1370}
-                height={768}
-                alt="Pixel art of the red brick house at night with lit windows"
-                className={`${ws.houseImg} ${ws.nightScene}`}
-              />
+              {theme && (
+                <img
+                  src={theme === 'dark' ? '/house/exterior-night.png' : '/house/exterior.png'}
+                  width={1370}
+                  height={768}
+                  decoding="async"
+                  alt={
+                    theme === 'dark'
+                      ? 'Pixel art of the red brick house at night with lit windows'
+                      : 'Pixel art of a red brick Georgian house with a cupola'
+                  }
+                  className={ws.houseImg}
+                />
+              )}
             </button>
           </div>
         )}
 
         <div className={ws.hud}>
-          <p className={ws.statusLine} role="status">
-            {view === 'inside' ? line : '☖ home, seen from the yard'}
-          </p>
-          <p className={ws.hudHint}>
-            {view === 'inside' ? (
-              <>
-                <span className={ws.hintKeys}>← ↑ → ↓ wander · the view follows you · enter interact</span>
-                <span className={ws.hintTouch}>tap a room to wander · tap it again to interact</span>
-              </>
-            ) : (
-              <>
-                <span className={ws.hintKeys}>enter or click to come back inside</span>
-                <span className={ws.hintTouch}>tap the house to come back inside</span>
-              </>
-            )}
-          </p>
+          {view === 'inside' && (
+            <p className={ws.statusLine} role="status">
+              {line}
+            </p>
+          )}
           <button
             type="button"
             className={ws.viewBtn}
@@ -604,7 +641,7 @@ export default function Dollhouse({ books }: { books: ShelfBook[] }) {
         <div className={ws.overlay} role="dialog" aria-modal="true" aria-label="The swan window">
           <div className={`${ws.osWindow} ${ws.swanWindowBox}`}>
             <div className={ws.osTitleBar}>
-              <span>swan_window.sys — the study</span>
+              <span>swan_window.sys</span>
               <button type="button" className={ws.osClose} onClick={() => setSwanOpen(false)} aria-label="Close">
                 ✕
               </button>

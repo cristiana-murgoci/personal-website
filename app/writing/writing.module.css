@@ -286,17 +286,8 @@
   image-rendering: pixelated;
 }
 
-/* Day scene in light mode, night scene in dark mode. Only one is ever
-   displayed; both are the same size so the world layout never shifts. */
-.nightScene {
-  display: none;
-}
-:global(:root[data-theme='dark']) .dayScene {
-  display: none;
-}
-:global(:root[data-theme='dark']) .nightScene {
-  display: block;
-}
+/* Day/night art is swapped in React (only the active theme's image is
+   mounted at all, so visitors never download the scene they can't see). */
 
 /* Invisible room hotspots over the cutaway */
 .hotspot {
@@ -324,15 +315,24 @@
 
 /* ── The scholar (box-shadow sprite) ─────────────────── */
 
+/* The walk is transform-only so it runs on the compositor alongside the
+   camera pan (left/top transitions forced main-thread layout per step and
+   desynced the scholar from the room on slow devices). X and Y keep their
+   separate step counts via the nested .spriteDrop. */
 .spriteAnchor {
   position: absolute;
-  width: 24px;
-  height: 36px;
-  margin-left: -12px;
-  margin-top: -36px;
+  left: 0;
+  top: 0;
   z-index: 5;
   pointer-events: none;
-  transition: left 0.5s steps(8, end), top 0.5s steps(6, end);
+  transition: transform 0.5s steps(8, end);
+}
+
+.spriteDrop {
+  display: block;
+  width: 24px;
+  height: 36px;
+  transition: transform 0.5s steps(6, end);
 }
 
 .pixieGirl {
@@ -378,21 +378,6 @@
   min-height: 18px;
 }
 
-.hudHint {
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--text-faint);
-  margin: 0;
-}
-
-/* Keyboard hints on devices with hover; touch hints everywhere else */
-.hintTouch { display: none; }
-
-@media (hover: none) {
-  .hintKeys  { display: none; }
-  .hintTouch { display: inline; }
-}
 
 .viewBtn {
   margin-top: 10px;
@@ -467,6 +452,7 @@
     animation: none;
   }
   .spriteAnchor,
+  .spriteDrop,
   .world {
     transition: none;
   }
