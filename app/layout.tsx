@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Inter, Cormorant_Garamond, Space_Mono } from "next/font/google";
 import "./globals.css";
 import styles from "./page.module.css";
@@ -111,6 +112,7 @@ export default function RootLayout({
           <SiteHeader />
           {children}
         </main>
+        <Analytics />
       </body>
     </html>
   );
